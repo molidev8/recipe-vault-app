@@ -1,4 +1,4 @@
-package com.example.recipevault
+package com.moliverac8.recipevault
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

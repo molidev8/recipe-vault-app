@@ -1,4 +1,4 @@
-package com.example.recipevault
+package com.moliverac8.recipevault
 
 import org.junit.Test
 
