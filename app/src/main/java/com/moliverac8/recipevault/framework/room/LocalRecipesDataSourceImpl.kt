@@ -4,7 +4,8 @@ import com.moliverac8.data.LocalRecipesDataSource
 import javax.inject.Inject
 
 
-class LocalRecipesDataSourceImpl @Inject constructor(val dao: LocalRecipeDatabaseDao) :
+class LocalRecipesDataSourceImpl(val db: LocalRecipeDatabase) :
     LocalRecipesDataSource {
 
+    private val dao = db.dao()
 }
