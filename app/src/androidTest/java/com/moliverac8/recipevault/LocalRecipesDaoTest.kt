@@ -1,7 +1,6 @@
 package com.moliverac8.recipevault
 
 import android.net.Uri
-import android.util.Log
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -13,7 +12,6 @@ import com.moliverac8.recipevault.framework.room.LocalRecipeDatabase
 import com.moliverac8.recipevault.framework.room.Recipe
 import com.moliverac8.recipevault.framework.room.Recipe_Ing
 import org.junit.After
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -39,7 +37,7 @@ class LocalRecipesDaoTest {
     fun insertRecipeAndGetById() {
         //GIVEN
         val recipe = Recipe(
-            1,
+            0,
             "Ensalada",
             20,
             listOf(DishType.MEAL),
