@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Recipe Vault</string>
+    <string name="my_recipes">Mis Recetas</string>
+    <string name="add_recipe">Añadir receta</string>
+    <string name="share">Compartir receta</string>
+    <string name="recipe_photo">Foto receta</string>
+    <string name="edit">Editar</string>
+</resources>

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Recipe Vault</string>
+    <string name="my_recipes">My Recipes</string>
+    <string name="add_recipe">Add recipe</string>
+    <string name="share">Share recipe</string>
+    <string name="recipe_photo">Recipe photo</string>
+    <string name="edit">Edit</string>
 </resources>

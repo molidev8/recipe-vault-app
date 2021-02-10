@@ -67,6 +67,17 @@ dependencies {
     }
 }
 
+// Navegacion
+dependencies {
+    def nav_version = '2.3.3'
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    def paging_version = "2.1.2"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version" // For Kotlin use paging-runtime-ktx
+    testImplementation "androidx.paging:paging-common-ktx:$paging_version" // For Kotlin use paging-common-ktx
+}
+
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
