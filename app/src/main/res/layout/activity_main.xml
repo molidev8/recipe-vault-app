@@ -8,9 +8,11 @@
         android:layout_height="match_parent"
         tools:context=".ui.MainActivity">
 
-        <androidx.fragment.app.FragmentContainerView
+        <fragment
             android:id="@+id/fragmentMaster"
             android:name="androidx.navigation.fragment.NavHostFragment"
+            app:navGraph="@navigation/nav_graph"
+            app:defaultNavHost="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@+id/bottomNav"

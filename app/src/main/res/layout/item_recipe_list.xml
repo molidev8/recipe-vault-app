@@ -5,6 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
+    <data>
+        <variable
+            name="recipe"
+            type="com.moliverac8.domain.Recipe" />
+    </data>
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/recipeCard"
         android:layout_height="wrap_content"
