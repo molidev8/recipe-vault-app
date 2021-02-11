@@ -34,34 +34,11 @@ class LocalRecipesDaoTest {
     fun close() = db.close()
 
     @Test
-    fun insertRecipeAndGetById() {
-        //GIVEN
-        val recipe = Recipe(
-            0,
-            "Ensalada",
-            20,
-            listOf(DishType.MEAL),
-            listOf(DietType.VEGETARIAN),
-            "Cocinar",
-            Uri.parse("dummyUri"),
-            "Lorem ipsum"
-        )
-
-        //WHEN
-        db.dao().insertRecipe(recipe)
-
-        val loaded = db.dao().getRecipeWithIngredientsByID(recipe.recipeID)
-
-        //THEN
-        assert(loaded.recipe == recipe)
-    }
-
-    @Test
     fun insertRecipeWithIngAndGetById() {
         //GIVEN
         val recipe = Recipe(
             1, "Ensalada", 20, listOf(DishType.MEAL),
-            listOf(DietType.VEGETARIAN), "Cocinar", Uri.parse("dummyUri"),
+            DietType.VEGETARIAN, "Cocinar", Uri.parse("dummyUri"),
             "Lorem ipsum")
         val ing = Ingredient(1, "Lechuga", "hojas", 3.0)
         val cross = Recipe_Ing(1, 1)

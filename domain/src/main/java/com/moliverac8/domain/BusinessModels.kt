@@ -5,7 +5,7 @@ data class Recipe(
     val name: String,
     val timeToCook: Int,
     val dishType: List<DishType>,
-    val dietType: List<DietType>,
+    val dietType: DietType,
     val instructions: String,
     val image: String, //URI
     val description: String

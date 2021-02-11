@@ -1,6 +1,9 @@
 package com.moliverac8.recipevault.framework.room
 
+import android.net.Uri
 import com.moliverac8.data.LocalRecipesDataSource
+import com.moliverac8.domain.DietType
+import com.moliverac8.domain.DishType
 import com.moliverac8.domain.RecipeWithIng
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
@@ -36,4 +39,35 @@ class LocalRecipesDataSourceImpl(db: LocalRecipeDatabase) : LocalRecipesDataSour
             }
             return@withContext list
         }
+}
+
+class FakeRecipesDataSourceImpl : LocalRecipesDataSource {
+
+    val recipe = Recipe(
+        1, "Ensalada de patata", 20, listOf(DishType.MEAL),
+        DietType.VEGETARIAN, "Cocinar", Uri.parse(
+            "android.resource://com.moliverac8.recipevault/drawable/ensalada_de_patata_y_aguacate"),
+        "Ensalada de pata y aguacate. En esta ocasión, vamos a preparar un plato " +
+                "frío que se hace en muy pocos minutos"
+        )
+        val ing = Ingredient (1, "Lechuga", "hojas", 3.0)
+    val cross = Recipe_Ing(1, 1)
+
+
+    override suspend fun insertRecipeWithIng(recipeWithIng: RecipeWithIng): Long {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getRecipeWithIngById(id: Int): RecipeWithIng {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getAllRecipesWithIng(): List<RecipeWithIng> =
+        withContext(IO) {
+            val ings = mutableListOf(ing, ing, ing)
+            val sample = RecipeWithIng(recipe, ings).toDomain()
+            val list = mutableListOf(sample, sample, sample, sample)
+            return@withContext list
+        }
+
 }

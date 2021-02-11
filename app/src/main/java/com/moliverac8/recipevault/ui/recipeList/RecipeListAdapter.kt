@@ -8,8 +8,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.moliverac8.recipevault.databinding.ItemRecipeListBinding
 import com.moliverac8.domain.Recipe
+import com.moliverac8.domain.RecipeWithIng
 
-class RecipeListAdapter(private val onClickListener: OnClickListener) : ListAdapter<Recipe, RecipeListAdapter.ViewHolder>(RecipeListDiffCallback()) {
+class RecipeListAdapter(private val onClickListener: OnClickListener) : ListAdapter<RecipeWithIng, RecipeListAdapter.ViewHolder>(RecipeListDiffCallback()) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -26,14 +27,14 @@ class RecipeListAdapter(private val onClickListener: OnClickListener) : ListAdap
         holder.bind(item)
     }
 
-    class OnClickListener(val clickListener: (recipe: Recipe) -> Unit) {
-        fun onClick(recipe: Recipe) = clickListener(recipe)
+    class OnClickListener(val clickListener: (recipe: RecipeWithIng) -> Unit) {
+        fun onClick(recipe: RecipeWithIng) = clickListener(recipe)
     }
 
     class ViewHolder private constructor(private val binding: ItemRecipeListBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Recipe) {
-            binding.recipe = item
+        fun bind(item: RecipeWithIng) {
+            binding.recipe = item.domainRecipe
             binding.executePendingBindings()
         }
 
@@ -47,13 +48,13 @@ class RecipeListAdapter(private val onClickListener: OnClickListener) : ListAdap
     }
 }
 
-class RecipeListDiffCallback : DiffUtil.ItemCallback<Recipe>() {
+class RecipeListDiffCallback : DiffUtil.ItemCallback<RecipeWithIng>() {
 
-    override fun areItemsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
-        return oldItem.id == newItem.id
+    override fun areItemsTheSame(oldItem: RecipeWithIng, newItem: RecipeWithIng): Boolean {
+        return oldItem.domainRecipe.id == newItem.domainRecipe.id
     }
 
-    override fun areContentsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
-        return oldItem == newItem
+    override fun areContentsTheSame(oldItem: RecipeWithIng, newItem: RecipeWithIng): Boolean {
+        return oldItem.domainRecipe == newItem.domainRecipe
     }
 }

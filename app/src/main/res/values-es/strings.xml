@@ -6,4 +6,5 @@
     <string name="share">Compartir receta</string>
     <string name="recipe_photo">Foto receta</string>
     <string name="edit">Editar</string>
+    <string name="timeToCook">%d minutos</string>
 </resources>

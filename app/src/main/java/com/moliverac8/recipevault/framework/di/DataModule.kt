@@ -3,6 +3,7 @@ package com.moliverac8.recipevault.framework.di
 import android.app.Application
 import com.moliverac8.data.LocalRecipesDataSource
 import com.moliverac8.data.RecipesRepository
+import com.moliverac8.recipevault.framework.room.FakeRecipesDataSourceImpl
 import com.moliverac8.recipevault.framework.room.LocalRecipeDatabase
 import com.moliverac8.recipevault.framework.room.LocalRecipesDataSourceImpl
 import dagger.Module
@@ -16,14 +17,17 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class) // Shares lifecycle with the app
 class DataModule {
 
-    @Provides
+    /*@Provides
     @Singleton
     fun databaseProvider(app: Application): LocalRecipeDatabase =
-        LocalRecipeDatabase.getInstance(app)
+        LocalRecipeDatabase.getInstance(app)*/
+
+    /*@Provides
+    fun localRecipesDataSourceProvider(db: LocalRecipeDatabase): LocalRecipesDataSource =
+        LocalRecipesDataSourceImpl(db)*/
 
     @Provides
-    fun localRecipesDataSourceProvider(db: LocalRecipeDatabase): LocalRecipesDataSource =
-        LocalRecipesDataSourceImpl(db)
+    fun fakeDataSource(): LocalRecipesDataSource = FakeRecipesDataSourceImpl()
 
     @Provides
     fun recipesRepositoryProvider(dataSource: LocalRecipesDataSource): RecipesRepository =

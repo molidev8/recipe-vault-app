@@ -14,7 +14,7 @@ data class Recipe(
     val recipeName: String,
     val timeToCook: Int,
     val dishType: List<DishType>,
-    val dietType: List<DietType>,
+    val dietType: DietType,
     val instructions: String,
     val image: Uri,
     val description: String
@@ -56,7 +56,7 @@ class DishTypeConverter {
     fun stringToList(type: String): List<DishType> {
         val list = mutableListOf<DishType>()
         type.split(",").forEach {
-            when(it) {
+            when (it) {
                 "BREAKFAST" -> list.add(DishType.BREAKFAST)
                 "MEAL" -> list.add(DishType.MEAL)
                 else -> list.add(DishType.DINNER)
@@ -68,22 +68,17 @@ class DishTypeConverter {
 
 class DietTypeConverter {
     @TypeConverter
-    fun listToString(type: List<DietType>): String {
-        return type.joinToString()
+    fun dietToString(type: DietType): String {
+        return type.toString()
     }
 
     @TypeConverter
-    fun stringToList(type: String): List<DietType> {
-        val list = mutableListOf<DietType>()
-        type.split(",").forEach {
-            when(it) {
-                "REGULAR" -> list.add(DietType.REGULAR)
-                "VEGAN" -> list.add(DietType.VEGAN)
-                else -> list.add(DietType.VEGETARIAN)
-            }
-        }
-        return list
+    fun stringToList(type: String): DietType = when (type) {
+        "REGULAR" -> DietType.REGULAR
+        "VEGAN" -> DietType.VEGAN
+        else -> DietType.VEGETARIAN
     }
+
 }
 
 class UriConverter {

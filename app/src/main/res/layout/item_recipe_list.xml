@@ -32,7 +32,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
                 app:strokeColor="@color/black"
-                app:strokeWidth="2dp"
+                app:strokeWidth="1dp"
+                app:dietImage="@{recipe}"
                 tools:background="@drawable/vegetarian" />
 
             <TextView
@@ -44,6 +45,7 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toEndOf="@id/dietImg"
                 app:layout_constraintTop_toTopOf="parent"
+                app:text="@{recipe.name}"
                 tools:text="Ensalada de Patata" />
 
             <TextView
@@ -56,6 +58,7 @@
                 app:layout_constraintBottom_toTopOf="@id/guideline"
                 app:layout_constraintStart_toEndOf="@+id/dietImg"
                 app:layout_constraintTop_toBottomOf="@+id/recipeTitle"
+                app:timeToCook="@{recipe.timeToCook}"
                 tools:text="20 minutos" />
 
             <ImageView
@@ -94,6 +97,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/guideline"
                 android:contentDescription="@string/recipe_photo"
+                app:image="@{recipe.image}"
                 tools:src="@drawable/ensalada_de_patata_y_aguacate" />
 
             <TextView
@@ -106,18 +110,22 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recipeImg"
+                app:text="@{recipe.description}"
                 tools:text="Ensalada de pata y aguacate. En esta ocasión, vamos a preparar un plato
-frío que se hace en muy" />
+frío que se hace en muy pocos minutos." />
 
             <Button
                 android:id="@+id/editBtn"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recipeDescription"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
                 android:text="@string/edit"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recipeDescription" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
