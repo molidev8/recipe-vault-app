@@ -6,5 +6,7 @@
     <string name="recipe_photo">Recipe photo</string>
     <string name="edit">Edit</string>
     <string name="timeToCook">%d minutes</string>
+    <string name="expand">Expand</string>
+    <string name="collapse">Collapse</string>
 
 </resources>
