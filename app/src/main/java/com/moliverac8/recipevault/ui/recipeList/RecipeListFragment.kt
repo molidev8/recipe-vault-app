@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.moliverac8.recipevault.databinding.FragmentRecipeListBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,7 +24,9 @@ class RecipeListFragment : Fragment() {
         val binding = FragmentRecipeListBinding.inflate(layoutInflater)
 
         val adapter = RecipeListAdapter(RecipeListAdapter.OnClickListener { recipe ->
-
+            val action =
+                RecipeListFragmentDirections.actionRecipeListFragmentToRecipePagerFragment(recipe.domainRecipe.id)
+            findNavController().navigate(action)
         })
 
         binding.recipeList.adapter = adapter

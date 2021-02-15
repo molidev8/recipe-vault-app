@@ -9,4 +9,6 @@
     <string name="timeToCook">%d minutos</string>
     <string name="expand">Expandir</string>
     <string name="collapse">Colapsar</string>
+    <string name="ings">Ingredientes</string>
+    <string name="recipe">Receta</string>
 </resources>

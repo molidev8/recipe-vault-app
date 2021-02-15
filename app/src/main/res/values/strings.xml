@@ -8,5 +8,7 @@
     <string name="timeToCook">%d minutes</string>
     <string name="expand">Expand</string>
     <string name="collapse">Collapse</string>
+    <string name="recipe">Recipe</string>
+    <string name="ings">Ingredients</string>
 
 </resources>

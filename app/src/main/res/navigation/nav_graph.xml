@@ -9,5 +9,23 @@
         android:id="@+id/recipeListFragment"
         android:name="com.moliverac8.recipevault.ui.recipeList.RecipeListFragment"
         android:label="RecipeListFragment"
-        tools:layout="@layout/fragment_recipe_list" />
+        tools:layout="@layout/fragment_recipe_list">
+        <action
+            android:id="@+id/action_recipeListFragment_to_recipePagerFragment"
+            app:destination="@id/recipePagerFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/recipePagerFragment"
+        android:name="com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragment"
+        android:label="RecipePagerFragment"
+        tools:layout="@layout/fragment_recipe_pager"
+
+        >
+        <argument
+            android:name="recipeID"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
+
 </navigation>
