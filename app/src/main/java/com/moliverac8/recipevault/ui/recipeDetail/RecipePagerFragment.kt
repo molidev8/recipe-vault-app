@@ -17,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class RecipePagerFragment : Fragment() {
 
     private val args by navArgs<RecipePagerFragmentArgs>()
-    private val viewModel: RecipeDetailVM by viewModels()
+    private val viewModel: RecipeDetailVM by viewModels(ownerProducer = { this })
 
     override fun onCreateView(
         inflater: LayoutInflater,

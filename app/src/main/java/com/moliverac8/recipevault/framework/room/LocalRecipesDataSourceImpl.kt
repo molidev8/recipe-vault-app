@@ -59,7 +59,8 @@ class FakeRecipesDataSourceImpl : LocalRecipesDataSource {
     }
 
     override suspend fun getRecipeWithIngById(id: Int): RecipeWithIng {
-        TODO("Not yet implemented")
+        val ings = mutableListOf(ing, ing, ing)
+        return RecipeWithIng(recipe, ings).toDomain()
     }
 
     override suspend fun getAllRecipesWithIng(): List<RecipeWithIng> =

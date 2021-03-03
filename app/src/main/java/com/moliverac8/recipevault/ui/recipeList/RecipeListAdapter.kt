@@ -1,16 +1,15 @@
 package com.moliverac8.recipevault.ui.recipeList
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.moliverac8.recipevault.databinding.ItemRecipeListBinding
-import com.moliverac8.domain.Recipe
 import com.moliverac8.domain.RecipeWithIng
+import com.moliverac8.recipevault.databinding.ItemRecipeListBinding
 
-class RecipeListAdapter(private val onClickListener: OnClickListener) : ListAdapter<RecipeWithIng, RecipeListAdapter.ViewHolder>(RecipeListDiffCallback()) {
+class RecipeListAdapter(private val onClickListener: OnClickListener) :
+    ListAdapter<RecipeWithIng, RecipeListAdapter.ViewHolder>(RecipeListDiffCallback()) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -31,7 +30,8 @@ class RecipeListAdapter(private val onClickListener: OnClickListener) : ListAdap
         fun onClick(recipe: RecipeWithIng) = clickListener(recipe)
     }
 
-    class ViewHolder private constructor(private val binding: ItemRecipeListBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder private constructor(private val binding: ItemRecipeListBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: RecipeWithIng) {
             binding.recipe = item.domainRecipe

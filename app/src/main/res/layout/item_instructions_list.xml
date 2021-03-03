@@ -6,11 +6,10 @@
 
     <data>
         <variable
-            name="recipe"
-            type="com.moliverac8.domain.Recipe" />
+            name="instruction"
+            type="String" />
     </data>
 
-<!--    LE FALTA EL DATA BINDING-->
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -23,13 +22,14 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/instruction"
+                android:id="@+id/instructionText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:padding="8dp"
+                app:text="@{instruction}"
                 tools:text="Cocemos las patatas sin pelar.
 En una olla, ponemos las patatas y añadimos agua
 hasta que estén bien cubiertas. Lo calentamos, y
@@ -48,7 +48,7 @@ puedes retirarlas del fuego." />
                 android:layout_marginEnd="8dp"
                 android:text="@string/collapse"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/instruction" />
+                app:layout_constraintTop_toBottomOf="@id/instructionText" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

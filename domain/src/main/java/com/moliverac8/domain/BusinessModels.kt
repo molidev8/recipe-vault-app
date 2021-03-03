@@ -6,7 +6,7 @@ data class Recipe(
     val timeToCook: Int,
     val dishType: List<DishType>,
     val dietType: DietType,
-    val instructions: String,
+    val instructions: String, //Realmente es un JSON pero se almacena como un string
     val image: String, //URI
     val description: String
 )
