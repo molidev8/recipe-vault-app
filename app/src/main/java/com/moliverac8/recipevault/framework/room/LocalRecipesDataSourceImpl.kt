@@ -45,9 +45,9 @@ class FakeRecipesDataSourceImpl : LocalRecipesDataSource {
 
     val recipe = Recipe(
         1, "Ensalada de patata", 20, listOf(DishType.MEAL),
-        DietType.VEGETARIAN, "Cocinar", Uri.parse(
+        DietType.VEGETARIAN, """[ "Cocinar", "Luego comer", "Terminar y recoger" ]""", Uri.parse(
             "android.resource://com.moliverac8.recipevault/drawable/ensalada_de_patata_y_aguacate"),
-        "Ensalada de pata y aguacate. En esta ocasión, vamos a preparar un plato " +
+        "Ensalada de patata y aguacate. En esta ocasión, vamos a preparar un plato " +
                 "frío que se hace en muy pocos minutos"
         )
         val ing = Ingredient (1, "Lechuga", "hojas", 3.0)

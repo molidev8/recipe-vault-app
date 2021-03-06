@@ -10,5 +10,6 @@
     <string name="collapse">Collapse</string>
     <string name="recipe">Recipe</string>
     <string name="ings">Ingredients</string>
+    <string name="dots">dotted line</string>
 
 </resources>

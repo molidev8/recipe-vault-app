@@ -1,5 +1,6 @@
 package com.moliverac8.recipevault.ui.common
 
+import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.net.Uri
 import android.widget.ImageView
@@ -7,6 +8,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.moliverac8.domain.DietType
+import com.moliverac8.domain.Ingredient
 import com.moliverac8.domain.Recipe
 import com.moliverac8.recipevault.R
 
@@ -41,5 +43,10 @@ fun ImageView.setDietImage(recipe: Recipe) {
     )
 
     Glide.with(this).load(uri).into(this)
+}
 
+@SuppressLint("SetTextI18n")
+@BindingAdapter("ingUnits")
+fun TextView.setIngUnits(ingredient: Ingredient) {
+    text = "${ingredient.quantity.toInt()} ${ingredient.unit}"
 }

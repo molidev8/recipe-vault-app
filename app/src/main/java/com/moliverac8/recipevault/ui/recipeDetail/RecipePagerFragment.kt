@@ -11,6 +11,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.FragmentRecipePagerBinding
+import com.moliverac8.recipevault.ui.recipeDetail.ingredients.RecipeIngsFragment
+import com.moliverac8.recipevault.ui.recipeDetail.instructions.RecipeDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
