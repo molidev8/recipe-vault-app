@@ -42,6 +42,10 @@ class RecipeDetailFragment : Fragment() {
             adapter.submitList(it.instructions.toListOfInstructions())
         }
 
+        binding.editBtn.setOnClickListener {
+
+        }
+
         binding.lifecycleOwner = this
 
         return binding.root

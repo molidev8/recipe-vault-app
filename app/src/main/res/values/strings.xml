@@ -11,5 +11,11 @@
     <string name="recipe">Recipe</string>
     <string name="ings">Ingredients</string>
     <string name="dots">dotted line</string>
+    <string name="set_title">Introduce recipe title</string>
+    <string name="set_time_to_cook">Introduce time to cook</string>
+    <string name="set_description">Introduce a small description</string>
+    <string name="set_step">Introduce a step</string>
+    <string name="instructions">Instructions</string>
+    <string name="save">Save</string>
 
 </resources>

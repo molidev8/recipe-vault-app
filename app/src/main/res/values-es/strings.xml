@@ -12,4 +12,10 @@
     <string name="ings">Ingredientes</string>
     <string name="recipe">Receta</string>
     <string name="dots">separación</string>
+    <string name="set_title">Introduzca el título de la receta</string>
+    <string name="set_time_to_cook">Introduce el tiempo de cocinado</string>
+    <string name="set_description">Introduce una pequeña descripción</string>
+    <string name="set_step">Introduce un paso</string>
+    <string name="instructions">Instrucciones</string>
+    <string name="save">Guardar</string>
 </resources>

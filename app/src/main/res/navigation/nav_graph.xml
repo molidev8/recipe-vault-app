@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/recipeListFragment">
+    app:startDestination="@id/recipeDetailEditFragment">
 
     <fragment
         android:id="@+id/recipeListFragment"
@@ -19,13 +19,16 @@
         android:id="@+id/recipePagerFragment"
         android:name="com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragment"
         android:label="RecipePagerFragment"
-        tools:layout="@layout/fragment_recipe_pager"
-
-        >
+        tools:layout="@layout/fragment_recipe_pager">
         <argument
             android:name="recipeID"
             android:defaultValue="-1"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/recipeDetailEditFragment"
+        android:name="com.moliverac8.recipevault.ui.recipeDetail.edit.RecipeDetailEditFragment"
+        android:label="RecipeDetailEditFragment"
+        tools:layout="@layout/fragment_recipe_detail_edit" />
 
 </navigation>
