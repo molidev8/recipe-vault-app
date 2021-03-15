@@ -3,184 +3,183 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="8dp">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/photo_btn"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraint_layout"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:alpha="0.2"
-                android:contentDescription="@string/recipe_photo"
-                android:scaleType="centerCrop"
-                android:src="@drawable/vegetarian"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="match_parent"
+                android:padding="8dp">
 
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:contentDescription="@string/recipe_photo"
-                android:src="@drawable/ic_baseline_add_a_photo_24"
-                app:layout_constraintBottom_toBottomOf="@+id/photo_btn"
-                app:layout_constraintEnd_toEndOf="@+id/photo_btn"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/photo_btn" />
+                <ImageView
+                    android:id="@+id/photo_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:alpha="0.2"
+                    android:contentDescription="@string/recipe_photo"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/vegetarian"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/set_title"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/set_title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/photo_btn">
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:contentDescription="@string/recipe_photo"
+                    android:src="@drawable/ic_baseline_add_a_photo_24"
+                    app:layout_constraintBottom_toBottomOf="@+id/photo_btn"
+                    app:layout_constraintEnd_toEndOf="@+id/photo_btn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/photo_btn" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/set_title_edit"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/set_title"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/set_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/photo_btn">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/set_title_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/set_time_to_cook"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/set_time_to_cook"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/set_title">
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/set_time_to_cook_edit"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/set_time_to_cook"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/set_time_to_cook"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/set_title">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/set_time_to_cook_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/set_description"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/set_description"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/set_time_to_cook">
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/set_description_edit"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/set_description"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/set_description"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/set_time_to_cook">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/set_description_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
 
-            <View
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:background="@android:color/darker_gray"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/set_description" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/instructions"
-                style="@style/TextAppearance.MaterialComponents.Headline5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:text="@string/instructions"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider" />
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/set_description" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/set_step"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/set_step"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/instructions">
+                <TextView
+                    android:id="@+id/instructions_text"
+                    style="@style/TextAppearance.MaterialComponents.Headline5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:text="@string/instructions"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/set_step_edit"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/instructions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/instructions_text"
+                    tools:listitem="@layout/item_edit_instructions_list" />
 
-            </com.google.android.material.textfield.TextInputLayout>
 
-            <View
-                android:id="@+id/divider_left"
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray"
-                app:layout_constraintBottom_toBottomOf="@id/add_step_view"
-                app:layout_constraintEnd_toStartOf="@id/add_btn"
-                app:layout_constraintStart_toStartOf="@id/add_step_view"
-                app:layout_constraintTop_toTopOf="@id/add_step_view" />
+                <View
+                    android:id="@+id/divider_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintBottom_toBottomOf="@id/add_step_view"
+                    app:layout_constraintEnd_toStartOf="@id/add_btn"
+                    app:layout_constraintStart_toStartOf="@id/add_step_view"
+                    app:layout_constraintTop_toTopOf="@id/add_step_view" />
 
-            <ImageView
-                android:id="@+id/add_btn"
+                <ImageView
+                    android:id="@+id/add_btn"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:contentDescription="@string/add_recipe"
+                    android:src="@drawable/ic_baseline_add_24"
+                    app:layout_constraintBottom_toBottomOf="@id/add_step_view"
+                    app:layout_constraintEnd_toStartOf="@id/divider_right"
+                    app:layout_constraintStart_toEndOf="@id/divider_left"
+                    app:layout_constraintTop_toTopOf="@id/add_step_view" />
+
+                <View
+                    android:id="@+id/divider_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintBottom_toBottomOf="@id/add_step_view"
+                    app:layout_constraintEnd_toEndOf="@id/add_step_view"
+                    app:layout_constraintStart_toEndOf="@id/add_btn"
+                    app:layout_constraintTop_toTopOf="@id/add_step_view" />
+
+                <androidx.constraintlayout.helper.widget.Layer
+                    android:id="@+id/add_step_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:constraint_referenced_ids="divider_left,add_btn,divider_right"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/instructions" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/add_recipe"
-                android:src="@drawable/ic_baseline_add_24"
-                app:layout_constraintBottom_toBottomOf="@id/add_step_view"
-                app:layout_constraintEnd_toStartOf="@id/divider_right"
-                app:layout_constraintStart_toEndOf="@id/divider_left"
-                app:layout_constraintTop_toTopOf="@id/add_step_view" />
+                android:layout_gravity="bottom|end"
+                android:layout_margin="8dp"
+                android:contentDescription="@string/save"
+                android:src="@drawable/ic_baseline_save_24" />
 
-            <View
-                android:id="@+id/divider_right"
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray"
-                app:layout_constraintBottom_toBottomOf="@id/add_step_view"
-                app:layout_constraintEnd_toEndOf="@id/add_step_view"
-                app:layout_constraintStart_toEndOf="@id/add_btn"
-                app:layout_constraintTop_toTopOf="@id/add_step_view" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-            <androidx.constraintlayout.helper.widget.Layer
-                android:id="@+id/add_step_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:constraint_referenced_ids="divider_left,add_btn,divider_right"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/set_step" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="8dp"
-            android:contentDescription="@string/save"
-            android:src="@drawable/ic_baseline_save_24" />
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
+    </ScrollView>
 
 </layout>
