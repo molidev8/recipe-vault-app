@@ -36,6 +36,11 @@ class RecipeListFragment : Fragment() {
             adapter.submitList(it)
         })
 
+        binding.newRecipeBtn.setOnClickListener {
+            val action = RecipeListFragmentDirections.actionRecipeListFragmentToRecipePagerFragment(-1)
+            findNavController().navigate(action)
+        }
+
         binding.lifecycleOwner = this
         return binding.root
     }

@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.moliverac8.recipevault.databinding.FragmentIngListBinding
 import com.moliverac8.recipevault.ui.recipeDetail.RecipeDetailVM
-import com.moliverac8.recipevault.ui.recipeDetail.RecipeInstructionsAdapter
+import com.moliverac8.recipevault.ui.recipeDetail.instructions.RecipeInstructionsAdapter
 import com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragment
 import dagger.hilt.android.AndroidEntryPoint
 

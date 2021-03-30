@@ -18,4 +18,6 @@
     <string name="set_step">Introduce un paso</string>
     <string name="instructions">Instrucciones</string>
     <string name="save">Guardar</string>
+    <string name="set_ing">Introduce un ingrediente</string>
+    <string name="set_quantity">Cantidad</string>
 </resources>

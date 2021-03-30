@@ -11,6 +11,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.FragmentRecipePagerBinding
+import com.moliverac8.recipevault.ui.recipeDetail.edit.RecipeDetailEditFragment
+import com.moliverac8.recipevault.ui.recipeDetail.edit.RecipeIngsEditFragment
 import com.moliverac8.recipevault.ui.recipeDetail.ingredients.RecipeIngsFragment
 import com.moliverac8.recipevault.ui.recipeDetail.instructions.RecipeDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,9 +30,9 @@ class RecipePagerFragment : Fragment() {
     ): View {
         val binding = FragmentRecipePagerBinding.inflate(layoutInflater)
 
-        binding.pager.adapter = RecipePager(this)
+        binding.pager.adapter = RecipePager(this, args.recipeID == -1)
         TabLayoutMediator(binding.tabs, binding.pager) { tab, position ->
-            tab.text = when(position) {
+            tab.text = when (position) {
                 0 -> getString(R.string.recipe)
                 else -> getString(R.string.ings)
             }
@@ -45,14 +47,21 @@ class RecipePagerFragment : Fragment() {
 }
 
 
-class RecipePager(fragment: Fragment): FragmentStateAdapter(fragment) {
+class RecipePager(fragment: Fragment, private val isNew: Boolean) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment {
-        return when(position) {
-            0 -> RecipeDetailFragment.newInstance()
-            else -> RecipeIngsFragment.newInstance()
+        return if (isNew) {
+            when (position) {
+                0 -> RecipeDetailEditFragment.newInstance()
+                else -> RecipeIngsEditFragment.newInstance()
+            }
+        } else {
+            when (position) {
+                0 -> RecipeDetailFragment.newInstance()
+                else -> RecipeIngsFragment.newInstance()
+            }
         }
     }
 }

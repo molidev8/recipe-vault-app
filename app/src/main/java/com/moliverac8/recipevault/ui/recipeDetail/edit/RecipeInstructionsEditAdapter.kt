@@ -5,7 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.moliverac8.domain.Recipe
+import com.moliverac8.domain.RecipeWithIng
 import com.moliverac8.recipevault.databinding.ItemEditInstructionsListBinding
+import com.moliverac8.recipevault.databinding.ItemInstructionsListBinding
+import com.moliverac8.recipevault.databinding.ItemRecipeListBinding
 
 class RecipeInstructionsEditAdapter :
     ListAdapter<String, RecipeInstructionsEditAdapter.ViewHolder>(InstructionDiffCallback()) {

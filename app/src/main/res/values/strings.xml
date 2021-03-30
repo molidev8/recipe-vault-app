@@ -17,5 +17,7 @@
     <string name="set_step">Introduce a step</string>
     <string name="instructions">Instructions</string>
     <string name="save">Save</string>
+    <string name="set_ing">Introduce an ingredient</string>
+    <string name="set_quantity">Quantity</string>
 
 </resources>

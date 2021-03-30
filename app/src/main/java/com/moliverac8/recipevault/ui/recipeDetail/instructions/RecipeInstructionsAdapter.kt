@@ -1,6 +1,5 @@
-package com.moliverac8.recipevault.ui.recipeDetail
+package com.moliverac8.recipevault.ui.recipeDetail.instructions
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil

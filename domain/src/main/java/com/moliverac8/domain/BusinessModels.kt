@@ -1,7 +1,7 @@
 package com.moliverac8.domain
 
 data class Recipe(
-    val id: Int,
+    val id: Int, // -1 para recetas nuevas
     val name: String,
     val timeToCook: Int,
     val dishType: List<DishType>,
@@ -9,7 +9,9 @@ data class Recipe(
     val instructions: String, //Realmente es un JSON pero se almacena como un string
     val image: String, //URI
     val description: String
-)
+) {
+    constructor() : this(-1, "", 0, listOf(), DietType.REGULAR, "", "", "")
+}
 
 data class Ingredient(
     val id: Int,
