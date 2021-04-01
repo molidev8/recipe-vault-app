@@ -19,5 +19,9 @@
     <string name="save">Save</string>
     <string name="set_ing">Introduce an ingredient</string>
     <string name="set_quantity">Quantity</string>
+    <string name="uds">Uds</string>
+    <string name="grams">Grams</string>
+    <string name="liters">Liters</string>
+    <string name="cups">Cups</string>
 
 </resources>

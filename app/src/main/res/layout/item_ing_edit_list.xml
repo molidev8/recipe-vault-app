@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="ing"
             type="com.moliverac8.domain.Ingredient" />
@@ -38,7 +37,7 @@
             android:id="@+id/units"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:padding="8dp"
             android:text="0 uds"
             app:layout_constraintBaseline_toBaselineOf="@+id/ing"
             app:layout_constraintEnd_toEndOf="parent" />

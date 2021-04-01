@@ -20,4 +20,8 @@
     <string name="save">Guardar</string>
     <string name="set_ing">Introduce un ingrediente</string>
     <string name="set_quantity">Cantidad</string>
+    <string name="uds">Uds</string>
+    <string name="grams">Gramos</string>
+    <string name="liters">Litros</string>
+    <string name="cups">Tazas</string>
 </resources>

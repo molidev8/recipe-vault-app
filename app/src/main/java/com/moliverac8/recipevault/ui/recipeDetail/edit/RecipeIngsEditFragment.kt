@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import com.moliverac8.recipevault.databinding.FragmentIngListEditBinding
 import com.moliverac8.recipevault.ui.recipeDetail.RecipeDetailVM
 import com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragment
+import es.uam.eps.tfg.menuPlanner.util.IngQuantityDialog
 
 class RecipeIngsEditFragment : Fragment() {
 
@@ -22,7 +23,9 @@ class RecipeIngsEditFragment : Fragment() {
     ): View {
         binding = FragmentIngListEditBinding.inflate(layoutInflater)
 
-        val adapter = RecipeIngsEditAdapter()
+        val adapter = RecipeIngsEditAdapter(RecipeIngsEditAdapter.OnClickListener {
+            IngQuantityDialog().show(parentFragmentManager, "")
+        })
 
         binding.ingredients.adapter = adapter
 
