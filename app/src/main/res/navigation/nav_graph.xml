@@ -24,6 +24,10 @@
             android:name="recipeID"
             android:defaultValue="-1"
             app:argType="integer" />
+        <argument
+            android:name="isEditable"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
 
 </navigation>

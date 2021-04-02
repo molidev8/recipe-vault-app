@@ -18,7 +18,9 @@ data class Ingredient(
     val name: String,
     val unit: String,
     val quantity: Double
-)
+) {
+    constructor() : this(-1, "", "", 0.0)
+}
 
 data class RecipeWithIng(
     val domainRecipe: Recipe,

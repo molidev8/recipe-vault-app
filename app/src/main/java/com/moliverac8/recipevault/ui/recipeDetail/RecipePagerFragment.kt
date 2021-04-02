@@ -30,7 +30,7 @@ class RecipePagerFragment : Fragment() {
     ): View {
         val binding = FragmentRecipePagerBinding.inflate(layoutInflater)
 
-        binding.pager.adapter = RecipePager(this, args.recipeID == -1)
+        binding.pager.adapter = RecipePager(this, args.isEditable)
         TabLayoutMediator(binding.tabs, binding.pager) { tab, position ->
             tab.text = when (position) {
                 0 -> getString(R.string.recipe)
@@ -40,6 +40,7 @@ class RecipePagerFragment : Fragment() {
 
         binding.lifecycleOwner = this
 
+        // Cargo la receta nueva o la existente en el viewModel compartido por los fragmentos del viewpager
         viewModel.getRecipe(args.recipeID)
 
         return binding.root
@@ -47,12 +48,13 @@ class RecipePagerFragment : Fragment() {
 }
 
 
-class RecipePager(fragment: Fragment, private val isNew: Boolean) : FragmentStateAdapter(fragment) {
+class RecipePager(fragment: Fragment, private val isEditable: Boolean) :
+    FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment {
-        return if (isNew) {
+        return if (isEditable) {
             when (position) {
                 0 -> RecipeDetailEditFragment.newInstance()
                 else -> RecipeIngsEditFragment.newInstance()

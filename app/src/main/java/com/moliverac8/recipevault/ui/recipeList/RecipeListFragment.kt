@@ -24,9 +24,9 @@ class RecipeListFragment : Fragment() {
     ): View {
         val binding = FragmentRecipeListBinding.inflate(layoutInflater)
 
-        val adapter = RecipeListAdapter(RecipeListAdapter.OnClickListener { recipe ->
+        val adapter = RecipeListAdapter(RecipeListAdapter.OnClickListener { recipe, isEditable ->
             val action =
-                RecipeListFragmentDirections.actionRecipeListFragmentToRecipePagerFragment(recipe.domainRecipe.id)
+                RecipeListFragmentDirections.actionRecipeListFragmentToRecipePagerFragment(recipe.domainRecipe.id, isEditable)
             findNavController().navigate(action)
         })
 
@@ -37,7 +37,7 @@ class RecipeListFragment : Fragment() {
         })
 
         binding.newRecipeBtn.setOnClickListener {
-            val action = RecipeListFragmentDirections.actionRecipeListFragmentToRecipePagerFragment(-1)
+            val action = RecipeListFragmentDirections.actionRecipeListFragmentToRecipePagerFragment(-1, true)
             findNavController().navigate(action)
         }
 

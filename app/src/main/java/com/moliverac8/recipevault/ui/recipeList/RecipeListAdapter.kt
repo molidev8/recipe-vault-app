@@ -15,7 +15,7 @@ class RecipeListAdapter(private val onClickListener: OnClickListener) :
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        return ViewHolder.from(parent)
+        return ViewHolder.from(parent, onClickListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -26,23 +26,26 @@ class RecipeListAdapter(private val onClickListener: OnClickListener) :
         holder.bind(item)
     }
 
-    class OnClickListener(val clickListener: (recipe: RecipeWithIng) -> Unit) {
-        fun onClick(recipe: RecipeWithIng) = clickListener(recipe)
+    class OnClickListener(val clickListener: (recipe: RecipeWithIng, isEditable: Boolean) -> Unit) {
+        fun onClick(recipe: RecipeWithIng, isEditable: Boolean = false) = clickListener(recipe, isEditable)
     }
 
-    class ViewHolder private constructor(private val binding: ItemRecipeListBinding) :
+    class ViewHolder private constructor(private val binding: ItemRecipeListBinding, private val onClickListener: OnClickListener) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: RecipeWithIng) {
             binding.recipe = item.domainRecipe
+            binding.editBtn.setOnClickListener {
+                onClickListener.onClick(item, true)
+            }
             binding.executePendingBindings()
         }
 
         companion object {
-            fun from(parent: ViewGroup): ViewHolder {
+            fun from(parent: ViewGroup, onClickListener: OnClickListener): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ItemRecipeListBinding.inflate(layoutInflater, parent, false)
-                return ViewHolder(binding)
+                return ViewHolder(binding, onClickListener)
             }
         }
     }

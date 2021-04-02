@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
-            name="ing"
+            name="ingredient"
             type="com.moliverac8.domain.Ingredient" />
     </data>
 
@@ -29,6 +30,7 @@
                 android:id="@+id/ing_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:text="@{ingredient.name}"
                 android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -38,7 +40,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="0 uds"
+            tools:text="0 Uds"
+            app:ingUnits="@{ingredient}"
             app:layout_constraintBaseline_toBaselineOf="@+id/ing"
             app:layout_constraintEnd_toEndOf="parent" />
 

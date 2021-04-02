@@ -18,14 +18,11 @@ class RecipeIngsEditAdapter(private val onClickListener: OnClickListener) : List
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        return ViewHolder.from(parent)
+        return ViewHolder.from(parent, onClickListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.itemView.setOnClickListener {
-            onClickListener.onClick()
-        }
         holder.bind(item)
     }
 
@@ -33,18 +30,22 @@ class RecipeIngsEditAdapter(private val onClickListener: OnClickListener) : List
         fun onClick() = clickListener()
     }
 
-    class ViewHolder private constructor(private val binding: ItemIngEditListBinding) :
+    class ViewHolder private constructor(private val binding: ItemIngEditListBinding, private val onClickListener: OnClickListener) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Ingredient) {
+            binding.ingredient = item
+            binding.units.setOnClickListener {
+                onClickListener.onClick()
+            }
             binding.executePendingBindings()
         }
 
         companion object {
-            fun from(parent: ViewGroup): ViewHolder {
+            fun from(parent: ViewGroup, onClickListener: OnClickListener): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ItemIngEditListBinding.inflate(layoutInflater, parent, false)
-                return ViewHolder(binding)
+                return ViewHolder(binding, onClickListener)
             }
         }
     }

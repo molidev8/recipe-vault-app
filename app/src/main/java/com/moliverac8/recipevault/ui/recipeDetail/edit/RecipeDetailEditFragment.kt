@@ -52,9 +52,17 @@ class RecipeDetailEditFragment : Fragment() {
 
         viewModel.recipeWithIng.observe(viewLifecycleOwner, { recipe ->
             this.recipe = recipe
-            instructions = recipe.domainRecipe.instructions.toListOfInstructions().toMutableList()
+            binding.setTitleEdit.setText(recipe.domainRecipe.name)
+            binding.setDescriptionEdit.setText(recipe.domainRecipe.description)
+            binding.setTimeToCookEdit.setText(recipe.domainRecipe.timeToCook.toString())
+            instructions =
+                if (recipe.domainRecipe.instructions.isNotEmpty())
+                    recipe.domainRecipe.instructions.toListOfInstructions().toMutableList()
+                else mutableListOf()
             adapter.submitList(instructions)
         })
+
+
 
         binding.photoBtn.setOnClickListener {
             if (!Permissions.hasPermissions(requireContext())) {

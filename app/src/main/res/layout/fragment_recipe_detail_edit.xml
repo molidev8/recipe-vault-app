@@ -123,6 +123,7 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/instructions"
                     app:layout_constraintTop_toBottomOf="@+id/instructions_text"
                     tools:listitem="@layout/item_edit_instructions_list" />
 
@@ -165,6 +166,7 @@
                     android:layout_marginTop="16dp"
                     app:constraint_referenced_ids="divider_left,add_btn,divider_right"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/instructions" />
 
