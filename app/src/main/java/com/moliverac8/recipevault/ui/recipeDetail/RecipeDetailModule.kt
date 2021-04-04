@@ -3,6 +3,7 @@ package com.moliverac8.recipevault.ui.recipeDetail
 import com.moliverac8.data.RecipesRepository
 import com.moliverac8.usecases.GetAllRecipes
 import com.moliverac8.usecases.GetRecipeByID
+import com.moliverac8.usecases.SaveRecipe
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,4 +17,7 @@ class RecipeDetailModule {
     fun getRecipeById(recipesRepository: RecipesRepository): GetRecipeByID =
         GetRecipeByID(recipesRepository)
 
+    @Provides
+    fun saveRecipe(recipesRepository: RecipesRepository): SaveRecipe =
+        SaveRecipe(recipesRepository)
 }

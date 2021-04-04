@@ -1,6 +1,7 @@
 package com.moliverac8.recipevault.ui.recipeDetail.edit
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ class RecipeIngsEditFragment : Fragment() {
 
     private lateinit var binding: FragmentIngListEditBinding
     private lateinit var ings: MutableList<Ingredient>
+    private lateinit var adapter: RecipeIngsEditAdapter
     private val viewModel: RecipeDetailVM by viewModels(ownerProducer = { parentFragment as RecipePagerFragment })
 
     override fun onCreateView(
@@ -25,7 +27,7 @@ class RecipeIngsEditFragment : Fragment() {
     ): View {
         binding = FragmentIngListEditBinding.inflate(layoutInflater)
 
-        val adapter = RecipeIngsEditAdapter(RecipeIngsEditAdapter.OnClickListener {
+        adapter = RecipeIngsEditAdapter(RecipeIngsEditAdapter.OnClickListener {
             IngQuantityDialog().show(parentFragmentManager, "")
         })
 
@@ -43,6 +45,11 @@ class RecipeIngsEditFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.saveIngredients(adapter.currentList)
     }
 
     companion object {

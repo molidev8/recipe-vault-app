@@ -1,5 +1,7 @@
 package com.moliverac8.recipevault.ui.recipeDetail.edit
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -25,7 +27,6 @@ class RecipeInstructionsEditAdapter :
         val item = getItem(position)
         holder.bind(item)
     }
-
 
     class ViewHolder private constructor(private val binding: ItemEditInstructionsListBinding) :
         RecyclerView.ViewHolder(binding.root) {

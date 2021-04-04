@@ -1,4 +1,5 @@
 package com.moliverac8.recipevault
 
 const val PERMISSION = "MY_PERMISSIONS"
-const val APP = "APP"
+const val GENERAL = "GENERAL"
+const val IO = "MY_IO"

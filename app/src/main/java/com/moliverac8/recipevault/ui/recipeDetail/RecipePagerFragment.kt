@@ -1,6 +1,7 @@
 package com.moliverac8.recipevault.ui.recipeDetail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
+import com.moliverac8.recipevault.GENERAL
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.FragmentRecipePagerBinding
 import com.moliverac8.recipevault.ui.recipeDetail.edit.RecipeDetailEditFragment
@@ -30,6 +32,10 @@ class RecipePagerFragment : Fragment() {
     ): View {
         val binding = FragmentRecipePagerBinding.inflate(layoutInflater)
 
+        // Cargo la receta nueva o la existente en el viewModel compartido por los fragmentos del viewpager
+        Log.d(GENERAL, "PG - Receta ID ${args.recipeID}")
+        viewModel.getRecipe(args.recipeID)
+
         binding.pager.adapter = RecipePager(this, args.isEditable)
         TabLayoutMediator(binding.tabs, binding.pager) { tab, position ->
             tab.text = when (position) {
@@ -39,9 +45,6 @@ class RecipePagerFragment : Fragment() {
         }.attach()
 
         binding.lifecycleOwner = this
-
-        // Cargo la receta nueva o la existente en el viewModel compartido por los fragmentos del viewpager
-        viewModel.getRecipe(args.recipeID)
 
         return binding.root
     }

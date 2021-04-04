@@ -1,6 +1,7 @@
 package com.moliverac8.recipevault.framework.room
 
 import android.net.Uri
+import android.util.Log
 import com.moliverac8.data.LocalRecipesDataSource
 import com.moliverac8.domain.DietType
 import com.moliverac8.domain.DishType
@@ -44,31 +45,69 @@ class LocalRecipesDataSourceImpl(db: LocalRecipeDatabase) : LocalRecipesDataSour
 class FakeRecipesDataSourceImpl : LocalRecipesDataSource {
 
     val recipe = Recipe(
-        1, "Ensalada de patata", 20, listOf(DishType.MEAL),
-        DietType.VEGETARIAN, """[ "Cocinar", "Luego comer", "Terminar y recoger" ]""", Uri.parse(
-            "android.resource://com.moliverac8.recipevault/drawable/ensalada_de_patata_y_aguacate"),
+        1, "Ensalada de patata", 20, listOf(DishType.MEAL, DishType.DINNER),
+        DietType.VEGETARIAN, """[ "Cocemos las patatas sin pelar.
+En una olla, ponemos las patatas y añadimos agua
+hasta que estén bien cubiertas. Lo calentamos, y
+dejamos que las patatas se cocinen durante 35 minutos.
+Pasado este tiempo, las pinchamos con un cuchillo para
+comprobar si están completamente cocinadas. Si el
+cuchillo las atraviesa con facilidad hasta el centro,
+puedes retirarlas del fuego.", "Luego comer", "Cocemos las patatas sin pelar.
+En una olla, ponemos las patatas y añadimos agua
+hasta que estén bien cubiertas. Lo calentamos, y
+dejamos que las patatas se cocinen durante 35 minutos.
+Pasado este tiempo, las pinchamos con un cuchillo para
+comprobar si están completamente cocinadas. Si el
+cuchillo las atraviesa con facilidad hasta el centro,
+puedes retirarlas del fuego." ]""", Uri.parse(
+            "android.resource://com.moliverac8.recipevault/drawable/ensalada_de_patata_y_aguacate"
+        ),
         "Ensalada de patata y aguacate. En esta ocasión, vamos a preparar un plato " +
                 "frío que se hace en muy pocos minutos"
-        )
-        val ing = Ingredient (1, "Lechuga", "hojas", 3.0)
+    )
+    val recipe2 = Recipe(
+        2, "Ensalada de patata", 20, listOf(DishType.MEAL),
+        DietType.VEGETARIAN, """[ "Cocemos las patatas sin pelar.
+En una olla, ponemos las patatas y añadimos agua
+hasta que estén bien cubiertas. Lo calentamos, y
+dejamos que las patatas se cocinen durante 35 minutos.
+Pasado este tiempo, las pinchamos con un cuchillo para
+comprobar si están completamente cocinadas. Si el
+cuchillo las atraviesa con facilidad hasta el centro,
+puedes retirarlas del fuego.", "Cocemos las patatas sin pelar.
+En una olla, ponemos las patatas y añadimos agua
+hasta que estén bien cubiertas. Lo calentamos, y
+dejamos que las patatas se cocinen durante 35 minutos.
+Pasado este tiempo, las pinchamos con un cuchillo para
+comprobar si están completamente cocinadas. Si el
+cuchillo las atraviesa con facilidad hasta el centro,
+puedes retirarlas del fuego.", "Terminar y recoger" ]""", Uri.parse(
+            "android.resource://com.moliverac8.recipevault/drawable/ensalada_de_patata_y_aguacate"
+        ),
+        "Ensalada de patata y aguacate. En esta ocasión, vamos a preparar un plato " +
+                "frío que se hace en muy pocos minutos"
+    )
+    val ing = Ingredient(1, "Lechuga", "hojas", 3.0)
     val cross = Recipe_Ing(1, 1)
+    var list = mutableListOf<RecipeWithIng>()
 
+    init {
+        val ings = mutableListOf(ing, ing, ing)
+        val sample = RecipeWithIng(recipe, ings).toDomain()
+        val sample2 = RecipeWithIng(recipe2, ings).toDomain()
+
+        list = mutableListOf(sample, sample2)
+    }
 
     override suspend fun insertRecipeWithIng(recipeWithIng: RecipeWithIng): Long {
-        TODO("Not yet implemented")
+        list.add(recipeWithIng)
+        return 1
     }
 
     override suspend fun getRecipeWithIngById(id: Int): RecipeWithIng {
-        val ings = mutableListOf(ing, ing, ing)
-        return RecipeWithIng(recipe, ings).toDomain()
+        return list.filter { id == id }.first()
     }
 
-    override suspend fun getAllRecipesWithIng(): List<RecipeWithIng> =
-        withContext(IO) {
-            val ings = mutableListOf(ing, ing, ing)
-            val sample = RecipeWithIng(recipe, ings).toDomain()
-            val list = mutableListOf(sample, sample, sample, sample)
-            return@withContext list
-        }
-
+    override suspend fun getAllRecipesWithIng(): List<RecipeWithIng> = list
 }

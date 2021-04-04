@@ -19,7 +19,7 @@ data class Ingredient(
     val unit: String,
     val quantity: Double
 ) {
-    constructor() : this(-1, "", "", 0.0)
+    constructor() : this(-1, "", "Uds", 0.0)
 }
 
 data class RecipeWithIng(

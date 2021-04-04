@@ -17,15 +17,19 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class) // Shares lifecycle with the app
 class DataModule {
 
-    /*@Provides
+//    Comentar descomentar estos dos para usarlos
+/*
+    @Provides
     @Singleton
     fun databaseProvider(app: Application): LocalRecipeDatabase =
-        LocalRecipeDatabase.getInstance(app)*/
+        LocalRecipeDatabase.getInstance(app)
 
-    /*@Provides
+    @Provides
     fun localRecipesDataSourceProvider(db: LocalRecipeDatabase): LocalRecipesDataSource =
-        LocalRecipesDataSourceImpl(db)*/
+        LocalRecipesDataSourceImpl(db)
+*/
 
+//    Comentar/descomentar para usarlo
     @Provides
     fun fakeDataSource(): LocalRecipesDataSource = FakeRecipesDataSourceImpl()
 

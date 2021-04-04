@@ -29,8 +29,16 @@ class RecipeInstructionsAdapter :
     class ViewHolder private constructor(private val binding: ItemInstructionsListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        private var instructionCollapsed: Boolean = false
+
         fun bind(item: String) {
             binding.instruction = item
+            binding.expandBtn.setOnClickListener {
+                binding.instructionText.maxLines =
+                    if (!instructionCollapsed) 1
+                    else Int.MAX_VALUE
+                instructionCollapsed = !instructionCollapsed
+            }
             binding.executePendingBindings()
         }
 

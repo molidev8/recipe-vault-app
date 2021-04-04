@@ -39,12 +39,26 @@
                 android:layout_marginTop="8dp"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/dietImg"
                 app:layout_constraintTop_toBottomOf="@id/recipeImg"
                 app:text="@{recipe.name}"
                 tools:text="Ensalada de Patata" />
 
-            <!--<ImageView
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/dietImg"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:dietImage="@{recipe}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recipeImg"
+                app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+                app:strokeColor="@color/black"
+                app:strokeWidth="1dp"
+                tools:background="@drawable/vegetarian" />
+
+            <ImageView
                 android:id="@+id/edit_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,7 +67,7 @@
                 android:src="@drawable/ic_baseline_edit_24"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recipeImg"
-                android:contentDescription="@string/edit" />-->
+                android:contentDescription="@string/edit" />
 
             <TextView
                 android:id="@+id/timeToCook"
@@ -63,10 +77,21 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/dietImg"
                 app:layout_constraintTop_toBottomOf="@+id/recipeTitle"
                 app:timeToCook="@{recipe.timeToCook}"
                 tools:text="20 minutos" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/timeToEatChips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/timeToCook"
+                app:singleLine="true">
+
+            </com.google.android.material.chip.ChipGroup>
 
             <TextView
                 android:id="@+id/recipeDescription"
@@ -76,9 +101,8 @@
                 android:layout_marginTop="8dp"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/timeToCook"
+                app:layout_constraintTop_toBottomOf="@+id/timeToEatChips"
                 app:text="@{recipe.description}"
                 tools:text="Ensalada de pata y aguacate. En esta ocasión, vamos a preparar un plato
 frío que se hace en muy pocos minutos." />
@@ -99,8 +123,8 @@ frío que se hace en muy pocos minutos." />
                 android:id="@+id/instructions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/divider"
