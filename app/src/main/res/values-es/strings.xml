@@ -24,4 +24,12 @@
     <string name="grams">Gramos</string>
     <string name="liters">Litros</string>
     <string name="cups">Tazas</string>
+    <string name="breakfast">Desayuno</string>
+    <string name="meal">Comida</string>
+    <string name="dinner">Cena</string>
+    <string name="choose_time">Elige un tipo</string>
+    <string name="choose_diet">Elige una dieta</string>
+    <string name="vegan">Vegano</string>
+    <string name="vegetarian">Vegetariano</string>
+    <string name="regular">Regular</string>
 </resources>

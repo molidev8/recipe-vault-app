@@ -23,5 +23,13 @@
     <string name="grams">Grams</string>
     <string name="liters">Liters</string>
     <string name="cups">Cups</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="meal">Meal</string>
+    <string name="dinner">Dinner</string>
+    <string name="choose_time">Choose type</string>
+    <string name="choose_diet">Choose diet</string>
+    <string name="vegan">Vegan</string>
+    <string name="vegetarian">Vegetarian</string>
+    <string name="regular">Regular</string>
 
 </resources>

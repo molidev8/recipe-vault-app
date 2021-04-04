@@ -1,5 +1,6 @@
 package com.moliverac8.recipevault.ui.recipeDetail.edit
 
+import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -14,12 +15,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.core.content.FileProvider
 import androidx.core.view.children
 import androidx.core.view.forEach
 import androidx.core.view.forEachIndexed
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.moliverac8.domain.DietType
@@ -31,6 +34,7 @@ import com.moliverac8.recipevault.IO
 import com.moliverac8.recipevault.PERMISSION
 import com.moliverac8.recipevault.databinding.FragmentRecipeDetailEditBinding
 import com.moliverac8.recipevault.ui.common.Permissions
+import com.moliverac8.recipevault.ui.common.setImage
 import com.moliverac8.recipevault.ui.common.toJsonInstructions
 import com.moliverac8.recipevault.ui.common.toListOfInstructions
 import com.moliverac8.recipevault.ui.recipeDetail.RecipeDetailVM
@@ -38,6 +42,8 @@ import com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragment
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class RecipeDetailEditFragment : Fragment() {
 
@@ -50,6 +56,7 @@ class RecipeDetailEditFragment : Fragment() {
     private val mapOfInstructions = mutableMapOf<Int, String>()
     private var nInstructions = 0
     private lateinit var adapter: RecipeInstructionsEditAdapter
+    private lateinit var recipePhotoPath: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -91,50 +98,119 @@ class RecipeDetailEditFragment : Fragment() {
         }
 
         binding.saveBtn.setOnClickListener {
-            val id = if (recipe.domainRecipe.id != -1) -1
-            else recipe.domainRecipe.id
-            recoverInstructions()
-            viewModel.saveRecipe(
-                Recipe(
-                    id,
-                    binding.setTitleEdit.text.toString(),
-                    binding.setTimeToCookEdit.text.toString().toInt(),
-                    mutableListOf(DishType.BREAKFAST),
-                    DietType.REGULAR,
-                    mapOfInstructions.values.toList().toJsonInstructions(),
-                    photoUri.toString(),
-                    binding.setDescriptionEdit.text.toString()
-                )
-            )
-            viewModel.saveEverything()
+            saveRecipeInfo()
             findNavController().popBackStack()
         }
 
         return binding.root
     }
 
-    private fun recoverInstructions() {
-            binding.instructions.forEachIndexed { idx, view ->
-                if (view is TextInputLayout) {
-                    Log.d(GENERAL, view.editText?.text.toString())
-                    mapOfInstructions[idx] = view.editText?.text.toString()
-                }
+    private fun saveRecipeInfo() {
+        // Compruebo si es una receta nueva o una edicion
+        val type = mutableListOf<DishType>()
+        val id = if (recipe.domainRecipe.id != -1) -1
+        else recipe.domainRecipe.id
+
+        // Recupero las instrucciones
+        recoverInstructions()
+
+        // Obtengo el cuando se quiere comer la receta
+        binding.timeToEatChips.checkedChipIds.forEach {
+            when (it) {
+                binding.breakfastChip.id -> type.add(DishType.BREAKFAST)
+                binding.mealChip.id -> type.add(DishType.MEAL)
+                else -> type.add(DishType.DINNER)
             }
+        }
+
+        // Obtengo el tipo de dieta
+        val diet = when (binding.dietChips.checkedChipId) {
+            binding.regularChip.id -> DietType.REGULAR
+            binding.veganChip.id -> DietType.VEGETARIAN
+            else -> DietType.VEGAN
+        }
+
+        // Guardo en la base de datos
+        viewModel.saveRecipe(
+            Recipe(
+                id,
+                binding.setTitleEdit.text.toString(),
+                binding.setTimeToCookEdit.text.toString().toInt(),
+                type,
+                diet,
+                mapOfInstructions.values.toList().toJsonInstructions(),
+                photoUri.toString(),
+                binding.setDescriptionEdit.text.toString()
+            )
+        )
+        viewModel.saveEverything()
     }
 
-    private fun launchCamera() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        try {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-        } catch (e: ActivityNotFoundException) {
+    private fun recoverInstructions() {
+        binding.instructions.forEachIndexed { idx, view ->
+            if (view is TextInputLayout) {
+                Log.d(GENERAL, view.editText?.text.toString())
+                mapOfInstructions[idx] = view.editText?.text.toString()
+            }
         }
     }
 
+    private fun launchCamera() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val photoFile: File? = try {
+            createImageFile()
+        } catch (ex: IOException) {
+            Log.d(IO, "Error al lanzar la camara")
+            null
+        }
+        photoUri = FileProvider.getUriForFile(
+            requireContext(),
+            "com.moliverac8.recipevault",
+            photoFile!!
+        )
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+    }
+
+    @Throws(IOException::class)
+    @SuppressLint("SimpleDateFormat")
+    private fun createImageFile(): File {
+        val timestamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File? = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timestamp}_",
+            ".jpg",
+            storageDir
+        ).apply {
+            recipePhotoPath = absolutePath
+        }
+    }
+
+    /*private fun saveToDevice(bitmap: Bitmap) {
+        if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
+            // Directorio dentro de la app /files/Pictures/
+            val picturesDirectory = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            if (picturesDirectory != null && !picturesDirectory.exists()) {
+                picturesDirectory.mkdirs()
+            }
+            try {
+                val file = File(picturesDirectory, "receta1.png")
+                val fileOutput = FileOutputStream(file)
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutput)
+                Log.d(IO, Uri.fromFile(file).toString())
+                photoUri = Uri.fromFile(file)
+                fileOutput.flush()
+                fileOutput.close()
+            } catch (e: IOException) {
+                Log.d(IO, "error guardando foto en < Q ${e.message}")
+            }
+        }
+    }*/
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as Bitmap
-            binding.photoBtn.setImageBitmap(imageBitmap)
-            saveToDevice(imageBitmap)
+            Glide.with(this).load(photoUri).into(binding.photoBtn)
         }
     }
 
@@ -155,27 +231,5 @@ class RecipeDetailEditFragment : Fragment() {
 
     companion object {
         fun newInstance(): RecipeDetailEditFragment = RecipeDetailEditFragment()
-    }
-
-
-    fun saveToDevice(bitmap: Bitmap) {
-        if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
-            // Directorio dentro de la app /files/Pictures/
-            val picturesDirectory = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-            if (picturesDirectory != null && !picturesDirectory.exists()) {
-                picturesDirectory.mkdirs()
-            }
-            try {
-                val file = File(picturesDirectory, "receta1.png")
-                val fileOutput = FileOutputStream(file)
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutput)
-                Log.d(IO, Uri.fromFile(file).toString())
-                photoUri = Uri.fromFile(file)
-                fileOutput.flush()
-                fileOutput.close()
-            } catch (e: IOException) {
-                Log.d(IO, "error guardando foto en < Q ${e.message}")
-            }
-        }
     }
 }

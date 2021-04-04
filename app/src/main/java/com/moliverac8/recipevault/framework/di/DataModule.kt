@@ -18,7 +18,6 @@ import javax.inject.Singleton
 class DataModule {
 
 //    Comentar descomentar estos dos para usarlos
-/*
     @Provides
     @Singleton
     fun databaseProvider(app: Application): LocalRecipeDatabase =
@@ -27,11 +26,12 @@ class DataModule {
     @Provides
     fun localRecipesDataSourceProvider(db: LocalRecipeDatabase): LocalRecipesDataSource =
         LocalRecipesDataSourceImpl(db)
-*/
 
 //    Comentar/descomentar para usarlo
+/*
     @Provides
     fun fakeDataSource(): LocalRecipesDataSource = FakeRecipesDataSourceImpl()
+*/
 
     @Provides
     fun recipesRepositoryProvider(dataSource: LocalRecipesDataSource): RecipesRepository =
