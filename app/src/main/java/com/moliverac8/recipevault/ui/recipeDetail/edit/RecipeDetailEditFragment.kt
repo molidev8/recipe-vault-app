@@ -187,27 +187,6 @@ class RecipeDetailEditFragment : Fragment() {
         }
     }
 
-    /*private fun saveToDevice(bitmap: Bitmap) {
-        if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
-            // Directorio dentro de la app /files/Pictures/
-            val picturesDirectory = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-            if (picturesDirectory != null && !picturesDirectory.exists()) {
-                picturesDirectory.mkdirs()
-            }
-            try {
-                val file = File(picturesDirectory, "receta1.png")
-                val fileOutput = FileOutputStream(file)
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutput)
-                Log.d(IO, Uri.fromFile(file).toString())
-                photoUri = Uri.fromFile(file)
-                fileOutput.flush()
-                fileOutput.close()
-            } catch (e: IOException) {
-                Log.d(IO, "error guardando foto en < Q ${e.message}")
-            }
-        }
-    }*/
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Glide.with(this).load(photoUri).into(binding.photoBtn)
