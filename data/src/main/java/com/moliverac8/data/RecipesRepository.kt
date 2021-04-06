@@ -12,4 +12,7 @@ class RecipesRepository(private val localRecipeDatabase: LocalRecipesDataSource)
 
     suspend fun insertRecipeWithIngredient(recipeWithIng: RecipeWithIng): Long =
         localRecipeDatabase.insertRecipeWithIng(recipeWithIng)
+
+    suspend fun updateRecipeWithIngredients(old: RecipeWithIng, new: RecipeWithIng) =
+        localRecipeDatabase.updateRecipeWithIng(old, new)
 }

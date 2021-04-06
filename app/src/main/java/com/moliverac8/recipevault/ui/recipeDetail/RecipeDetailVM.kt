@@ -11,6 +11,7 @@ import com.moliverac8.domain.RecipeWithIng
 import com.moliverac8.recipevault.GENERAL
 import com.moliverac8.usecases.GetRecipeByID
 import com.moliverac8.usecases.SaveRecipe
+import com.moliverac8.usecases.UpdateRecipe
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -20,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class RecipeDetailVM @Inject constructor(
     private val getRecipeByID: GetRecipeByID,
-    private val saveRecipeWithIng: SaveRecipe
+    private val saveRecipeWithIng: SaveRecipe,
+    private val updateRecipe: UpdateRecipe
 ) : ViewModel() {
 
     val recipeWithIng: LiveData<RecipeWithIng>
@@ -58,6 +60,14 @@ class RecipeDetailVM @Inject constructor(
         viewModelScope.launch {
             withContext(IO) {
                 tempRecipe = recipe
+            }
+        }
+    }
+
+    fun updateRecipe(old: RecipeWithIng) {
+        viewModelScope.launch {
+            withContext(IO) {
+                updateRecipe(old, RecipeWithIng(tempRecipe, tempIngs))
             }
         }
     }

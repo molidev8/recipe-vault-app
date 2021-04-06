@@ -73,6 +73,19 @@ class RecipeDetailEditFragment : Fragment() {
             binding.setDescriptionEdit.setText(recipe.domainRecipe.description)
             if (recipe.domainRecipe.timeToCook == 0) binding.setTimeToCookEdit.setText("")
             else binding.setTimeToCookEdit.setText(recipe.domainRecipe.timeToCook.toString())
+            photoUri = Uri.parse(recipe.domainRecipe.image)
+            when(recipe.domainRecipe.dietType) {
+                DietType.VEGAN -> binding.veganChip.isChecked = true
+                DietType.VEGETARIAN -> binding.vegetarianChip.isChecked = true
+                DietType.REGULAR -> binding.regularChip.isChecked = true
+            }
+            recipe.domainRecipe.dishType.forEach {
+                when(it) {
+                    DishType.BREAKFAST -> binding.breakfastChip.isChecked = true
+                    DishType.MEAL -> binding.mealChip.isChecked = true
+                    DishType.DINNER -> binding.dinnerChip.isChecked = true
+                }
+            }
             instructions =
                 if (recipe.domainRecipe.instructions.isNotEmpty())
                     recipe.domainRecipe.instructions.toListOfInstructions().toMutableList()
@@ -108,7 +121,7 @@ class RecipeDetailEditFragment : Fragment() {
     private fun saveRecipeInfo() {
         // Compruebo si es una receta nueva o una edicion
         val type = mutableListOf<DishType>()
-        val id = if (recipe.domainRecipe.id != -1) -1
+        val id = if (recipe.domainRecipe.id == -1) -1
         else recipe.domainRecipe.id
 
         // Recupero las instrucciones
@@ -143,7 +156,8 @@ class RecipeDetailEditFragment : Fragment() {
                 binding.setDescriptionEdit.text.toString()
             )
         )
-        viewModel.saveEverything()
+        if (id != -1) viewModel.updateRecipe(recipe)
+        else viewModel.saveEverything()
     }
 
     private fun recoverInstructions() {

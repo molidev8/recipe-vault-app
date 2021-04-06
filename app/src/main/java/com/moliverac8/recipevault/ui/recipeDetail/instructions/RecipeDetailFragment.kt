@@ -59,7 +59,6 @@ class RecipeDetailFragment : Fragment() {
         }
 
         binding.lifecycleOwner = this
-
         return binding.root
     }
 
@@ -71,6 +70,7 @@ class RecipeDetailFragment : Fragment() {
                     ConstraintLayout.LayoutParams.WRAP_CONTENT
                 )
                 text = type.toString()
+                isClickable = false
             }
             binding.timeToEatChips.addView(chip)
         }

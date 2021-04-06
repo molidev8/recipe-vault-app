@@ -32,17 +32,16 @@ class RecipeInstructionsAdapter :
         RecyclerView.ViewHolder(binding.root) {
 
         private var instructionCollapsed: Boolean = false
-        private var resources = Resources.getSystem()
 
         fun bind(item: String) {
             binding.instruction = item
             binding.expandBtn.setOnClickListener {
                 binding.instructionText.maxLines =
                     if (!instructionCollapsed) {
-                        binding.expandBtn.text = resources.getString(R.string.expand)
+                        binding.expandBtn.setText(R.string.expand)
                         1
                     } else {
-                        resources.getString(R.string.collapse)
+                        binding.expandBtn.setText(R.string.collapse)
                         Int.MAX_VALUE
                     }
                 instructionCollapsed = !instructionCollapsed

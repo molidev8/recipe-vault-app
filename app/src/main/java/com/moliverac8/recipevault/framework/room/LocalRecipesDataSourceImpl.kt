@@ -6,6 +6,7 @@ import com.moliverac8.data.LocalRecipesDataSource
 import com.moliverac8.domain.DietType
 import com.moliverac8.domain.DishType
 import com.moliverac8.domain.RecipeWithIng
+import com.moliverac8.recipevault.GENERAL
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -40,6 +41,22 @@ class LocalRecipesDataSourceImpl(db: LocalRecipeDatabase) : LocalRecipesDataSour
             }
             return@withContext list
         }
+
+    override suspend fun updateRecipeWithIng(old: RecipeWithIng, new: RecipeWithIng) {
+        withContext(IO) {
+            dao.updateRecipe(new.domainRecipe.toRoom())
+            val ings = new.ings.subtract(old.ings).map { it.toRoom() }
+            Log.d(GENERAL, "Nueva $ings")
+            ings.forEach { ingredient ->
+                if (ingredient.ingID == 0) {
+                    val idIng = dao.insertIngredient(ingredient)
+                    dao.insertRecipeIngCross(Recipe_Ing(new.domainRecipe.id, idIng.toInt()))
+                } else {
+                    dao.updateIngredient(ingredient)
+                }
+            }
+        }
+    }
 }
 
 class FakeRecipesDataSourceImpl : LocalRecipesDataSource {
@@ -110,4 +127,7 @@ puedes retirarlas del fuego.", "Terminar y recoger" ]""", Uri.parse(
     }
 
     override suspend fun getAllRecipesWithIng(): List<RecipeWithIng> = list
+    override suspend fun updateRecipeWithIng(old: RecipeWithIng, new: RecipeWithIng) {
+        TODO("Not yet implemented")
+    }
 }

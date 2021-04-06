@@ -5,14 +5,21 @@ import com.moliverac8.domain.Recipe as DomainRecipe
 import com.moliverac8.domain.Ingredient as DomainIngredient
 import com.moliverac8.domain.RecipeWithIng as DomainRecipeWithIng
 
-fun DomainRecipe.toRoom(): Recipe =
-    Recipe(0, name, timeToCook, dishType, dietType, instructions, Uri.parse(image), description)
+fun DomainRecipe.toRoom(): Recipe {
+    val aux = if (id != -1) id
+    else 0
+    return Recipe(aux, name, timeToCook, dishType, dietType, instructions, Uri.parse(image), description)
+}
 
 fun Recipe.toDomain(): DomainRecipe =
     DomainRecipe(recipeID, recipeName, timeToCook, dishType, dietType, instructions, image.toString(), description)
 
-fun DomainIngredient.toRoom(): Ingredient =
-    Ingredient(0, name, unit, quantity)
+fun DomainIngredient.toRoom(): Ingredient {
+    val aux = if (id != -1) id
+    else 0
+    return Ingredient(aux, name, unit, quantity)
+}
+
 
 fun Ingredient.toDomain(): DomainIngredient =
     DomainIngredient(ingID, ingName, unit, quantity)

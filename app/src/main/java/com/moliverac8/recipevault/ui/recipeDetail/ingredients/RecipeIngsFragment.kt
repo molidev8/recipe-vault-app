@@ -28,10 +28,9 @@ class RecipeIngsFragment : Fragment() {
         val adapter = RecipeIngsAdapter()
         binding.ingList.adapter = adapter
 
-        val ings = viewModel.recipeWithIng.value?.ings
-        ings?.let {
-            adapter.submitList(it)
-        }
+        viewModel.recipeWithIng.observe(viewLifecycleOwner, { recipe ->
+            adapter.submitList(recipe.ings)
+        })
 
         binding.lifecycleOwner = this
         return binding.root

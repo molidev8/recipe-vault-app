@@ -4,6 +4,7 @@ import com.moliverac8.data.RecipesRepository
 import com.moliverac8.usecases.GetAllRecipes
 import com.moliverac8.usecases.GetRecipeByID
 import com.moliverac8.usecases.SaveRecipe
+import com.moliverac8.usecases.UpdateRecipe
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,4 +21,8 @@ class RecipeDetailModule {
     @Provides
     fun saveRecipe(recipesRepository: RecipesRepository): SaveRecipe =
         SaveRecipe(recipesRepository)
+
+    @Provides
+    fun updateRecipe(recipesRepository: RecipesRepository): UpdateRecipe =
+        UpdateRecipe(recipesRepository)
 }

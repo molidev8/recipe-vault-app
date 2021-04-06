@@ -18,6 +18,15 @@ class RecipeListFragment : Fragment() {
 
     private val viewModel: RecipeListVM by viewModels(ownerProducer = { this })
 
+    private val navigateToDetails = { id: Int, isEditable: Boolean ->
+        findNavController().navigate(
+            RecipeListFragmentDirections.actionRecipeListFragmentToRecipePagerFragment(
+                id,
+                isEditable
+            )
+        )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,12 +35,8 @@ class RecipeListFragment : Fragment() {
         val binding = FragmentRecipeListBinding.inflate(layoutInflater)
 
         val adapter = RecipeListAdapter(RecipeListAdapter.OnClickListener { recipe, isEditable ->
-            val action =
-                RecipeListFragmentDirections.actionRecipeListFragmentToRecipePagerFragment(recipe.domainRecipe.id, isEditable)
-            findNavController().navigate(action)
+            navigateToDetails(recipe.domainRecipe.id, isEditable)
         })
-
-        viewModel.updateRecipes()
 
         binding.recipeList.adapter = adapter
 
@@ -39,16 +44,13 @@ class RecipeListFragment : Fragment() {
             adapter.submitList(it)
         })
 
+        viewModel.updateRecipes()
+
         binding.newRecipeBtn.setOnClickListener {
-            val action = RecipeListFragmentDirections.actionRecipeListFragmentToRecipePagerFragment(-1, true)
-            findNavController().navigate(action)
+            navigateToDetails(-1, true)
         }
 
         binding.lifecycleOwner = this
         return binding.root
-    }
-
-    override fun onStop() {
-        super.onStop()
     }
 }

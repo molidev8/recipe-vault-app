@@ -22,5 +22,4 @@ class RecipeListVM @Inject constructor(
             _recipes.value = getRecipes()
         }
     }
-
 }

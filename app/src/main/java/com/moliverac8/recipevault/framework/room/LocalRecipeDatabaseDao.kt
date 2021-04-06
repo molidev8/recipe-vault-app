@@ -1,9 +1,6 @@
 package com.moliverac8.recipevault.framework.room
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
 
 @Dao
 interface LocalRecipeDatabaseDao {
@@ -16,15 +13,24 @@ interface LocalRecipeDatabaseDao {
     @Query("select * from Recipe")
     fun getRecipeWithIngredients(): List<RecipeWithIng>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRecipe(recipe: Recipe): Long
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertIngredient(ing: Ingredient): Long
 
     @Query("select * from Ingredient where ingID = (:id)")
     fun getIngredient(id: Int): Ingredient
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRecipeIngCross(ref: Recipe_Ing): Long
+
+    @Update
+    fun updateRecipe(recipe: Recipe)
+
+    @Update
+    fun updateRecipeIngCross(ref: Recipe_Ing)
+
+    @Update
+    fun updateIngredient(ing: Ingredient)
 }
