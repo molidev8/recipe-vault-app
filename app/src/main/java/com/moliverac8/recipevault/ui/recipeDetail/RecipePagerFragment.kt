@@ -24,6 +24,7 @@ class RecipePagerFragment : Fragment() {
 
     private val args by navArgs<RecipePagerFragmentArgs>()
     private val viewModel: RecipeDetailVM by viewModels(ownerProducer = { this })
+    private val isTablet: Boolean by lazy { requireContext().resources.getBoolean(R.bool.isTablet) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,9 +33,13 @@ class RecipePagerFragment : Fragment() {
     ): View {
         val binding = FragmentRecipePagerBinding.inflate(layoutInflater)
 
+        if (isTablet && args.firstLoad) viewModel.getRecipe(1)
+        else viewModel.getRecipe(args.recipeID)
+
         // Cargo la receta nueva o la existente en el viewModel compartido por los fragmentos del viewpager
         Log.d(GENERAL, "PG - Receta ID ${args.recipeID}")
-        viewModel.getRecipe(args.recipeID)
+
+
 
         binding.pager.adapter = RecipePager(this, args.isEditable)
         TabLayoutMediator(binding.tabs, binding.pager) { tab, position ->

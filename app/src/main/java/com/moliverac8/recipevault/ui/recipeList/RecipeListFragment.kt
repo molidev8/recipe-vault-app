@@ -10,13 +10,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.FragmentRecipeListBinding
+import com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class RecipeListFragment : Fragment() {
 
     private val viewModel: RecipeListVM by viewModels(ownerProducer = { this })
+    private val isTablet: Boolean by lazy { requireContext().resources.getBoolean(R.bool.isTablet) }
 
     private val navigateToDetails = { id: Int, isEditable: Boolean ->
         findNavController().navigate(
@@ -27,6 +30,10 @@ class RecipeListFragment : Fragment() {
         )
     }
 
+    private val navigateToDetailsOnTablet = { id: Int, isEditable: Boolean ->
+        findNavController().navigate(RecipePagerFragmentDirections.actionRecipePagerFragmentSelf(id, isEditable))
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,7 +42,10 @@ class RecipeListFragment : Fragment() {
         val binding = FragmentRecipeListBinding.inflate(layoutInflater)
 
         val adapter = RecipeListAdapter(RecipeListAdapter.OnClickListener { recipe, isEditable ->
-            navigateToDetails(recipe.domainRecipe.id, isEditable)
+            recipe.domainRecipe.id.let { id ->
+                if (isTablet) navigateToDetailsOnTablet(id, isEditable)
+                else navigateToDetails(id, isEditable)
+            }
         })
 
         binding.recipeList.adapter = adapter
@@ -47,7 +57,8 @@ class RecipeListFragment : Fragment() {
         viewModel.updateRecipes()
 
         binding.newRecipeBtn.setOnClickListener {
-            navigateToDetails(-1, true)
+            if (isTablet) navigateToDetailsOnTablet(-1, true)
+            else navigateToDetails(-1, true)
         }
 
         binding.lifecycleOwner = this

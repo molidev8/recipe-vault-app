@@ -10,24 +10,25 @@
 
         <fragment
             android:id="@+id/fragmentMaster"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            app:navGraph="@navigation/nav_graph"
-            app:defaultNavHost="true"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:name="com.moliverac8.recipevault.ui.recipeList.RecipeListFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@id/bottomNav"
             app:layout_constraintEnd_toStartOf="@id/fragmentDetail"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.fragment.app.FragmentContainerView
+        <fragment
             android:id="@+id/fragmentDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:defaultNavHost="true"
             app:layout_constraintBottom_toTopOf="@id/bottomNav"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/fragmentMaster"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:navGraph="@navigation/nav_graph_tablet" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNav"
@@ -36,9 +37,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/menu_bottom_nav"
-            >
-        </com.google.android.material.bottomnavigation.BottomNavigationView>
+            app:menu="@menu/menu_bottom_nav" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
