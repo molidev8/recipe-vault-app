@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/recipeListFragment">
+    app:startDestination="@id/RecipeListFragment">
 
     <fragment
-        android:id="@+id/recipeListFragment"
+        android:id="@+id/RecipeListFragment"
         android:name="com.moliverac8.recipevault.ui.recipeList.RecipeListFragment"
         android:label="RecipeListFragment"
         tools:layout="@layout/fragment_recipe_list">
@@ -29,5 +29,11 @@
             app:argType="boolean"
             android:defaultValue="false" />
     </fragment>
+
+    <fragment
+        android:id="@+id/AccountFragment"
+        tools:layout="@layout/fragment_account"
+        android:name="com.moliverac8.recipevault.ui.account.AccountFragment"
+        android:label="AccountFragment" />
 
 </navigation>

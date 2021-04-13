@@ -31,5 +31,18 @@
     <string name="vegan">Vegan</string>
     <string name="vegetarian">Vegetarian</string>
     <string name="regular">Regular</string>
+    <string name="last_copy">Last backup</string>
+    <string name="make_backup">Backup</string>
+    <string name="restore">Restore</string>
+    <string name="schedule_backup">Schedule backup</string>
+    <string name="schedule_descr">Your recipes will be backup in Google Drive and your device automatically</string>
+    <string name="backup_timing">Make backup every</string>
+    <string name="day">Day</string>
+    <string name="week">Week</string>
+    <string name="month">Month</string>
+    <string name="save_with">Save with</string>
+    <string name="just_wifi">Just Wi-Fi</string>
+    <string name="wifi_and_data">Wi-Fi or Data</string>
+    <string name="my_account">My Account</string>
 
 </resources>

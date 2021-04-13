@@ -1,15 +1,19 @@
 package com.moliverac8.recipevault.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.app.ActivityCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.moliverac8.recipevault.R
-import com.moliverac8.recipevault.ui.common.Permissions
+import com.moliverac8.recipevault.databinding.ActivityMainBinding
+import com.moliverac8.recipevault.databinding.ActivityMainTabletBinding
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -19,6 +23,10 @@ class MainActivity : AppCompatActivity() {
             setContentView(R.layout.activity_main_tablet)
         } else {
             setContentView(R.layout.activity_main)
+            val navHostFragment = supportFragmentManager
+                .findFragmentById(R.id.fragmentMaster) as NavHostFragment
+            val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNav);
+            NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.navController)
         }
     }
 }

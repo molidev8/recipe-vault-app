@@ -2,10 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:title="@string/my_recipes"
-        android:id="@+id/bottom_myRecipes"
+        android:id="@+id/RecipeListFragment"
         android:icon="@drawable/ic_menu_book_white_18dp"
-        >
-    </item>
+        android:title="@string/my_recipes" />
+
+    <item
+        android:id="@+id/AccountFragment"
+        android:icon="@drawable/account_circle_black_24dp"
+        android:title="@string/my_account" />
 
 </menu>

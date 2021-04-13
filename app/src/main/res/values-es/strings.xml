@@ -32,4 +32,17 @@
     <string name="vegan">Vegano</string>
     <string name="vegetarian">Vegetariano</string>
     <string name="regular">Regular</string>
+    <string name="last_copy">Última copia</string>
+    <string name="make_backup">Realizar copia</string>
+    <string name="restore">Restaurar</string>
+    <string name="schedule_backup">Programar copia</string>
+    <string name="schedule_descr">Tus recetas se almacenarán en Google Drive y en  tu dispositivo de forma automática</string>
+    <string name="backup_timing">Almacenar copia cada</string>
+    <string name="day">Día</string>
+    <string name="week">Semana</string>
+    <string name="month">Mes</string>
+    <string name="save_with">Guardar usando</string>
+    <string name="just_wifi">Solo Wi-Fi</string>
+    <string name="wifi_and_data">Wi-Fi o datos</string>
+    <string name="my_account">Mi Cuenta</string>
 </resources>

@@ -33,7 +33,7 @@ class RecipePagerFragment : Fragment() {
     ): View {
         val binding = FragmentRecipePagerBinding.inflate(layoutInflater)
 
-        if (isTablet && args.firstLoad) viewModel.getRecipe(1)
+        if (isTablet/* && args.firstLoad*/) viewModel.getRecipe(1)
         else viewModel.getRecipe(args.recipeID)
 
         // Cargo la receta nueva o la existente en el viewModel compartido por los fragmentos del viewpager
