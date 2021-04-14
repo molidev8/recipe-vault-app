@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.work.WorkManager
 import com.google.android.material.tabs.TabLayoutMediator
 import com.moliverac8.recipevault.GENERAL
 import com.moliverac8.recipevault.R
@@ -32,7 +33,6 @@ class RecipePagerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentRecipePagerBinding.inflate(layoutInflater)
-
         if (isTablet/* && args.firstLoad*/) viewModel.getRecipe(1)
         else viewModel.getRecipe(args.recipeID)
 

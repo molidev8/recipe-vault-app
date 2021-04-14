@@ -1,7 +1,7 @@
 package com.moliverac8.recipevault
 
-import dagger.hilt.android.HiltAndroidApp
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class RecipeVaultApplication : Application()
+class RecipeVaultApplication() : Application()

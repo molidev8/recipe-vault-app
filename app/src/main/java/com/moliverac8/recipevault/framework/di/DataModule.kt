@@ -18,19 +18,19 @@ import javax.inject.Singleton
 class DataModule {
 
 //    Comentar descomentar estos dos para usarlos
-/*    @Provides
+    @Provides
     @Singleton
     fun databaseProvider(app: Application): LocalRecipeDatabase =
         LocalRecipeDatabase.getInstance(app)
 
     @Provides
     fun localRecipesDataSourceProvider(db: LocalRecipeDatabase): LocalRecipesDataSource =
-        LocalRecipesDataSourceImpl(db)*/
+        LocalRecipesDataSourceImpl(db)
 
 //    Comentar/descomentar para usarlo
-    @Provides
+    /*@Provides
     fun fakeDataSource(): LocalRecipesDataSource = FakeRecipesDataSourceImpl()
-
+*/
     @Provides
     fun recipesRepositoryProvider(dataSource: LocalRecipesDataSource): RecipesRepository =
         RecipesRepository(dataSource)

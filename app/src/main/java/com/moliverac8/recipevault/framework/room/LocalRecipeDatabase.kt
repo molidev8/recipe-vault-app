@@ -6,6 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
+const val DATABASE_NAME = "recipes_db"
+
 @Database(
     entities = [Recipe::class, Ingredient::class, Recipe_Ing::class],
     version = 1,
@@ -13,6 +15,7 @@ import androidx.room.TypeConverters
 )
 
 @TypeConverters(DishTypeConverter::class, DietTypeConverter::class, UriConverter::class)
+
 
 abstract class LocalRecipeDatabase : RoomDatabase() {
     abstract fun dao(): LocalRecipeDatabaseDao
@@ -29,7 +32,7 @@ abstract class LocalRecipeDatabase : RoomDatabase() {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         LocalRecipeDatabase::class.java,
-                        "recipes_db"
+                        DATABASE_NAME
                     ).build()
                     INSTANCE = instance
                 }
