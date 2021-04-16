@@ -7,11 +7,11 @@ import android.util.Log
 import com.moliverac8.recipevault.framework.room.DATABASE_NAME
 import com.moliverac8.recipevault.framework.room.LocalRecipeDatabase
 import kotlinx.coroutines.withContext
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.lang.Exception
 import kotlinx.coroutines.Dispatchers.IO
+import java.io.*
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 
 private const val BACKUP_REQUEST_CODE = 1
@@ -30,8 +30,7 @@ class BackupUserData() {
         }
     }
 
-    suspend fun backupRoomDatabase(context: Context): Boolean =
-        withContext(IO) {
+    suspend fun backupRoomDatabase(context: Context): Boolean = withContext(IO) {
             // Me aseguro de que no ocurren transacciones
             LocalRecipeDatabase.getInstance(context).close()
 
@@ -45,11 +44,51 @@ class BackupUserData() {
             try {
                 val dbFile = File(dbPath.toURI())
                 dbFile.copyTo(tempFile)
+                zipBackupFiles(context, dbFile, tempFile.path)
                 return@withContext true
             } catch (e: Exception) {
-                Log.d(com.moliverac8.recipevault.IO, "Error al copiar fichero $e")
+                Log.d(com.moliverac8.recipevault.IO, "Error al hacer backup $e")
                 return@withContext false
             }
         }
+
+    private suspend fun zipBackupFiles(context: Context, db: File, dbBackupPath: String) = withContext(IO) {
+        val photosDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val backupDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+        val output = ZipOutputStream(BufferedOutputStream(FileOutputStream(backupDir?.path + "/backup.zip")))
+
+        photosDir?.listFiles()?.forEach { file ->
+            val entry = ZipEntry(file.name)
+            val input = BufferedInputStream(FileInputStream(file))
+            output.putNextEntry(entry)
+            input.copyTo(output)
+            input.close()
+            output.closeEntry()
+        }
+
+        val entry = ZipEntry(db.name)
+        val input = BufferedInputStream(FileInputStream(db))
+        output.putNextEntry(entry)
+        input.copyTo(output)
+        output.closeEntry()
+        output.close()
+    }
+
+
+    suspend fun restoreRoomDatabase(context: Context) = withContext(IO) {
+        LocalRecipeDatabase.getInstance(context).close()
+
+        val dbPath = context.getDatabasePath(DATABASE_NAME)
+        val backupDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+        val backupFile = backupDir?.listFiles()?.first()
+
+        try {
+            val dbFile = File(dbPath.toURI())
+            backupFile?.copyTo(dbFile)
+        } catch (e: Exception) {
+            Log.d(com.moliverac8.recipevault.IO, "Error al restaurar fichero $e")
+        }
+    }
+
 
 }
