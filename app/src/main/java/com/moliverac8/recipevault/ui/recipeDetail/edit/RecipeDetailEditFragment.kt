@@ -33,6 +33,7 @@ import com.moliverac8.recipevault.GENERAL
 import com.moliverac8.recipevault.IO
 import com.moliverac8.recipevault.PERMISSION
 import com.moliverac8.recipevault.databinding.FragmentRecipeDetailEditBinding
+import com.moliverac8.recipevault.ui.REQUEST_IMAGE_CAPTURE
 import com.moliverac8.recipevault.ui.common.Permissions
 import com.moliverac8.recipevault.ui.common.setImage
 import com.moliverac8.recipevault.ui.common.toJsonInstructions
@@ -47,7 +48,6 @@ import java.util.*
 
 class RecipeDetailEditFragment : Fragment() {
 
-    private val REQUEST_IMAGE_CAPTURE = 1
     private lateinit var binding: FragmentRecipeDetailEditBinding
     private lateinit var recipe: RecipeWithIng
     private lateinit var instructions: MutableList<String>

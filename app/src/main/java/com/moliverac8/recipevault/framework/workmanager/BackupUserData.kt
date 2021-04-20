@@ -6,56 +6,79 @@ import android.os.Environment
 import android.util.Log
 import com.moliverac8.recipevault.framework.room.DATABASE_NAME
 import com.moliverac8.recipevault.framework.room.LocalRecipeDatabase
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.withContext
 import java.lang.Exception
 import kotlinx.coroutines.Dispatchers.IO
 import java.io.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
+import javax.inject.Inject
+import javax.inject.Singleton
 
 
 private const val BACKUP_REQUEST_CODE = 1
 private const val BACKUP_NAME = "backup"
 
-class BackupUserData() {
+class BackupUserData(private val context: Context) {
 
-    fun onBackupRequest() {
-        val mimeType = arrayOf("application/json")
-//        val fileName =
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = "application/zip"
-            putExtra(Intent.EXTRA_MIME_TYPES, mimeType)
-//            putExtra(Intent.EXTRA_TITLE, fileName)
+    val dropboxManager: DropboxManager by lazy {
+        EntryPointAccessors.fromApplication(
+            context,
+            BackupEntryPoint::class.java
+        ).dropboxManager()
+    }
+
+
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface BackupEntryPoint {
+        fun dropboxManager(): DropboxManager
+    }
+
+    suspend fun doBackup(context: Context): Boolean = withContext(IO) {
+        val dbFile = backupRoomDatabase(context)
+        dbFile?.let {
+            zipBackupFiles(context, dbFile)
+            uploadToDropbox()
+            return@withContext true
+        }
+        return@withContext false
+    }
+
+    suspend fun restoreBackup(context: Context): Boolean = withContext(IO) {
+        return@withContext true
+    }
+
+    private fun backupRoomDatabase(context: Context): File? {
+        // Me aseguro de que no ocurren transacciones
+        LocalRecipeDatabase.getInstance(context).close()
+
+        val dbPath = context.getDatabasePath(DATABASE_NAME)
+        val backupDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+
+        // Si ya existe una copia anterior, la elimino
+        val tempFile = File.createTempFile("recipeVault", BACKUP_NAME, backupDir)
+        if (tempFile.exists()) tempFile.delete()
+
+        return try {
+            val dbFile = File(dbPath.toURI())
+            dbFile.copyTo(tempFile)
+            dbFile
+        } catch (e: Exception) {
+            Log.d(com.moliverac8.recipevault.IO, "Error al hacer backup $e")
+            null
         }
     }
 
-    suspend fun backupRoomDatabase(context: Context): Boolean = withContext(IO) {
-            // Me aseguro de que no ocurren transacciones
-            LocalRecipeDatabase.getInstance(context).close()
-
-            val dbPath = context.getDatabasePath(DATABASE_NAME)
-            val backupDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
-
-            // Si ya existe una copia anterior, la elimino
-            val tempFile = File.createTempFile("recipeVault", BACKUP_NAME, backupDir)
-            if (tempFile.exists()) tempFile.delete()
-
-            try {
-                val dbFile = File(dbPath.toURI())
-                dbFile.copyTo(tempFile)
-                zipBackupFiles(context, dbFile, tempFile.path)
-                return@withContext true
-            } catch (e: Exception) {
-                Log.d(com.moliverac8.recipevault.IO, "Error al hacer backup $e")
-                return@withContext false
-            }
-        }
-
-    private suspend fun zipBackupFiles(context: Context, db: File, dbBackupPath: String) = withContext(IO) {
+    private fun zipBackupFiles(context: Context, db: File) {
         val photosDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val backupDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
-        val output = ZipOutputStream(BufferedOutputStream(FileOutputStream(backupDir?.path + "/backup.zip")))
+        val output =
+            ZipOutputStream(BufferedOutputStream(FileOutputStream(backupDir?.path + "/backup.zip")))
 
         photosDir?.listFiles()?.forEach { file ->
             val entry = ZipEntry(file.name)
@@ -74,8 +97,13 @@ class BackupUserData() {
         output.close()
     }
 
+    private fun uploadToDropbox() {
+        //Comentar esta linea en testing
+//        dropboxManager.initDropboxClient()
+        dropboxManager.uploadBackup()
+    }
 
-    suspend fun restoreRoomDatabase(context: Context) = withContext(IO) {
+    private fun restoreRoomDatabase(context: Context)  {
         LocalRecipeDatabase.getInstance(context).close()
 
         val dbPath = context.getDatabasePath(DATABASE_NAME)
@@ -90,5 +118,13 @@ class BackupUserData() {
         }
     }
 
+    private fun downloadFromDropbox() {
+        //dropboxManager.initDropboxClient()
+        dropboxManager.downloadBackup()
+    }
+
+    private fun unzipBackupFiles() {
+
+    }
 
 }

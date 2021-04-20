@@ -17,6 +17,14 @@ class AccountFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAccountBinding.inflate(layoutInflater)
+
+
+        binding.makeBackupBtn.setOnClickListener {
+        }
+
+        binding.restoreBackupBtn.setOnClickListener {
+        }
+
         return binding.root
     }
 }
