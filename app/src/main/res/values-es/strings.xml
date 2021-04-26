@@ -36,7 +36,7 @@
     <string name="make_backup">Realizar copia</string>
     <string name="restore">Restaurar</string>
     <string name="schedule_backup">Programar copia</string>
-    <string name="schedule_descr">Tus recetas se almacenarán en Google Drive y en  tu dispositivo de forma automática</string>
+    <string name="schedule_descr">Tus recetas se almacenarán en Dropbox y en  tu dispositivo de forma automática</string>
     <string name="backup_timing">Almacenar copia cada</string>
     <string name="day">Día</string>
     <string name="week">Semana</string>
@@ -45,5 +45,5 @@
     <string name="just_wifi">Solo Wi-Fi</string>
     <string name="wifi_and_data">Wi-Fi o datos</string>
     <string name="my_account">Mi Cuenta</string>
-    <string name="web_client_id">851073828886-c0cb7aap964nnis1e31t1mh8u67u3226.apps.googleusercontent.com</string>
+    <string name="log_in">Login to Dropbox</string>
 </resources>

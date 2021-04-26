@@ -1,41 +1,49 @@
 package com.moliverac8.recipevault
 
+import android.content.Context
 import android.net.Uri
 import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider.getApplicationContext
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.SmallTest
 import com.moliverac8.domain.DietType
 import com.moliverac8.domain.DishType
 import com.moliverac8.recipevault.framework.room.Ingredient
 import com.moliverac8.recipevault.framework.room.LocalRecipeDatabase
 import com.moliverac8.recipevault.framework.room.Recipe
 import com.moliverac8.recipevault.framework.room.Recipe_Ing
+import com.moliverac8.recipevault.framework.workmanager.BackupUserData
+import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@SmallTest
 @RunWith(AndroidJUnit4::class)
-class LocalRecipesDaoTest {
+class BackupRestoreUnitTest {
 
+    private lateinit var backupUserData: BackupUserData
+    private lateinit var context: Context
     private lateinit var db: LocalRecipeDatabase
 
     @Before
-    fun initDb() {
-        db = Room.inMemoryDatabaseBuilder(
-            getApplicationContext(),
-            LocalRecipeDatabase::class.java
-        ).build()
+    fun setUp() {
+        context = ApplicationProvider.getApplicationContext()
+        backupUserData = BackupUserData(context)
+        db = LocalRecipeDatabase.getInstance(context)
+    }
+
+    @Test
+    fun testBackupRestore() {
+        insertRecipeWithIng()
+            assert(runBlocking { backupUserData.restoreBackup() })
     }
 
     @After
-    fun close() = db.close()
+    fun clearUp() {
+        db.clearAllTables()
+    }
 
-    @Test
-    fun insertRecipeWithIngAndGetById() {
-        //GIVEN
+    fun insertRecipeWithIng() {
         val recipe = Recipe(
             1, "Ensalada", 20, listOf(DishType.MEAL),
             DietType.VEGETARIAN, "Cocinar", Uri.parse("dummyUri"),
@@ -43,17 +51,10 @@ class LocalRecipesDaoTest {
         val ing = Ingredient(1, "Lechuga", "hojas", 3.0)
         val cross = Recipe_Ing(1, 1)
 
-        //WHEN
         db.dao().apply {
             insertRecipe(recipe)
             insertIngredient(ing)
             insertRecipeIngCross(cross)
         }
-
-        val loaded = db.dao().getRecipeWithIngredientsByID(recipe.recipeID)
-
-        //THEN
-        assert(loaded.recipe == recipe)
-        assert(loaded.ings.first() == ing)
     }
 }
