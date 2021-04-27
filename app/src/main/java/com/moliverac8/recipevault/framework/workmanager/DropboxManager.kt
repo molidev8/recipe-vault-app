@@ -3,6 +3,7 @@ package com.moliverac8.recipevault.framework.workmanager
 import android.content.Context
 import android.os.Environment
 import android.util.Log
+import com.dropbox.core.DbxException
 import com.dropbox.core.DbxRequestConfig
 import com.dropbox.core.android.Auth
 import com.dropbox.core.http.OkHttp3Requestor
@@ -43,22 +44,25 @@ class DropboxManager(private val context: Context) {
         }
     }
 
-    fun uploadBackup(): Boolean {
+    fun uploadFile(input: FileInputStream): Boolean {
         return try {
-            val input = FileInputStream(backupDir?.listFiles()?.find { it.name == "recipe-vault-backup.zip" })
             val result = client?.files()?.deleteV2("/recipe-vault-backup.zip")
             Log.d(BACKUP, "Eliminando copia en Dropbox ${result.toString()}")
             client?.files()?.upload("/recipe-vault-backup.zip")
                 ?.uploadAndFinish(input)
             true
-        } catch (e: Exception) {
-            Log.d(BACKUP, "Error al subir el backup ${e.localizedMessage}")
-            false
+        } catch (e: DbxException) {
+            Log.d(BACKUP, "Error uploading files ${e.localizedMessage}")
+            throw DbxException("")
         }
     }
 
-    fun downloadBackup() {
-        val output = FileOutputStream(File(backupDir, "recipe-vault-backup.zip")) as OutputStream
-        client?.files()?.download("/recipe-vault-backup.zip")?.download(output)
+    fun downloadFile(output: FileOutputStream) {
+        try {
+            client?.files()?.download("/recipe-vault-backup.zip")?.download(output as OutputStream)
+        } catch (e: DbxException) {
+            Log.d(BACKUP, "Error downloading files ${e.localizedMessage}")
+            throw DbxException("")
+        }
     }
 }

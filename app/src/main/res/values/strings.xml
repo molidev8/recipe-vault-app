@@ -45,5 +45,6 @@
     <string name="wifi_and_data">Wi-Fi or Data</string>
     <string name="my_account">My Account</string>
     <string name="log_in">Iniciar sesión en Dropbox</string>
+    <string name="backup_error">There was an error with your backup, please try again later</string>
 
 </resources>

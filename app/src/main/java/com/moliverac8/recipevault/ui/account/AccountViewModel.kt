@@ -11,8 +11,12 @@ import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.jvm.Throws
 
 @HiltViewModel
 class AccountViewModel @Inject constructor(
@@ -38,7 +42,9 @@ class AccountViewModel @Inject constructor(
 
     fun loginToDropbox() = viewModelScope.launch { dropboxManager.startOAuth2Authentication() }
 
-    fun makeBackup() = viewModelScope.launch { backupUserData.doBackup() }
+    fun makeBackup(coroutineExceptionHandler: CoroutineExceptionHandler) =
+        CoroutineScope(IO + coroutineExceptionHandler).launch { backupUserData.doBackup() }
 
-    fun restoreBackup() = viewModelScope.launch { backupUserData.restoreBackup() }
+    fun restoreBackup(coroutineExceptionHandler: CoroutineExceptionHandler) =
+        CoroutineScope(IO + coroutineExceptionHandler).launch { backupUserData.restoreBackup() }
 }

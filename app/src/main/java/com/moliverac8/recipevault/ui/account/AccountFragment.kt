@@ -9,10 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.dropbox.core.android.Auth
+import com.google.android.material.snackbar.Snackbar
+import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.FragmentAccountBinding
 import com.moliverac8.recipevault.databinding.FragmentAccountInitBinding
 import com.moliverac8.recipevault.framework.workmanager.BackupUserData
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineExceptionHandler
 
 @AndroidEntryPoint
 class AccountFragment : Fragment() {
@@ -32,11 +35,17 @@ class AccountFragment : Fragment() {
         val binding =
             if (serializedCredential != null) FragmentAccountBinding.inflate(layoutInflater).apply {
                 makeBackupBtn.setOnClickListener {
-                    viewModel.makeBackup()
+                    viewModel.makeBackup(CoroutineExceptionHandler { _, _ ->
+                        Snackbar.make(it, getString(R.string.backup_error), Snackbar.LENGTH_LONG)
+                            .show()
+                    })
                 }
 
                 restoreBackupBtn.setOnClickListener {
-                    viewModel.restoreBackup()
+                    viewModel.restoreBackup(CoroutineExceptionHandler { _, _ ->
+                        Snackbar.make(it, getString(R.string.backup_error), Snackbar.LENGTH_LONG)
+                            .show()
+                    })
                 }
             }
             else FragmentAccountInitBinding.inflate(layoutInflater).apply {
