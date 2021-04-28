@@ -36,9 +36,9 @@ class RecipeListAdapter(private val onClickListener: OnClickListener) :
 
         fun bind(item: RecipeWithIng) {
             binding.recipe = item.domainRecipe
-            binding.editBtn.setOnClickListener {
+            /*binding.editBtn.setOnClickListener {
                 onClickListener.onClick(item, true)
-            }
+            }*/
             binding.executePendingBindings()
         }
 

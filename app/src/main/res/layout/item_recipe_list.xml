@@ -14,53 +14,84 @@
         android:id="@+id/recipeCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp">
-
-
+        android:layout_margin="8dp"
+        app:cardBackgroundColor="#F6FAFD"
+        app:cardElevation="4dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/dietImg"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:padding="4dp"
-                app:dietImage="@{recipe}"
-                app:layout_constraintBottom_toTopOf="@+id/guideline"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+            <ImageView
+                android:id="@+id/recipeImg"
+                android:layout_width="wrap_content"
+                android:layout_height="180dp"
+                android:contentDescription="@string/recipe_photo"
+                android:scaleType="centerCrop"
+
+                app:image="@{recipe.image}"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:background="@drawable/vegetarian" />
+                tools:src="@drawable/ensalada_de_patata_y_aguacate" />
 
-            <TextView
-                android:id="@+id/recipeTitle"
-                style="@style/TextAppearance.MaterialComponents.Headline6"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:textSize="24sp"
-                app:layout_constraintStart_toEndOf="@id/dietImg"
-                app:layout_constraintTop_toTopOf="@+id/dietImg"
-                app:text="@{recipe.name}"
-                tools:text="Ensalada de Patata" />
+                android:padding="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recipeImg">
 
-            <TextView
-                android:id="@+id/timeToCook"
-                style="@style/TextAppearance.MaterialComponents.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:textSize="18sp"
-                app:layout_constraintStart_toEndOf="@+id/dietImg"
-                app:layout_constraintTop_toBottomOf="@+id/recipeTitle"
-                app:timeToCook="@{recipe.timeToCook}"
-                tools:text="20 minutos" />
 
-            <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/dietImg"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:dietImage="@{recipe}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toEndOf="@id/verticalGuideline"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:background="@drawable/vegetarian" />
+
+                <TextView
+                    android:id="@+id/recipeTitle"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintBottom_toTopOf="@+id/timeToCook"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/dietImg"
+                    app:layout_constraintTop_toTopOf="@+id/dietImg"
+                    app:text="@{recipe.name}"
+                    tools:text="Ensalada de Patata" />
+
+                <TextView
+                    android:id="@+id/timeToCook"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/dietImg"
+                    app:layout_constraintStart_toStartOf="@+id/verticalGuideline"
+                    app:layout_constraintTop_toBottomOf="@+id/recipeTitle"
+                    app:timeToCook="@{recipe.timeToCook}"
+                    tools:text="20 minutos" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/verticalGuideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.18" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--<ImageView
                 android:id="@+id/shareBtn"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
@@ -69,29 +100,9 @@
                 android:src="@drawable/ic_baseline_share_24"
                 app:layout_constraintBottom_toTopOf="@id/guideline"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" />-->
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent=".2" />
-
-            <ImageView
-                android:id="@+id/recipeImg"
-                android:layout_width="wrap_content"
-                android:layout_height="200dp"
-                android:layout_marginTop="8dp"
-                android:contentDescription="@string/recipe_photo"
-                android:scaleType="centerCrop"
-                app:image="@{recipe.image}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/guideline"
-                tools:src="@drawable/ensalada_de_patata_y_aguacate" />
-
-            <TextView
+            <!--<TextView
                 android:id="@+id/recipeDescription"
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="wrap_content"
@@ -103,9 +114,9 @@
                 app:layout_constraintTop_toBottomOf="@id/recipeImg"
                 app:text="@{recipe.description}"
                 tools:text="Ensalada de pata y aguacate. En esta ocasión, vamos a preparar un plato
-frío que se hace en muy pocos minutos." />
+frío que se hace en muy pocos minutos." />-->
 
-            <Button
+            <!--<Button
                 android:id="@+id/editBtn"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
@@ -116,14 +127,7 @@ frío que se hace en muy pocos minutos." />
                 android:text="@string/edit"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recipeDescription" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.18" />
+                app:layout_constraintTop_toBottomOf="@id/recipeDescription" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
