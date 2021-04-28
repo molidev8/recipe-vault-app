@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="recipe"
             type="com.moliverac8.domain.Recipe" />
@@ -13,27 +12,27 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/recipeCard"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_margin="8dp"
-        >
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.imageview.ShapeableImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/dietImg"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:padding="4dp"
+                app:dietImage="@{recipe}"
+                app:layout_constraintBottom_toTopOf="@+id/guideline"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-                app:strokeColor="@color/black"
-                app:strokeWidth="1dp"
-                app:dietImage="@{recipe}"
                 tools:background="@drawable/vegetarian" />
 
             <TextView
@@ -42,9 +41,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:textSize="24sp"
                 app:layout_constraintStart_toEndOf="@id/dietImg"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/dietImg"
                 app:text="@{recipe.name}"
                 tools:text="Ensalada de Patata" />
 
@@ -54,8 +53,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toTopOf="@id/guideline"
+                android:layout_marginTop="8dp"
+                android:textSize="18sp"
                 app:layout_constraintStart_toEndOf="@+id/dietImg"
                 app:layout_constraintTop_toBottomOf="@+id/recipeTitle"
                 app:timeToCook="@{recipe.timeToCook}"
@@ -66,38 +65,30 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginEnd="16dp"
+                android:contentDescription="@string/share"
                 android:src="@drawable/ic_baseline_share_24"
                 app:layout_constraintBottom_toTopOf="@id/guideline"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:contentDescription="@string/share" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="dietImg, recipeTitle, timeToCook, shareBtn"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent=".2"
-                app:layout_constraintTop_toTopOf="@+id/group" />
+                app:layout_constraintGuide_percent=".2" />
 
             <ImageView
                 android:id="@+id/recipeImg"
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
                 android:layout_marginTop="8dp"
+                android:contentDescription="@string/recipe_photo"
                 android:scaleType="centerCrop"
+                app:image="@{recipe.image}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/guideline"
-                android:contentDescription="@string/recipe_photo"
-                app:image="@{recipe.image}"
                 tools:src="@drawable/ensalada_de_patata_y_aguacate" />
 
             <TextView
@@ -105,9 +96,9 @@
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="start"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recipeImg"
                 app:text="@{recipe.description}"
@@ -126,6 +117,13 @@ frío que se hace en muy pocos minutos." />
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recipeDescription" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.18" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
