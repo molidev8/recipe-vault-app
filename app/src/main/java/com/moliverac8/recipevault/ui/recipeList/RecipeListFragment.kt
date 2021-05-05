@@ -12,7 +12,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.mancj.materialsearchbar.MaterialSearchBar
-import com.miguelcatalan.materialsearchview.MaterialSearchView
 import com.moliverac8.domain.DietType
 import com.moliverac8.domain.DishType
 import com.moliverac8.domain.Recipe

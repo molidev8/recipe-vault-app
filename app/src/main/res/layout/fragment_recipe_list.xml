@@ -3,100 +3,99 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <com.moliverac8.recipevault.ui.common.NestedCoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.mancj.materialsearchbar.MaterialSearchBar
-                android:id="@+id/search_view"
-                style="@style/MaterialSearchBarLight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:mt_maxSuggestionsCount="10" />
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#FFFFFF"
-                android:scrollbars="none"
-                app:layout_scrollFlags="scroll">
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/filterChips"
-                    android:layout_width="wrap_content"
+                <com.mancj.materialsearchbar.MaterialSearchBar
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    android:id="@+id/search_view"
+                    style="@style/MaterialSearchBarLight"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    app:singleLine="true">
+                    app:mt_maxSuggestionsCount="10" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/breakfastChip"
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    android:scrollbars="none">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/filterChips"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:text="@string/breakfast" />
+                        android:padding="8dp"
+                        app:singleLine="true">
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/mealChip"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:text="@string/meal" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/breakfastChip"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checkable="true"
+                            android:text="@string/breakfast" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/dinnerChip"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:text="@string/dinner" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/mealChip"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checkable="true"
+                            android:text="@string/meal" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/veganChip"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:text="@string/vegan" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/dinnerChip"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checkable="true"
+                            android:text="@string/dinner" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/vegetarianChip"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:text="@string/vegetarian" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/veganChip"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checkable="true"
+                            android:text="@string/vegan" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/regularChip"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:text="@string/regular" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/vegetarianChip"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checkable="true"
+                            android:text="@string/vegetarian" />
 
-                </com.google.android.material.chip.ChipGroup>
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/regularChip"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checkable="true"
+                            android:text="@string/regular" />
 
-            </HorizontalScrollView>
+                    </com.google.android.material.chip.ChipGroup>
+
+                </HorizontalScrollView>
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recipeList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:listitem="@layout/item_recipe_list" />
 
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recipeList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_recipe_list">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
-        </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/newRecipeBtn"
@@ -106,10 +105,8 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:contentDescription="@string/add_recipe"
-            android:src="@drawable/ic_baseline_add_24">
+            android:src="@drawable/ic_baseline_add_24" />
 
-        </com.google.android.material.floatingactionbutton.FloatingActionButton>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </com.moliverac8.recipevault.ui.common.NestedCoordinatorLayout>
 
 </layout>

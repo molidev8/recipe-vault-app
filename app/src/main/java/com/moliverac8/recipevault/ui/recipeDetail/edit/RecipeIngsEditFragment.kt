@@ -15,9 +15,9 @@ import com.google.android.material.textfield.TextInputLayout
 import com.moliverac8.domain.Ingredient
 import com.moliverac8.recipevault.GENERAL
 import com.moliverac8.recipevault.databinding.FragmentIngListEditBinding
+import com.moliverac8.recipevault.ui.common.IngQuantityDialog
 import com.moliverac8.recipevault.ui.recipeDetail.RecipeDetailVM
 import com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragment
-import es.uam.eps.tfg.menuPlanner.util.IngQuantityDialog
 
 class RecipeIngsEditFragment : Fragment() {
 
