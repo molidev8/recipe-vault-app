@@ -2,9 +2,8 @@ package com.moliverac8.recipevault.ui.recipeList
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.SearchView
 import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -12,6 +11,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
+import com.mancj.materialsearchbar.MaterialSearchBar
+import com.miguelcatalan.materialsearchview.MaterialSearchView
 import com.moliverac8.domain.DietType
 import com.moliverac8.domain.DishType
 import com.moliverac8.domain.Recipe
@@ -27,6 +28,7 @@ class RecipeListFragment : Fragment() {
     private val viewModel: RecipeListVM by viewModels(ownerProducer = { this })
     private val isTablet: Boolean by lazy { requireContext().resources.getBoolean(R.bool.isTablet) }
     private val filterList: MutableList<String> = mutableListOf()
+    private lateinit var binding: FragmentRecipeListBinding
     private lateinit var unfilteredRecipes: List<RecipeWithIng>
 
     private val navigateToDetails = { id: Int, isEditable: Boolean ->
@@ -52,7 +54,7 @@ class RecipeListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentRecipeListBinding.inflate(layoutInflater)
+        binding = FragmentRecipeListBinding.inflate(layoutInflater)
 
         val adapter = RecipeListAdapter(RecipeListAdapter.OnClickListener { recipe, isEditable ->
             recipe.domainRecipe.id.let { id ->
@@ -100,6 +102,23 @@ class RecipeListFragment : Fragment() {
         })
 
         viewModel.updateRecipes()
+
+        binding.searchView.setOnSearchActionListener(object : MaterialSearchBar.OnSearchActionListener  {
+
+            override fun onSearchStateChanged(enabled: Boolean) {
+
+            }
+
+            override fun onSearchConfirmed(text: CharSequence?) {
+                adapter.submitList(unfilteredRecipes.filter {
+                    it.domainRecipe.name.contains(text.toString())
+                })
+            }
+
+            override fun onButtonClicked(buttonCode: Int) {
+
+            }
+        })
 
         binding.newRecipeBtn.setOnClickListener {
             if (isTablet) navigateToDetailsOnTablet(-1, true)
