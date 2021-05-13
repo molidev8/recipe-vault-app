@@ -1,15 +1,20 @@
 package com.moliverac8.recipevault.ui.recipeList
 
 import android.os.Bundle
+import android.transition.Visibility
 import android.util.Log
 import android.view.*
+import android.view.View.GONE
 import android.widget.SearchView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.Chip
 import com.mancj.materialsearchbar.MaterialSearchBar
 import com.moliverac8.domain.DietType
@@ -29,6 +34,9 @@ class RecipeListFragment : Fragment() {
     private val filterList: MutableList<String> = mutableListOf()
     private lateinit var binding: FragmentRecipeListBinding
     private lateinit var unfilteredRecipes: List<RecipeWithIng>
+    private val bottomBarView: BottomAppBar by lazy {
+        requireActivity().findViewById(R.id.bottomBar)
+    }
 
     private val navigateToDetails = { id: Int, isEditable: Boolean ->
         findNavController().navigate(
@@ -87,7 +95,8 @@ class RecipeListFragment : Fragment() {
                 }
                 var list = unfilteredRecipes
                 filterList.forEach { filter ->
-                   list = list.filter { recipe -> recipe.domainRecipe.dietType.name == filter || recipe.domainRecipe.dishType.any { it.name == filter } }
+                    list =
+                        list.filter { recipe -> recipe.domainRecipe.dietType.name == filter || recipe.domainRecipe.dishType.any { it.name == filter } }
                 }
                 adapter.submitList(list)
             }
@@ -102,7 +111,8 @@ class RecipeListFragment : Fragment() {
 
         viewModel.updateRecipes()
 
-        binding.searchView.setOnSearchActionListener(object : MaterialSearchBar.OnSearchActionListener  {
+        binding.searchView.setOnSearchActionListener(object :
+            MaterialSearchBar.OnSearchActionListener {
 
             override fun onSearchStateChanged(enabled: Boolean) {
 
@@ -119,12 +129,21 @@ class RecipeListFragment : Fragment() {
             }
         })
 
-        binding.newRecipeBtn.setOnClickListener {
-            if (isTablet) navigateToDetailsOnTablet(-1, true)
-            else navigateToDetails(-1, true)
-        }
-
         binding.lifecycleOwner = this
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        /*val anchor = with(binding.newRecipeBtn) {
+            setOnClickListener {
+                if (isTablet) navigateToDetailsOnTablet(-1, true)
+                else navigateToDetails(-1, true)
+            }
+            layoutParams as CoordinatorLayout.LayoutParams
+        }*/
+
+        /*anchor.anchorId = bottomBarView.id
+        binding.newRecipeBtn.layoutParams = anchor*/
     }
 }

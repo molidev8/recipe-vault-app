@@ -49,8 +49,10 @@ class MainActivity : AppCompatActivity() {
             setContentView(R.layout.activity_main)
             val navHostFragment = supportFragmentManager
                 .findFragmentById(R.id.fragmentMaster) as NavHostFragment
-            val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNav);
+            val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNav)
             NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.navController)
+            bottomNavigationView.background = null
+            bottomNavigationView.menu.getItem(1).isEnabled = false
         }
     }
 

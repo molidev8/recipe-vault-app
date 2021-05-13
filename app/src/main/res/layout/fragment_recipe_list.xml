@@ -96,17 +96,6 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/item_recipe_list" />
 
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/newRecipeBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:contentDescription="@string/add_recipe"
-            android:src="@drawable/ic_baseline_add_24" />
-
     </com.moliverac8.recipevault.ui.common.NestedCoordinatorLayout>
 
 </layout>

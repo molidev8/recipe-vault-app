@@ -25,7 +25,7 @@
             app:text="@{ing.name}"
             tools:text="Patatas" />
 
-        <es.uam.eps.tfg.menuPlanner.util.Dots
+        <com.moliverac8.recipevault.ui.common.Dots
             android:layout_width="0dp"
             android:layout_height="2dp"
             android:layout_marginStart="8dp"

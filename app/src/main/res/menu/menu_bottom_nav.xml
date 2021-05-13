@@ -7,6 +7,10 @@
         android:title="@string/my_recipes" />
 
     <item
+        android:id="@+id/placeHolder"
+        android:title="" />
+
+    <item
         android:id="@+id/AccountFragment"
         android:icon="@drawable/account_circle_black_24dp"
         android:title="@string/my_account" />
