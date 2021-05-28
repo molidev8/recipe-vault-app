@@ -33,7 +33,8 @@ abstract class LocalRecipeDatabase : RoomDatabase() {
                         context.applicationContext,
                         LocalRecipeDatabase::class.java,
                         DATABASE_NAME
-                    ).build()
+
+                    ).setJournalMode(JournalMode.TRUNCATE).build()
                     INSTANCE = instance
                 }
 

@@ -22,18 +22,63 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@mipmap/ic_launcher"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="@id/logoEndLimit"
+            app:layout_constraintStart_toStartOf="@id/logoStartLimit"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.19999999" />
+
+        <TextView
+            android:id="@+id/logo_title"
+            style="@style/TextAppearance.MaterialComponents.Headline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/app_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/logo" />
+
+        <TextView
+            android:id="@+id/sign_in_help_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/sign_in_help"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/last_local_date"
+            app:layout_constraintTop_toBottomOf="@+id/logo_title" />
+
+        <Button
+            android:id="@+id/loginBtn"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/log_in"
+            app:icon="@drawable/dropbox"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sign_in_help_text" />
+
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/progress_bar"
-            app:showAnimationBehavior="inward"
-            app:hideAnimationBehavior="outward"
-            app:indeterminateAnimationType="disjoint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:visibility="gone"
+            app:hideAnimationBehavior="outward"
+            app:indeterminateAnimationType="disjoint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:showAnimationBehavior="inward" />
 
         <TextView
             android:id="@+id/last_backup_title"
@@ -82,25 +127,14 @@
             tools:text="Tamaño: 123 MB" />
 
         <Button
-            android:id="@+id/loginBtn"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/log_in"
-            android:visibility="gone"
-            app:icon="@drawable/dropbox"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/last_backup_title" />
-
-        <Button
             android:id="@+id/make_backup_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/make_backup"
+            app:layout_constraintEnd_toStartOf="@+id/restore_backup_btn"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/size" />
 
@@ -111,7 +145,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/restore"
-            app:layout_constraintStart_toEndOf="@id/make_backup_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/make_backup_btn"
             app:layout_constraintTop_toBottomOf="@id/size" />
 
         <TextView
@@ -224,8 +260,26 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/automatic_backup"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/save_with_group" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/login_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="loginBtn, sign_in_help_text, logo_title, logo" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/logged_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="last_backup_title, last_cloud_date, last_local_date, size,
+            make_backup_btn, restore_backup_btn, schedule_backup_title, schedule_description,
+            backup_timing, timing_group, save_with, save_with_group, automaticBackupBtn" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
@@ -234,6 +288,20 @@
             android:alpha="1"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.23" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/logoStartLimit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.2" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/logoEndLimit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.8" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,23 +2,21 @@ package com.moliverac8.recipevault.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.dropbox.core.android.Auth
-import com.dropbox.core.oauth.DbxCredential
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.moliverac8.recipevault.IO
+import com.google.android.material.transition.MaterialFadeThrough
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.framework.workmanager.BackupUserData
 import com.moliverac8.recipevault.framework.workmanager.DropboxManager
+import com.moliverac8.recipevault.ui.recipeList.RecipeListFragment
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 const val REQUEST_IMAGE_CAPTURE = 1
 
@@ -50,10 +48,36 @@ class MainActivity : AppCompatActivity() {
             val navHostFragment = supportFragmentManager
                 .findFragmentById(R.id.fragmentMaster) as NavHostFragment
             val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNav)
+            bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.RecipeListFragment -> {
+                        val fragment = RecipeListFragment.newInstance().apply {
+                            exitTransition = MaterialFadeThrough()
+                        }
+                        openFragment(fragment)
+                        true
+                    }
+                    R.id.AccountFragment -> {
+                        val fragment = RecipeListFragment.newInstance().apply {
+                            exitTransition = MaterialFadeThrough()
+                        }
+                        openFragment(fragment)
+                        true
+                    }
+                    else -> false
+                }
+            }
             NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.navController)
             bottomNavigationView.background = null
             bottomNavigationView.menu.getItem(1).isEnabled = false
         }
+    }
+
+    private fun openFragment(fragment: Fragment) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragmentMaster, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 
     override fun onResume() {

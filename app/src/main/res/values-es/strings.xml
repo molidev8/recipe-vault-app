@@ -45,7 +45,7 @@
     <string name="just_wifi">Solo Wi-Fi</string>
     <string name="wifi_and_data">Wi-Fi o datos</string>
     <string name="my_account">Mi Cuenta</string>
-    <string name="log_in">Login to Dropbox</string>
+    <string name="log_in">Inicia sesión en Dropbox</string>
     <string name="backup_error">Hubo un error con la copia de seguridad, por favor inténtalo más tarde</string>
     <string name="backup_time_error">No se pudo obtener la fecha</string>
     <string name="local">Local: %s</string>
@@ -55,4 +55,5 @@
     <string name="automatic_backup">Programar copia automática</string>
     <string name="backup_done_ok">Copia de seguridad realizada con éxito</string>
     <string name="restore_done_ok">Copia restaurada con éxito</string>
+    <string name="sign_in_help">Inicia sesión para hacer copias de seguridad de tus recetas en Dropbox</string>
 </resources>

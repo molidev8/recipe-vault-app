@@ -6,11 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.transition.MaterialFadeThrough
 import com.moliverac8.recipevault.*
 import com.moliverac8.recipevault.databinding.FragmentAccountBinding
 import com.moliverac8.recipevault.framework.workmanager.BackupWorkerManager
@@ -38,11 +41,37 @@ class AccountFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val serializedCredential = prefs.getString(DROPBOX_CREDENTIAL, null)
-
         binding = FragmentAccountBinding.inflate(layoutInflater)
 
+        enterTransition = MaterialFadeThrough()
+
+        val firstTime = prefs.getBoolean(FIRST_TIME_LOGIN, true)
+
+        if (!firstTime) {
+            // El usuario ha iniciado sesión en Dropbox
+            binding.loginGroup.visibility = View.GONE
+            binding.loggedGroup.visibility = View.VISIBLE
+        }
+
+        updateMetadata(binding)
+
+        return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val serializedCredential = prefs.getString(DROPBOX_CREDENTIAL, null)
+        val firstTime = prefs.getBoolean(FIRST_TIME_LOGIN, true)
+
         if (serializedCredential != null) {
+            viewModel.isFinished.observe(viewLifecycleOwner) { backupSize ->
+                prefs.edit().putLong(BACKUP_SIZE, backupSize).apply()
+                binding.progressBar.hide()
+                Snackbar.make(requireView(), getString(R.string.backup_done_ok), Snackbar.LENGTH_SHORT)
+                    .setAnchorView(bottomBarView).show()
+                updateMetadata(binding)
+            }
+
             viewModel.doingBackup.observe(viewLifecycleOwner) { isWorking ->
                 if (isWorking) {
                     binding.progressBar.show()
@@ -61,6 +90,7 @@ class AccountFragment : Fragment() {
                     binding.progressBar.show()
                     Snackbar.make(binding.root, getString(R.string.restore_done_ok), Snackbar.LENGTH_SHORT)
                         .setAnchorView(bottomBarView).show()
+                    binding.progressBar.hide()
                 }
             }
 
@@ -69,6 +99,7 @@ class AccountFragment : Fragment() {
                     Snackbar.make(it, getString(R.string.backup_error), Snackbar.LENGTH_LONG)
                         .setAnchorView(bottomBarView)
                         .show()
+                    binding.progressBar.hide()
                 })
             }
 
@@ -77,6 +108,7 @@ class AccountFragment : Fragment() {
                     Snackbar.make(it, getString(R.string.backup_error), Snackbar.LENGTH_LONG)
                         .setAnchorView(bottomBarView)
                         .show()
+                    binding.progressBar.hide()
                 })
             }
 
@@ -94,40 +126,7 @@ class AccountFragment : Fragment() {
             binding.loginBtn.setOnClickListener {
                 viewModel.loginToDropbox()
             }
-
-            binding.lastLocalDate.visibility = View.GONE
-            binding.lastCloudDate.visibility = View.GONE
-            binding.makeBackupBtn.visibility = View.GONE
-            binding.restoreBackupBtn.visibility = View.GONE
-            binding.size.visibility = View.GONE
-            binding.loginBtn.visibility = View.VISIBLE
         }
-
-        updateMetadata(binding)
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val serializedCredential = prefs.getString(DROPBOX_CREDENTIAL, null)
-
-        if (serializedCredential != null) {
-            viewModel.isFinished.observe(viewLifecycleOwner) { backupSize ->
-                prefs.edit().putLong(BACKUP_SIZE, backupSize).apply()
-                binding.progressBar.hide()
-                Snackbar.make(view, getString(R.string.backup_done_ok), Snackbar.LENGTH_SHORT)
-                    .setAnchorView(bottomBarView).show()
-                updateMetadata(binding)
-            }
-        }
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val serializedCredential = prefs.getString(DROPBOX_CREDENTIAL, null)
-        val firstTime = prefs.getBoolean(FIRST_TIME_LOGIN, true)
 
         if (serializedCredential != null && firstTime) {
 
@@ -138,12 +137,8 @@ class AccountFragment : Fragment() {
             prefs.edit().putBoolean(FIRST_TIME_LOGIN, false).apply()
 
             // El usuario ha iniciado sesión en Dropbox
-            binding.lastLocalDate.visibility = View.VISIBLE
-            binding.lastCloudDate.visibility = View.VISIBLE
-            binding.makeBackupBtn.visibility = View.VISIBLE
-            binding.restoreBackupBtn.visibility = View.VISIBLE
-            binding.size.visibility = View.VISIBLE
-            binding.loginBtn.visibility = View.GONE
+            binding.loginGroup.visibility = View.GONE
+            binding.loggedGroup.visibility = View.VISIBLE
 
             viewModel.saveSizeOfCloudBackup(prefs)
             viewModel.saveDateOfLastBackup(prefs)
@@ -166,5 +161,9 @@ class AccountFragment : Fragment() {
         }.time
 
         binding.sizeInBytes = prefs.getLong(BACKUP_SIZE, 0L)
+    }
+
+    companion object {
+        fun newInstance(): AccountFragment = AccountFragment()
     }
 }

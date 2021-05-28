@@ -17,6 +17,7 @@ import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.transition.MaterialFadeThrough
 import com.mancj.materialsearchbar.MaterialSearchBar
 import com.moliverac8.domain.DietType
 import com.moliverac8.domain.DishType
@@ -24,6 +25,7 @@ import com.moliverac8.domain.Recipe
 import com.moliverac8.domain.RecipeWithIng
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.FragmentRecipeListBinding
+import com.moliverac8.recipevault.ui.account.AccountFragment
 import com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -140,6 +142,11 @@ class RecipeListFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        newRecipeBtn.show()
+    }
+
     override fun onStop() {
         super.onStop()
         newRecipeBtn.hide()
@@ -155,5 +162,9 @@ class RecipeListFragment : Fragment() {
             else navigateToDetails(-1, true)
         }
         }
+    }
+
+    companion object {
+        fun newInstance(): RecipeListFragment = RecipeListFragment()
     }
 }

@@ -4,28 +4,20 @@ import android.content.Context
 import android.os.Environment
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.dropbox.core.DbxException
 import com.dropbox.core.oauth.DbxCredential
 import com.moliverac8.recipevault.BACKUP
-import com.moliverac8.recipevault.GENERAL
 import com.moliverac8.recipevault.framework.room.DATABASE_NAME
 import com.moliverac8.recipevault.framework.room.LocalRecipeDatabase
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import java.io.*
-import java.lang.IllegalArgumentException
 import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipException
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
-import kotlin.jvm.Throws
 
 
 class BackupUserData(private val context: Context) {
@@ -83,7 +75,9 @@ class BackupUserData(private val context: Context) {
         downloadFromDropbox(FileOutputStream(File(backupDir, "recipe-vault-backup.zip")))
         unzipBackupFiles()
         restoreRoomDatabase()
+        LocalRecipeDatabase.getInstance(context)
     } catch (e: Exception) {
+        Log.d(BACKUP, e.localizedMessage!!)
         throw Exception()
     }
 
@@ -120,10 +114,11 @@ class BackupUserData(private val context: Context) {
                 file?.let {
                     if (!file.isDirectory) addZipEntry(file)
                     else file.listFiles()?.forEach { file ->
-                        addZipEntry(file)
+                        if (file.extension == "jpg") addZipEntry(file)
                     }
                 }
             }
+            zipOutput.close()
         } catch (e: IllegalArgumentException) {
             Log.d(BACKUP, "Filename too long ${e.localizedMessage}")
             throw Exception()
@@ -141,7 +136,7 @@ class BackupUserData(private val context: Context) {
     private fun restoreRoomDatabase() {
 
         val dbPath = context.getDatabasePath(DATABASE_NAME)
-        val backupFile = backupDir?.listFiles()?.find { it.name == "backup.db" }
+        val backupFile = backupDir?.listFiles()?.find { it.name == "recipes_db" }
 
         try {
             backupFile?.copyTo(dbPath, true)
@@ -160,10 +155,10 @@ class BackupUserData(private val context: Context) {
         while (entries.hasMoreElements()) {
             val entry = entries.nextElement()
             val output = entry?.run {
-                if (name == "backup.db") BufferedOutputStream(
-                    FileOutputStream(File(backupDir, name))
-                )
-                else BufferedOutputStream(FileOutputStream(File(photosDir, name)))
+                if (name == "recipes_db")
+                    BufferedOutputStream(FileOutputStream(File(backupDir, name)))
+                else
+                    BufferedOutputStream(FileOutputStream(File(photosDir, name)))
             }
 
             val data = input.getInputStream(entry)

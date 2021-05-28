@@ -47,8 +47,8 @@ class DropboxManager(private val context: Context) {
 
     fun uploadFile(input: FileInputStream): Boolean {
         return try {
-            val result = client?.files()?.deleteV2("/recipe-vault-backup.zip")
-            Log.d(BACKUP, "Eliminando copia en Dropbox ${result.toString()}")
+            /*val result = client?.files()?.deleteV2("/recipe-vault-backup.zip")
+            Log.d(BACKUP, "Eliminando copia en Dropbox ${result.toString()}")*/
             client?.files()?.upload("/recipe-vault-backup.zip")
                 ?.uploadAndFinish(input)
             true

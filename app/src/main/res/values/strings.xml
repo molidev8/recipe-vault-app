@@ -44,7 +44,7 @@
     <string name="just_wifi">Just Wi-Fi</string>
     <string name="wifi_and_data">Wi-Fi or Data</string>
     <string name="my_account">My Account</string>
-    <string name="log_in">Iniciar sesión en Dropbox</string>
+    <string name="log_in">Login to Dropbox</string>
     <string name="backup_error">There was an error with your backup, please try again later</string>
     <string name="backup_time_error">Could not find a previous backup</string>
     <string name="local">Local: %s</string>
@@ -54,4 +54,5 @@
     <string name="automatic_backup">Program Automatic Backup</string>
     <string name="backup_done_ok">Backup done successfully</string>
     <string name="restore_done_ok">Backup restored successfully</string>
+    <string name="sign_in_help">Sign in to make backups of your recipes in Dropbox</string>
 </resources>
