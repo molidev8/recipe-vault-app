@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -20,20 +19,20 @@
             android:id="@+id/newRecipeBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_anchor="@id/bottomBar"
             android:contentDescription="@string/add_recipe"
-            android:src="@drawable/ic_baseline_add_24" />
+            android:src="@drawable/ic_baseline_add_24"
+            app:layout_anchor="@id/bottomBar" />
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottomBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:fabCradleMargin="7dp"
             app:fabAlignmentMode="center"
-            app:hideOnScroll="true"
+            app:fabCradleMargin="7dp"
             app:fabCradleRoundedCornerRadius="7dp"
-            app:fabCradleVerticalOffset="5dp">
+            app:fabCradleVerticalOffset="5dp"
+            app:hideOnScroll="true">
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottomNav"
@@ -43,7 +42,6 @@
                 app:menu="@menu/menu_bottom_nav" />
 
         </com.google.android.material.bottomappbar.BottomAppBar>
-
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

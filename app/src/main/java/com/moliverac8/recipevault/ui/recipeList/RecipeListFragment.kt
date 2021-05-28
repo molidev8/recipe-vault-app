@@ -139,11 +139,20 @@ class RecipeListFragment : Fragment() {
         return binding.root
     }
 
+    override fun onStop() {
+        super.onStop()
+        newRecipeBtn.hide()
+    }
+
     override fun onStart() {
         super.onStart()
-        newRecipeBtn.setOnClickListener {
+        newRecipeBtn.apply {
+            setShowMotionSpecResource(R.animator.fab_show)
+            setHideMotionSpecResource(R.animator.fab_hide)
+            setOnClickListener {
             if (isTablet) navigateToDetailsOnTablet(-1, true)
             else navigateToDetails(-1, true)
+        }
         }
     }
 }

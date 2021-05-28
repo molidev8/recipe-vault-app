@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.moliverac8.recipevault.*
 import com.moliverac8.recipevault.databinding.FragmentAccountBinding
@@ -26,6 +27,10 @@ class AccountFragment : Fragment() {
         requireContext().getSharedPreferences("recipe-vault", AppCompatActivity.MODE_PRIVATE)
     }
     private lateinit var binding: FragmentAccountBinding
+
+    private val newRecipeBtn: FloatingActionButton by lazy {
+        requireActivity().findViewById(R.id.newRecipeBtn)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -120,6 +125,11 @@ class AccountFragment : Fragment() {
             viewModel.saveSizeOfCloudBackup(prefs)
             viewModel.saveDateOfLastBackup(prefs)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        newRecipeBtn.show()
     }
 
     private fun updateMetadata(binding: FragmentAccountBinding) {
