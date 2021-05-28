@@ -14,6 +14,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.OutputStream
+import java.util.*
 
 private const val API_KEY = "1an6pdc5pzzppws"
 
@@ -64,5 +65,14 @@ class DropboxManager(private val context: Context) {
             Log.d(BACKUP, "Error downloading files ${e.localizedMessage}")
             throw DbxException("")
         }
+    }
+
+    fun getDateOfLastBackup(): Date? {
+        return client?.files()?.download("/recipe-vault-backup.zip")?.result?.serverModified
+    }
+
+    // Devuelve el tamaño de la copia en bytes
+    fun getSizeOfLastBackup(): Long {
+        return client?.files()?.download("/recipe-vault-backup.zip")?.result?.size ?: 0L
     }
 }

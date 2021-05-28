@@ -28,7 +28,6 @@
                 android:layout_height="180dp"
                 android:contentDescription="@string/recipe_photo"
                 android:scaleType="centerCrop"
-
                 app:image="@{recipe.image}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

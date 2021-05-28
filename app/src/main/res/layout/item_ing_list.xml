@@ -10,7 +10,6 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -19,17 +18,19 @@
             style="@style/TextAppearance.MaterialComponents.Subtitle2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:padding="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:text="@{ing.name}"
             tools:text="Patatas" />
 
         <com.moliverac8.recipevault.ui.common.Dots
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:layout_width="0dp"
             android:layout_height="2dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/units"
             app:layout_constraintStart_toEndOf="@id/ing_name" />
@@ -39,10 +40,11 @@
             style="@style/TextAppearance.MaterialComponents.Subtitle2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:padding="4dp"
             app:ingUnits="@{ing}"
-            app:layout_constraintBaseline_toBaselineOf="@id/ing_name"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="2 uds" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

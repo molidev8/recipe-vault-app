@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.Chip
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mancj.materialsearchbar.MaterialSearchBar
 import com.moliverac8.domain.DietType
 import com.moliverac8.domain.DishType
@@ -37,6 +38,9 @@ class RecipeListFragment : Fragment() {
     private val bottomBarView: BottomAppBar by lazy {
         requireActivity().findViewById(R.id.bottomBar)
     }
+    private val newRecipeBtn: FloatingActionButton by lazy {
+        requireActivity().findViewById(R.id.newRecipeBtn)
+    }
 
     private val navigateToDetails = { id: Int, isEditable: Boolean ->
         findNavController().navigate(
@@ -45,6 +49,8 @@ class RecipeListFragment : Fragment() {
                 isEditable
             )
         )
+        bottomBarView.visibility = GONE
+        newRecipeBtn.visibility = GONE
     }
 
     private val navigateToDetailsOnTablet = { id: Int, isEditable: Boolean ->
@@ -135,15 +141,9 @@ class RecipeListFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        /*val anchor = with(binding.newRecipeBtn) {
-            setOnClickListener {
-                if (isTablet) navigateToDetailsOnTablet(-1, true)
-                else navigateToDetails(-1, true)
-            }
-            layoutParams as CoordinatorLayout.LayoutParams
-        }*/
-
-        /*anchor.anchorId = bottomBarView.id
-        binding.newRecipeBtn.layoutParams = anchor*/
+        newRecipeBtn.setOnClickListener {
+            if (isTablet) navigateToDetailsOnTablet(-1, true)
+            else navigateToDetails(-1, true)
+        }
     }
 }

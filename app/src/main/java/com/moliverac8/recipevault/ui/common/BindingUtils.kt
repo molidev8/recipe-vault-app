@@ -11,6 +11,8 @@ import com.moliverac8.domain.DietType
 import com.moliverac8.domain.Ingredient
 import com.moliverac8.domain.Recipe
 import com.moliverac8.recipevault.R
+import com.moliverac8.recipevault.Strings
+import java.util.*
 
 @BindingAdapter("text")
 fun TextView.setString(string: String?) {
@@ -54,4 +56,26 @@ fun ImageView.setDietImage(recipe: Recipe?) {
 @BindingAdapter("ingUnits")
 fun TextView.setIngUnits(ingredient: Ingredient) {
     text = "${ingredient.quantity.toInt()} ${ingredient.unit}"
+}
+
+@BindingAdapter("localBackupTime")
+fun TextView.setLocalBackupTime(date: Date) {
+    text =  if (date.time != 0L) Strings.get(R.string.local, date.toString())
+    else Strings.get(R.string.no_local_backup_jet)
+}
+
+@BindingAdapter("cloudBackupTime")
+fun TextView.setCloudBackupTime(date: Date) {
+    text = if (date.time != 0L) Strings.get(R.string.cloud, date.toString())
+    else Strings.get(R.string.backup_time_error)
+}
+
+@BindingAdapter("backupSize")
+fun TextView.setBackupSize(sizeInBytes: Long) {
+    val inMB = if (sizeInBytes != 0L) {
+        (sizeInBytes / 1024) / 1024
+    } else {
+        0L
+    }
+    text = Strings.get(R.string.size, inMB)
 }

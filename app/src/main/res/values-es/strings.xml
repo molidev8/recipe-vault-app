@@ -47,4 +47,10 @@
     <string name="my_account">Mi Cuenta</string>
     <string name="log_in">Login to Dropbox</string>
     <string name="backup_error">Hubo un error con la copia de seguridad, por favor inténtalo más tarde</string>
+    <string name="backup_time_error">No se pudo obtener la fecha</string>
+    <string name="local">Local: %s</string>
+    <string name="cloud">Dropbox: %s</string>
+    <string name="size">Tamaño: %d MB</string>
+    <string name="no_local_backup_jet">Todavía no tienes una copia local</string>
+    <string name="automatic_backup">Programar copia automática</string>
 </resources>

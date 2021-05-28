@@ -176,4 +176,14 @@ class BackupUserData(private val context: Context) {
         }
     }
 
+    // Devuelve el tamaño de la copia en bytes
+    fun getBackupSize(): Long {
+        val file = File(backupDir?.path + "/recipe-vault-backup.zip")
+        return if (file.exists()) {
+            file.totalSpace
+        } else {
+            0
+        }
+    }
+
 }

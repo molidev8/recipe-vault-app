@@ -46,5 +46,10 @@
     <string name="my_account">My Account</string>
     <string name="log_in">Iniciar sesión en Dropbox</string>
     <string name="backup_error">There was an error with your backup, please try again later</string>
-
+    <string name="backup_time_error">Could not find a previous backup</string>
+    <string name="local">Local: %s</string>
+    <string name="cloud">Dropbox: %s</string>
+    <string name="size">Size: %d MB</string>
+    <string name="no_local_backup_jet">There is no local backup currently</string>
+    <string name="automatic_backup">Program Automatic Backup</string>
 </resources>

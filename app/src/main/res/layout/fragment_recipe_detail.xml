@@ -36,21 +36,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:textSize="24sp"
                 android:textStyle="bold"
+
                 app:layout_constraintStart_toEndOf="@+id/dietImg"
-                app:layout_constraintTop_toBottomOf="@id/recipeImg"
+                app:layout_constraintTop_toTopOf="@id/dietImg"
                 app:text="@{recipe.name}"
                 tools:text="Ensalada de Patata" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/dietImg"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="8dp"
                 app:dietImage="@{recipe}"
+                app:layout_constraintBottom_toTopOf="@id/timeToEatChips"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@id/recipeTitle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recipeImg"
                 app:strokeColor="@color/black"
@@ -61,12 +63,12 @@
                 android:id="@+id/edit_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
+                android:contentDescription="@string/edit"
                 android:src="@drawable/ic_baseline_edit_24"
+                app:layout_constraintBottom_toBottomOf="@+id/recipeTitle"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recipeImg"
-                android:contentDescription="@string/edit" />
+                app:layout_constraintTop_toTopOf="@+id/recipeTitle" />
 
             <TextView
                 android:id="@+id/timeToCook"
@@ -128,6 +130,12 @@ frío que se hace en muy pocos minutos." />
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/divider"
                 tools:listitem="@layout/item_instructions_list" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/imgLimit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -2,6 +2,7 @@ package com.moliverac8.recipevault.ui.recipeDetail
 
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.work.WorkManager
+import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayoutMediator
 import com.moliverac8.recipevault.GENERAL
 import com.moliverac8.recipevault.R
@@ -26,6 +28,12 @@ class RecipePagerFragment : Fragment() {
     private val args by navArgs<RecipePagerFragmentArgs>()
     private val viewModel: RecipeDetailVM by viewModels(ownerProducer = { this })
     private val isTablet: Boolean by lazy { requireContext().resources.getBoolean(R.bool.isTablet) }
+    private val bottomBarView: BottomAppBar by lazy {
+        requireActivity().findViewById(R.id.bottomBar)
+    }
+    private val newRecipeBtn: FloatingActionButton by lazy {
+        requireActivity().findViewById(R.id.newRecipeBtn)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,8 +47,6 @@ class RecipePagerFragment : Fragment() {
         // Cargo la receta nueva o la existente en el viewModel compartido por los fragmentos del viewpager
         Log.d(GENERAL, "PG - Receta ID ${args.recipeID}")
 
-
-
         binding.pager.adapter = RecipePager(this, args.isEditable)
         TabLayoutMediator(binding.tabs, binding.pager) { tab, position ->
             tab.text = when (position) {
@@ -52,6 +58,12 @@ class RecipePagerFragment : Fragment() {
         binding.lifecycleOwner = this
 
         return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        bottomBarView.visibility = View.VISIBLE
+        newRecipeBtn.visibility = View.VISIBLE
     }
 }
 

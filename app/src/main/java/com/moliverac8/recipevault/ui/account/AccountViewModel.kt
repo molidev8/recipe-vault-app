@@ -1,8 +1,13 @@
 package com.moliverac8.recipevault.ui.account
 
 import android.content.Context
+import android.content.SharedPreferences
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.moliverac8.recipevault.BACKUP_SIZE
+import com.moliverac8.recipevault.CLOUD_BACKUP_TIME
 import com.moliverac8.recipevault.framework.workmanager.BackupUserData
 import com.moliverac8.recipevault.framework.workmanager.DropboxManager
 import dagger.hilt.EntryPoint
@@ -15,8 +20,8 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.jvm.Throws
 
 @HiltViewModel
 class AccountViewModel @Inject constructor(
@@ -26,13 +31,25 @@ class AccountViewModel @Inject constructor(
     private val backupUserData: BackupUserData by lazy {
         BackupUserData(context)
     }
-
     private val dropboxManager: DropboxManager by lazy {
         EntryPointAccessors.fromApplication(
             context,
             BackupUserData.BackupEntryPoint::class.java
         ).dropboxManager()
     }
+    private val _doingBackup = MutableLiveData(false)
+    val doingBackup: LiveData<Boolean>
+        get() = _doingBackup
+
+    private val _isFinished = MutableLiveData<Long>()
+    val isFinished: LiveData<Long>
+        get() = _isFinished
+
+    private val _firstTimeSetup = MutableLiveData<Boolean>()
+    val firstTimeSetup: LiveData<Boolean>
+        get() = _firstTimeSetup
+
+    var firstTime = false
 
     @EntryPoint
     @InstallIn(SingletonComponent::class)
@@ -43,8 +60,31 @@ class AccountViewModel @Inject constructor(
     fun loginToDropbox() = viewModelScope.launch { dropboxManager.startOAuth2Authentication() }
 
     fun makeBackup(coroutineExceptionHandler: CoroutineExceptionHandler) =
-        CoroutineScope(IO + coroutineExceptionHandler).launch { backupUserData.doBackup() }
+        CoroutineScope(IO + coroutineExceptionHandler).launch {
+            _doingBackup.postValue(true)
+            backupUserData.doBackup()
+            _isFinished.postValue(backupUserData.getBackupSize())
+        }
 
     fun restoreBackup(coroutineExceptionHandler: CoroutineExceptionHandler) =
         CoroutineScope(IO + coroutineExceptionHandler).launch { backupUserData.restoreBackup() }
+
+    fun saveSizeOfCloudBackup(prefs: SharedPreferences) {
+        viewModelScope.launch {
+            withContext(IO) {
+                prefs.edit().putLong(BACKUP_SIZE, dropboxManager.getSizeOfLastBackup()).apply()
+            }
+        }
+    }
+
+    fun saveDateOfLastBackup(prefs: SharedPreferences) {
+        viewModelScope.launch {
+            withContext(IO) {
+                dropboxManager.getDateOfLastBackup()?.let {
+                    prefs.edit().putLong(CLOUD_BACKUP_TIME, it.time).apply()
+                }
+            }
+            _firstTimeSetup.postValue(true)
+        }
+    }
 }

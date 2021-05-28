@@ -5,4 +5,14 @@ import android.content.Context
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class RecipeVaultApplication : Application()
+class RecipeVaultApplication : Application() {
+
+    override fun onCreate() {
+        super.onCreate()
+        instance = this
+    }
+
+    companion object {
+        lateinit var instance: RecipeVaultApplication private set
+    }
+}
