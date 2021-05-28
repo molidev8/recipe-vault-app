@@ -52,4 +52,6 @@
     <string name="size">Size: %d MB</string>
     <string name="no_local_backup_jet">There is no local backup currently</string>
     <string name="automatic_backup">Program Automatic Backup</string>
+    <string name="backup_done_ok">Backup done successfully</string>
+    <string name="restore_done_ok">Backup restored successfully</string>
 </resources>

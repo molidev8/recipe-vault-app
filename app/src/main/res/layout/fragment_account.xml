@@ -4,12 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="local"
             type="java.util.Date" />
+
         <variable
             name="cloud"
             type="java.util.Date" />
+
         <variable
             name="sizeInBytes"
             type="Long" />
@@ -18,6 +21,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress_bar"
+            app:showAnimationBehavior="inward"
+            app:hideAnimationBehavior="outward"
+            app:indeterminateAnimationType="disjoint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/last_backup_title"

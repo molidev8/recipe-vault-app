@@ -42,6 +42,10 @@ class AccountViewModel @Inject constructor(
     val doingBackup: LiveData<Boolean>
         get() = _doingBackup
 
+    private val _doingRestore = MutableLiveData<Boolean>()
+    val doingRestore: LiveData<Boolean>
+        get() = _doingRestore
+
     private val _isFinished = MutableLiveData<Long>()
     val isFinished: LiveData<Long>
         get() = _isFinished
@@ -64,11 +68,16 @@ class AccountViewModel @Inject constructor(
         CoroutineScope(IO + coroutineExceptionHandler).launch {
             _doingBackup.postValue(true)
             backupUserData.doBackup()
+            _doingBackup.postValue(false)
             _isFinished.postValue(backupUserData.getBackupSize())
         }
 
     fun restoreBackup(coroutineExceptionHandler: CoroutineExceptionHandler) =
-        CoroutineScope(IO + coroutineExceptionHandler).launch { backupUserData.restoreBackup() }
+        CoroutineScope(IO + coroutineExceptionHandler).launch {
+            _doingRestore.postValue(true)
+            backupUserData.restoreBackup()
+            _doingRestore.postValue(false)
+        }
 
     fun saveSizeOfCloudBackup(prefs: SharedPreferences) {
         viewModelScope.launch {

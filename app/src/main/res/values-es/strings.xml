@@ -53,4 +53,6 @@
     <string name="size">Tamaño: %d MB</string>
     <string name="no_local_backup_jet">Todavía no tienes una copia local</string>
     <string name="automatic_backup">Programar copia automática</string>
+    <string name="backup_done_ok">Copia de seguridad realizada con éxito</string>
+    <string name="restore_done_ok">Copia restaurada con éxito</string>
 </resources>

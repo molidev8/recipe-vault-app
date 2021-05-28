@@ -2,14 +2,13 @@ package com.moliverac8.recipevault.ui.account
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.moliverac8.recipevault.*
@@ -27,7 +26,9 @@ class AccountFragment : Fragment() {
         requireContext().getSharedPreferences("recipe-vault", AppCompatActivity.MODE_PRIVATE)
     }
     private lateinit var binding: FragmentAccountBinding
-
+    private val bottomBarView: BottomAppBar by lazy {
+        requireActivity().findViewById(R.id.bottomBar)
+    }
     private val newRecipeBtn: FloatingActionButton by lazy {
         requireActivity().findViewById(R.id.newRecipeBtn)
     }
@@ -44,7 +45,7 @@ class AccountFragment : Fragment() {
         if (serializedCredential != null) {
             viewModel.doingBackup.observe(viewLifecycleOwner) { isWorking ->
                 if (isWorking) {
-                    // Progress bar goes
+                    binding.progressBar.show()
                     with(prefs.edit()) {
                         val time = Calendar.getInstance()
                         putLong(LOCAL_BACKUP_TIME, time.timeInMillis).apply()
@@ -53,15 +54,20 @@ class AccountFragment : Fragment() {
                 }
             }
 
-            viewModel.isFinished.observe(viewLifecycleOwner) { backupSize ->
-                prefs.edit().putLong(BACKUP_SIZE, backupSize).apply()
-                // Progress bar ends
-                updateMetadata(binding)
+            viewModel.doingRestore.observe(viewLifecycleOwner) { isWorking ->
+                if (isWorking) {
+                    binding.progressBar.show()
+                } else {
+                    binding.progressBar.show()
+                    Snackbar.make(binding.root, getString(R.string.restore_done_ok), Snackbar.LENGTH_SHORT)
+                        .setAnchorView(bottomBarView).show()
+                }
             }
 
             binding.makeBackupBtn.setOnClickListener {
                 viewModel.makeBackup(CoroutineExceptionHandler { _, _ ->
                     Snackbar.make(it, getString(R.string.backup_error), Snackbar.LENGTH_LONG)
+                        .setAnchorView(bottomBarView)
                         .show()
                 })
             }
@@ -69,12 +75,13 @@ class AccountFragment : Fragment() {
             binding.restoreBackupBtn.setOnClickListener {
                 viewModel.restoreBackup(CoroutineExceptionHandler { _, _ ->
                     Snackbar.make(it, getString(R.string.backup_error), Snackbar.LENGTH_LONG)
+                        .setAnchorView(bottomBarView)
                         .show()
                 })
             }
 
             binding.automaticBackupBtn.setOnClickListener {
-                val interval = when(binding.timingGroup.checkedRadioButtonId) {
+                val interval = when (binding.timingGroup.checkedRadioButtonId) {
                     binding.month.id -> 30L
                     binding.week.id -> 7L
                     binding.day.id -> 1L
@@ -99,6 +106,22 @@ class AccountFragment : Fragment() {
         updateMetadata(binding)
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val serializedCredential = prefs.getString(DROPBOX_CREDENTIAL, null)
+
+        if (serializedCredential != null) {
+            viewModel.isFinished.observe(viewLifecycleOwner) { backupSize ->
+                prefs.edit().putLong(BACKUP_SIZE, backupSize).apply()
+                binding.progressBar.hide()
+                Snackbar.make(view, getString(R.string.backup_done_ok), Snackbar.LENGTH_SHORT)
+                    .setAnchorView(bottomBarView).show()
+                updateMetadata(binding)
+            }
+        }
+
     }
 
     override fun onResume() {
