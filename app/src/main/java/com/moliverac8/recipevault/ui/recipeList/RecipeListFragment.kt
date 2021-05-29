@@ -1,31 +1,26 @@
 package com.moliverac8.recipevault.ui.recipeList
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
-import android.transition.Visibility
-import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
 import android.view.View.GONE
-import android.widget.SearchView
-import androidx.coordinatorlayout.widget.CoordinatorLayout
+import android.view.ViewGroup
 import androidx.core.view.children
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomappbar.BottomAppBar
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.transition.MaterialFadeThrough
+import com.google.android.material.transition.MaterialElevationScale
 import com.mancj.materialsearchbar.MaterialSearchBar
 import com.moliverac8.domain.DietType
 import com.moliverac8.domain.DishType
-import com.moliverac8.domain.Recipe
 import com.moliverac8.domain.RecipeWithIng
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.FragmentRecipeListBinding
-import com.moliverac8.recipevault.ui.account.AccountFragment
 import com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -51,8 +46,6 @@ class RecipeListFragment : Fragment() {
                 isEditable
             )
         )
-        bottomBarView.visibility = GONE
-        newRecipeBtn.visibility = GONE
     }
 
     private val navigateToDetailsOnTablet = { id: Int, isEditable: Boolean ->
@@ -155,12 +148,32 @@ class RecipeListFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         newRecipeBtn.apply {
-            setShowMotionSpecResource(R.animator.fab_show)
-            setHideMotionSpecResource(R.animator.fab_hide)
+            /*setShowMotionSpecResource(R.animator.fab_show)
+            setHideMotionSpecResource(R.animator.fab_hide)*/
             setOnClickListener {
-            if (isTablet) navigateToDetailsOnTablet(-1, true)
-            else navigateToDetails(-1, true)
-        }
+                bottomBarView.performHide()
+                bottomBarView.animate().setListener(object : AnimatorListenerAdapter() {
+                    var isCanceled = false
+                    override fun onAnimationEnd(animation: Animator?) {
+                        if (isCanceled) return
+
+                        bottomBarView.visibility = GONE
+                        newRecipeBtn.visibility = View.INVISIBLE
+                    }
+
+                    override fun onAnimationCancel(animation: Animator?) {
+                        isCanceled = true
+                    }
+                })
+
+                exitTransition = MaterialElevationScale(false).apply {
+                    duration = 300
+                }
+                reenterTransition = MaterialElevationScale(true).apply {
+                    duration = 300
+                }
+                navigateToDetails(-1, true)
+            }
         }
     }
 

@@ -47,12 +47,14 @@
     <string name="log_in">Login to Dropbox</string>
     <string name="backup_error">There was an error with your backup, please try again later</string>
     <string name="backup_time_error">Could not find a previous backup</string>
-    <string name="local">Local: %s</string>
-    <string name="cloud">Dropbox: %s</string>
-    <string name="size">Size: %d MB</string>
+    <string name="local">&lt;b>Local:&lt;/b> %s</string>
+    <string name="cloud">&lt;b>Dropbox:&lt;/b> %s</string>
+    <string name="size">&lt;b>Size:&lt;/b> %.2f MB</string>
     <string name="no_local_backup_jet">There is no local backup currently</string>
     <string name="automatic_backup">Program Automatic Backup</string>
     <string name="backup_done_ok">Backup done successfully</string>
     <string name="restore_done_ok">Backup restored successfully</string>
     <string name="sign_in_help">Sign in to make backups of your recipes in Dropbox</string>
+    <string name="back">Back</string>
+    <string name="required_text">Required text</string>
 </resources>

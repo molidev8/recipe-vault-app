@@ -9,8 +9,8 @@ import com.dropbox.core.android.Auth
 import com.dropbox.core.http.OkHttp3Requestor
 import com.dropbox.core.oauth.DbxCredential
 import com.dropbox.core.v2.DbxClientV2
+import com.dropbox.core.v2.files.WriteMode
 import com.moliverac8.recipevault.BACKUP
-import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -49,7 +49,7 @@ class DropboxManager(private val context: Context) {
         return try {
             /*val result = client?.files()?.deleteV2("/recipe-vault-backup.zip")
             Log.d(BACKUP, "Eliminando copia en Dropbox ${result.toString()}")*/
-            client?.files()?.upload("/recipe-vault-backup.zip")
+            client?.files()?.uploadBuilder("/recipe-vault-backup.zip")?.withMode(WriteMode.OVERWRITE)
                 ?.uploadAndFinish(input)
             true
         } catch (e: DbxException) {

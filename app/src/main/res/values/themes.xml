@@ -12,10 +12,17 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="tabStyle">@style/Widget.App.TabLayout</item>
     </style>
 
     <style name="roundedImageViewRounded">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
+    </style>
+    
+    <style name="Widget.App.TabLayout" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabTextAppearance">@style/TextAppearance.MaterialComponents.Body1</item>
+        <item name="tabIndicatorFullWidth">false</item>
+        <item name="tabIndicatorAnimationMode">elastic</item>
     </style>
 </resources>

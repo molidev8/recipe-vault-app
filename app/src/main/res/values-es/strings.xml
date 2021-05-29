@@ -48,12 +48,14 @@
     <string name="log_in">Inicia sesión en Dropbox</string>
     <string name="backup_error">Hubo un error con la copia de seguridad, por favor inténtalo más tarde</string>
     <string name="backup_time_error">No se pudo obtener la fecha</string>
-    <string name="local">Local: %s</string>
-    <string name="cloud">Dropbox: %s</string>
-    <string name="size">Tamaño: %d MB</string>
+    <string name="local">&lt;b>Local:&lt;/b> %s</string>
+    <string name="cloud">&lt;b>Dropbox:&lt;/b> %s</string>
+    <string name="size">&lt;b>Tamaño:&lt;/b> %.2f MB</string>
     <string name="no_local_backup_jet">Todavía no tienes una copia local</string>
     <string name="automatic_backup">Programar copia automática</string>
     <string name="backup_done_ok">Copia de seguridad realizada con éxito</string>
     <string name="restore_done_ok">Copia restaurada con éxito</string>
     <string name="sign_in_help">Inicia sesión para hacer copias de seguridad de tus recetas en Dropbox</string>
+    <string name="back">Atrás</string>
+    <string name="required_text">Campo necesario</string>
 </resources>

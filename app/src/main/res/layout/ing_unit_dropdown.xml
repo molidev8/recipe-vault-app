@@ -4,7 +4,7 @@
     style="@style/TextAppearance.MaterialComponents.Button"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
+    android:gravity="start"
     android:padding="4dp"
     tools:text="Unidades">
 

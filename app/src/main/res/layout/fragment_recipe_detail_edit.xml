@@ -7,265 +7,244 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="8dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraint_layout"
+            <ImageView
+                android:id="@+id/photo_btn"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="8dp">
+                android:layout_height="200dp"
+                android:alpha="0.2"
+                android:contentDescription="@string/recipe_photo"
+                android:scaleType="centerCrop"
+                android:src="@drawable/vegetarian"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
 
-                <ImageView
-                    android:id="@+id/photo_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:alpha="0.2"
-                    android:contentDescription="@string/recipe_photo"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/vegetarian"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                    app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:contentDescription="@string/recipe_photo"
+                android:src="@drawable/ic_baseline_add_a_photo_24"
+                app:layout_constraintBottom_toBottomOf="@+id/photo_btn"
+                app:layout_constraintEnd_toEndOf="@+id/photo_btn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/photo_btn" />
 
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:contentDescription="@string/recipe_photo"
-                    android:src="@drawable/ic_baseline_add_a_photo_24"
-                    app:layout_constraintBottom_toBottomOf="@+id/photo_btn"
-                    app:layout_constraintEnd_toEndOf="@+id/photo_btn"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/photo_btn" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/set_title"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/set_title"
+                app:errorEnabled="true"
+                app:helperText="@string/required_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/photo_btn">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/set_title"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:hint="@string/set_title"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/photo_btn">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/set_title_edit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/set_time_to_cook"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/set_title_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:hint="@string/set_time_to_cook"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/set_title">
+                    android:inputType="text" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/set_time_to_cook_edit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/set_time_to_cook"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/set_time_to_cook"
+                app:errorEnabled="true"
+                app:helperText="@string/required_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/set_title">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/set_description"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/set_time_to_cook_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:hint="@string/set_description"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/set_time_to_cook">
+                    android:inputType="number" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/set_description_edit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/set_description"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/set_description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/set_time_to_cook">
 
-                <TextView
-                    android:id="@+id/timeToEatTitle"
-                    style="@style/TextAppearance.MaterialComponents.Headline5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/choose_time"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/set_description" />
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/timeToEatChips"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/set_description_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/timeToEatTitle"
-                    app:selectionRequired="true">
+                    android:inputType="text" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/breakfastChip"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:text="@string/breakfast" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/mealChip"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:text="@string/meal" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/dinnerChip"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:text="@string/dinner" />
-
-                </com.google.android.material.chip.ChipGroup>
-
-                <TextView
-                    android:id="@+id/dietTitle"
-                    style="@style/TextAppearance.MaterialComponents.Headline5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/choose_diet"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/timeToEatChips" />
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/dietChips"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/dietTitle"
-                    app:selectionRequired="true"
-                    app:singleSelection="true">
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/veganChip"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:text="@string/vegan" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/vegetarianChip"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:text="@string/vegetarian" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/regularChip"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:text="@string/regular" />
-
-                </com.google.android.material.chip.ChipGroup>
-
-                <View
-                    android:id="@+id/divider"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@android:color/darker_gray"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/dietChips" />
-
-                <TextView
-                    android:id="@+id/instructions_text"
-                    style="@style/TextAppearance.MaterialComponents.Headline5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="4dp"
-                    android:text="@string/instructions"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/divider" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/instructions"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintBottom_toTopOf="@id/instructions"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/instructions_text"
-                    tools:listitem="@layout/item_edit_instructions_list" />
-
-
-                <View
-                    android:id="@+id/divider_left"
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:background="@android:color/darker_gray"
-                    app:layout_constraintBottom_toBottomOf="@id/add_step_view"
-                    app:layout_constraintEnd_toStartOf="@id/add_btn"
-                    app:layout_constraintStart_toStartOf="@id/add_step_view"
-                    app:layout_constraintTop_toTopOf="@id/add_step_view" />
-
-                <ImageView
-                    android:id="@+id/add_btn"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:contentDescription="@string/add_recipe"
-                    android:src="@drawable/ic_baseline_add_24"
-                    app:layout_constraintBottom_toBottomOf="@id/add_step_view"
-                    app:layout_constraintEnd_toStartOf="@id/divider_right"
-                    app:layout_constraintStart_toEndOf="@id/divider_left"
-                    app:layout_constraintTop_toTopOf="@id/add_step_view" />
-
-                <View
-                    android:id="@+id/divider_right"
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:background="@android:color/darker_gray"
-                    app:layout_constraintBottom_toBottomOf="@id/add_step_view"
-                    app:layout_constraintEnd_toEndOf="@id/add_step_view"
-                    app:layout_constraintStart_toEndOf="@id/add_btn"
-                    app:layout_constraintTop_toTopOf="@id/add_step_view" />
-
-                <androidx.constraintlayout.helper.widget.Layer
-                    android:id="@+id/add_step_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    app:constraint_referenced_ids="divider_left,add_btn,divider_right"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/instructions" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/saveBtn"
+            <TextView
+                android:id="@+id/timeToEatTitle"
+                style="@style/TextAppearance.MaterialComponents.Headline5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="8dp"
-                android:contentDescription="@string/save"
-                android:src="@drawable/ic_baseline_save_24" />
+                android:layout_marginTop="8dp"
+                android:text="@string/choose_time"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/set_description" />
 
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/timeToEatChips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/timeToEatTitle"
+                app:selectionRequired="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/breakfastChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:text="@string/breakfast" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/mealChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:text="@string/meal" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/dinnerChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:text="@string/dinner" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/dietTitle"
+                style="@style/TextAppearance.MaterialComponents.Headline5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/choose_diet"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/timeToEatChips" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/dietChips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dietTitle"
+                app:selectionRequired="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/veganChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:text="@string/vegan" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/vegetarianChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:text="@string/vegetarian" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/regularChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:text="@string/regular" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+
+            <TextView
+                android:id="@+id/instructions_text"
+                style="@style/TextAppearance.MaterialComponents.Headline5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="@string/instructions"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dietChips" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/instructions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toTopOf="@id/instructions"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/instructions_text"
+                tools:listitem="@layout/item_edit_instructions_list" />
+
+
+            <View
+                android:id="@+id/divider_left"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintBottom_toBottomOf="@id/add_step_view"
+                app:layout_constraintEnd_toStartOf="@id/add_btn"
+                app:layout_constraintStart_toStartOf="@id/add_step_view"
+                app:layout_constraintTop_toTopOf="@id/add_step_view" />
+
+            <ImageView
+                android:id="@+id/add_btn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="@string/add_recipe"
+                android:src="@drawable/ic_baseline_add_24"
+                app:layout_constraintBottom_toBottomOf="@id/add_step_view"
+                app:layout_constraintEnd_toStartOf="@id/divider_right"
+                app:layout_constraintStart_toEndOf="@id/divider_left"
+                app:layout_constraintTop_toTopOf="@id/add_step_view" />
+
+            <View
+                android:id="@+id/divider_right"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintBottom_toBottomOf="@id/add_step_view"
+                app:layout_constraintEnd_toEndOf="@id/add_step_view"
+                app:layout_constraintStart_toEndOf="@id/add_btn"
+                app:layout_constraintTop_toTopOf="@id/add_step_view" />
+
+            <androidx.constraintlayout.helper.widget.Layer
+                android:id="@+id/add_step_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:constraint_referenced_ids="divider_left,add_btn,divider_right"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/instructions" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 

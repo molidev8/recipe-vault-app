@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <com.moliverac8.recipevault.ui.common.NestedCoordinatorLayout
+        android:id="@+id/recipe_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true">
@@ -90,6 +91,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recipeList"
+            android:transitionGroup="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

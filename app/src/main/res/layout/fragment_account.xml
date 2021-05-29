@@ -269,14 +269,14 @@
             android:id="@+id/login_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             app:constraint_referenced_ids="loginBtn, sign_in_help_text, logo_title, logo" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/logged_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             app:constraint_referenced_ids="last_backup_title, last_cloud_date, last_local_date, size,
             make_backup_btn, restore_backup_btn, schedule_backup_title, schedule_description,
             backup_timing, timing_group, save_with, save_with_group, automaticBackupBtn" />

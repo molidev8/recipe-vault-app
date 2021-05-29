@@ -2,28 +2,27 @@ package com.moliverac8.recipevault.ui.recipeDetail.edit
 
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.FileProvider
-import androidx.core.view.children
-import androidx.core.view.forEach
 import androidx.core.view.forEachIndexed
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.textfield.TextInputLayout
 import com.moliverac8.domain.DietType
 import com.moliverac8.domain.DishType
@@ -32,16 +31,15 @@ import com.moliverac8.domain.RecipeWithIng
 import com.moliverac8.recipevault.GENERAL
 import com.moliverac8.recipevault.IO
 import com.moliverac8.recipevault.PERMISSION
+import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.FragmentRecipeDetailEditBinding
 import com.moliverac8.recipevault.ui.REQUEST_IMAGE_CAPTURE
 import com.moliverac8.recipevault.ui.common.Permissions
-import com.moliverac8.recipevault.ui.common.setImage
 import com.moliverac8.recipevault.ui.common.toJsonInstructions
 import com.moliverac8.recipevault.ui.common.toListOfInstructions
 import com.moliverac8.recipevault.ui.recipeDetail.RecipeDetailVM
 import com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragment
 import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -57,6 +55,9 @@ class RecipeDetailEditFragment : Fragment() {
     private var nInstructions = 0
     private lateinit var adapter: RecipeInstructionsEditAdapter
     private lateinit var recipePhotoPath: String
+    private val topBar: MaterialToolbar by lazy {
+        (requireParentFragment().view as CoordinatorLayout).findViewById(R.id.top_bar)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,18 +70,21 @@ class RecipeDetailEditFragment : Fragment() {
 
         viewModel.recipeWithIng.observe(viewLifecycleOwner, { recipe ->
             this.recipe = recipe
-            binding.setTitleEdit.setText(recipe.domainRecipe.name)
+            if (recipe.domainRecipe.name.isNotBlank()) {
+                binding.setTitleEdit.setText(recipe.domainRecipe.name)
+            }
+            if (recipe.domainRecipe.timeToCook != 0) {
+                binding.setTimeToCookEdit.setText(recipe.domainRecipe.timeToCook.toString())
+            }
             binding.setDescriptionEdit.setText(recipe.domainRecipe.description)
-            if (recipe.domainRecipe.timeToCook == 0) binding.setTimeToCookEdit.setText("")
-            else binding.setTimeToCookEdit.setText(recipe.domainRecipe.timeToCook.toString())
             photoUri = Uri.parse(recipe.domainRecipe.image)
-            when(recipe.domainRecipe.dietType) {
+            when (recipe.domainRecipe.dietType) {
                 DietType.VEGAN -> binding.veganChip.isChecked = true
                 DietType.VEGETARIAN -> binding.vegetarianChip.isChecked = true
                 DietType.REGULAR -> binding.regularChip.isChecked = true
             }
             recipe.domainRecipe.dishType.forEach {
-                when(it) {
+                when (it) {
                     DishType.BREAKFAST -> binding.breakfastChip.isChecked = true
                     DishType.MEAL -> binding.mealChip.isChecked = true
                     DishType.DINNER -> binding.dinnerChip.isChecked = true
@@ -110,12 +114,50 @@ class RecipeDetailEditFragment : Fragment() {
             adapter.notifyItemInserted(instructions.size - 1)
         }
 
-        binding.saveBtn.setOnClickListener {
-            saveRecipeInfo()
-            findNavController().popBackStack()
+        topBar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.save_recipe -> {
+                    saveRecipeInfo()
+                    findNavController().popBackStack()
+                    true
+                }
+                else -> false
+            }
+        }
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val watcher = { container: TextInputLayout ->
+            { text: Editable? ->
+                if (text.isNullOrBlank()) {
+                    container.error = getString(R.string.required_text)
+                } else {
+                    container.isErrorEnabled = false
+                }
+            }
         }
 
-        return binding.root
+        val focusListener = { container: TextInputLayout ->
+            View.OnFocusChangeListener { v, hasFocus ->
+                with(v as EditText) {
+                    if (!hasFocus) {
+                        if (text.isNullOrBlank()) {
+                            container.error = getString(R.string.required_text)
+                        } else {
+                            container.isErrorEnabled = false
+                        }
+                    }
+                }
+            }
+        }
+
+        binding.setTitleEdit.doAfterTextChanged(watcher(binding.setTitle))
+        binding.setTimeToCookEdit.doAfterTextChanged(watcher(binding.setTimeToCook))
+        binding.setTitleEdit.onFocusChangeListener = focusListener(binding.setTitle)
+        binding.setTimeToCookEdit.onFocusChangeListener = focusListener(binding.setTimeToCook)
     }
 
     private fun saveRecipeInfo() {

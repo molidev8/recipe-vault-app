@@ -10,7 +10,7 @@ data class Recipe(
     val image: String, //URI
     val description: String
 ) {
-    constructor() : this(-1, "", 0, listOf(), DietType.REGULAR, "", "", "")
+    constructor() : this(-1, "", 0, listOf(), DietType.NONE, "", "", "")
 }
 
 data class Ingredient(
@@ -32,5 +32,5 @@ enum class DishType {
 }
 
 enum class DietType {
-    VEGETARIAN, VEGAN, REGULAR
+    VEGETARIAN, VEGAN, REGULAR, NONE
 }

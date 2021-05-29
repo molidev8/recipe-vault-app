@@ -1,18 +1,23 @@
 package com.moliverac8.recipevault.ui.recipeDetail
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.transition.Slide
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.android.material.transition.MaterialContainerTransform
 import com.moliverac8.recipevault.GENERAL
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.FragmentRecipePagerBinding
@@ -34,13 +39,14 @@ class RecipePagerFragment : Fragment() {
     private val newRecipeBtn: FloatingActionButton by lazy {
         requireActivity().findViewById(R.id.newRecipeBtn)
     }
+    private lateinit var binding: FragmentRecipePagerBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentRecipePagerBinding.inflate(layoutInflater)
+        binding = FragmentRecipePagerBinding.inflate(layoutInflater)
         if (isTablet/* && args.firstLoad*/) viewModel.getRecipe(1)
         else viewModel.getRecipe(args.recipeID)
 
@@ -55,15 +61,41 @@ class RecipePagerFragment : Fragment() {
             }
         }.attach()
 
+        binding.topBar.run {
+            navigationIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_arrow_back_24)
+            setNavigationOnClickListener {
+                findNavController().navigateUp()
+            }
+        }
+
         binding.lifecycleOwner = this
 
         return binding.root
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (args.recipeID == -1) {
+            enterTransition = MaterialContainerTransform().apply {
+                startView = requireActivity().findViewById(R.id.newRecipeBtn)
+                endView = binding.recipePager
+                scrimColor = Color.TRANSPARENT
+                endContainerColor = resources.getColor(R.color.white)
+                startContainerColor = resources.getColor(R.color.white)
+                containerColor = resources.getColor(R.color.white)
+                duration = 300
+            }
+            returnTransition = Slide().apply {
+                duration = 225
+                addTarget(R.id.recipe_pager)
+            }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
         bottomBarView.visibility = View.VISIBLE
-        newRecipeBtn.visibility = View.VISIBLE
+        bottomBarView.performShow()
     }
 }
 
