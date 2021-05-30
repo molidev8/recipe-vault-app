@@ -8,6 +8,7 @@
 
     <item
         android:id="@+id/placeHolder"
+        android:enabled="false"
         android:title="" />
 
     <item

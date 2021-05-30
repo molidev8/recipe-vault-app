@@ -19,6 +19,9 @@ import com.moliverac8.recipevault.databinding.FragmentAccountBinding
 import com.moliverac8.recipevault.framework.workmanager.BackupWorkerManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 @AndroidEntryPoint
@@ -42,7 +45,6 @@ class AccountFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAccountBinding.inflate(layoutInflater)
-
         enterTransition = MaterialFadeThrough()
 
         val firstTime = prefs.getBoolean(FIRST_TIME_LOGIN, true)
@@ -99,7 +101,9 @@ class AccountFragment : Fragment() {
                     Snackbar.make(it, getString(R.string.backup_error), Snackbar.LENGTH_LONG)
                         .setAnchorView(bottomBarView)
                         .show()
-                    binding.progressBar.hide()
+                    CoroutineScope(Dispatchers.Main).launch {
+                        binding.progressBar.hide()
+                    }
                 })
             }
 
@@ -108,7 +112,9 @@ class AccountFragment : Fragment() {
                     Snackbar.make(it, getString(R.string.backup_error), Snackbar.LENGTH_LONG)
                         .setAnchorView(bottomBarView)
                         .show()
-                    binding.progressBar.hide()
+                    CoroutineScope(Dispatchers.Main).launch {
+                        binding.progressBar.hide()
+                    }
                 })
             }
 
@@ -143,11 +149,6 @@ class AccountFragment : Fragment() {
             viewModel.saveSizeOfCloudBackup(prefs)
             viewModel.saveDateOfLastBackup(prefs)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        newRecipeBtn.show()
     }
 
     private fun updateMetadata(binding: FragmentAccountBinding) {

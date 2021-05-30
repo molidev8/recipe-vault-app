@@ -32,14 +32,11 @@ class RecipePagerFragment : Fragment() {
 
     private val args by navArgs<RecipePagerFragmentArgs>()
     private val viewModel: RecipeDetailVM by viewModels(ownerProducer = { this })
-    private val isTablet: Boolean by lazy { requireContext().resources.getBoolean(R.bool.isTablet) }
-    private val bottomBarView: BottomAppBar by lazy {
-        requireActivity().findViewById(R.id.bottomBar)
-    }
-    private val newRecipeBtn: FloatingActionButton by lazy {
-        requireActivity().findViewById(R.id.newRecipeBtn)
-    }
     private lateinit var binding: FragmentRecipePagerBinding
+
+    interface RecipePagerNavigateInterface {
+        fun navigateHomeFromPager()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,8 +44,7 @@ class RecipePagerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentRecipePagerBinding.inflate(layoutInflater)
-        if (isTablet/* && args.firstLoad*/) viewModel.getRecipe(1)
-        else viewModel.getRecipe(args.recipeID)
+        viewModel.getRecipe(args.recipeID)
 
         // Cargo la receta nueva o la existente en el viewModel compartido por los fragmentos del viewpager
         Log.d(GENERAL, "PG - Receta ID ${args.recipeID}")
@@ -64,7 +60,7 @@ class RecipePagerFragment : Fragment() {
         binding.topBar.run {
             navigationIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_arrow_back_24)
             setNavigationOnClickListener {
-                findNavController().navigateUp()
+                (activity as RecipePagerNavigateInterface).navigateHomeFromPager()
             }
         }
 
@@ -81,21 +77,13 @@ class RecipePagerFragment : Fragment() {
                 endView = binding.recipePager
                 scrimColor = Color.TRANSPARENT
                 endContainerColor = resources.getColor(R.color.white)
-                startContainerColor = resources.getColor(R.color.white)
                 containerColor = resources.getColor(R.color.white)
-                duration = 300
+                startContainerColor = resources.getColor(R.color.white)
             }
             returnTransition = Slide().apply {
-                duration = 225
                 addTarget(R.id.recipe_pager)
             }
         }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        bottomBarView.visibility = View.VISIBLE
-        bottomBarView.performShow()
     }
 }
 

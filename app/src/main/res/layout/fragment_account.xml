@@ -26,20 +26,20 @@
             android:id="@+id/logo"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:src="@mipmap/ic_launcher"
+            android:scaleType="centerCrop"
+            android:src="@drawable/logo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/logoEndLimit"
             app:layout_constraintStart_toStartOf="@id/logoStartLimit"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.19999999" />
+            app:layout_constraintVertical_bias="0.100000024" />
 
         <TextView
             android:id="@+id/logo_title"
             style="@style/TextAppearance.MaterialComponents.Headline4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:text="@string/app_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,12 +47,14 @@
 
         <TextView
             android:id="@+id/sign_in_help_text"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:gravity="center"
             android:text="@string/sign_in_help"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/last_local_date"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintEnd_toStartOf="@+id/logoEndLimit"
+            app:layout_constraintStart_toStartOf="@+id/logoStartLimit"
             app:layout_constraintTop_toBottomOf="@+id/logo_title" />
 
         <Button
@@ -216,43 +218,6 @@
 
         </RadioGroup>
 
-        <TextView
-            android:id="@+id/save_with"
-            style="@style/TextAppearance.MaterialComponents.Headline6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/save_with"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/timing_group" />
-
-        <RadioGroup
-            android:id="@+id/save_with_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:checkedButton="@id/wifi"
-            android:orientation="vertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/save_with">
-
-            <RadioButton
-                android:id="@+id/wifi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/just_wifi" />
-
-            <RadioButton
-                android:id="@+id/wifi_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/wifi_and_data" />
-
-        </RadioGroup>
-
         <Button
             android:id="@+id/automaticBackupBtn"
             android:layout_width="wrap_content"
@@ -263,7 +228,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/save_with_group" />
+            app:layout_constraintTop_toBottomOf="@+id/timing_group" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/login_group"
@@ -279,7 +244,7 @@
             android:visibility="gone"
             app:constraint_referenced_ids="last_backup_title, last_cloud_date, last_local_date, size,
             make_backup_btn, restore_backup_btn, schedule_backup_title, schedule_description,
-            backup_timing, timing_group, save_with, save_with_group, automaticBackupBtn" />
+            backup_timing, timing_group, automaticBackupBtn" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"

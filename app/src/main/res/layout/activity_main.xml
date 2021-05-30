@@ -15,6 +15,25 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:navGraph="@navigation/nav_graph" />
 
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:fabAlignmentMode="center"
+            app:hideOnScroll="true" >
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottomNav"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_transparent"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                app:menu="@menu/menu_bottom_nav" />
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/newRecipeBtn"
             android:layout_width="wrap_content"
@@ -22,27 +41,6 @@
             android:contentDescription="@string/add_recipe"
             android:src="@drawable/ic_baseline_add_24"
             app:layout_anchor="@id/bottomBar" />
-
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottomBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:fabAlignmentMode="center"
-            app:fabCradleMargin="7dp"
-            app:fabCradleRoundedCornerRadius="7dp"
-            app:fabCradleVerticalOffset="5dp"
-            app:hideOnScroll="true">
-
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottomNav"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                app:menu="@menu/menu_bottom_nav" />
-
-        </com.google.android.material.bottomappbar.BottomAppBar>
-
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

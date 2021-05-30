@@ -1,11 +1,8 @@
 package com.moliverac8.recipevault.ui.recipeList
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
@@ -14,29 +11,28 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.transition.MaterialElevationScale
 import com.mancj.materialsearchbar.MaterialSearchBar
 import com.moliverac8.domain.DietType
 import com.moliverac8.domain.DishType
 import com.moliverac8.domain.RecipeWithIng
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.FragmentRecipeListBinding
-import com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class RecipeListFragment : Fragment() {
 
     private val viewModel: RecipeListVM by viewModels(ownerProducer = { this })
-    private val isTablet: Boolean by lazy { requireContext().resources.getBoolean(R.bool.isTablet) }
     private val filterList: MutableList<String> = mutableListOf()
     private lateinit var binding: FragmentRecipeListBinding
     private lateinit var unfilteredRecipes: List<RecipeWithIng>
-    private val bottomBarView: BottomAppBar by lazy {
-        requireActivity().findViewById(R.id.bottomBar)
-    }
     private val newRecipeBtn: FloatingActionButton by lazy {
         requireActivity().findViewById(R.id.newRecipeBtn)
+    }
+
+    interface RecipeListNavigationInterface {
+        fun navigateToNewRecipe()
+        fun navigateToExistingRecipe()
     }
 
     private val navigateToDetails = { id: Int, isEditable: Boolean ->
@@ -48,27 +44,15 @@ class RecipeListFragment : Fragment() {
         )
     }
 
-    private val navigateToDetailsOnTablet = { id: Int, isEditable: Boolean ->
-        findNavController().navigate(
-            RecipePagerFragmentDirections.actionRecipePagerFragmentSelf(
-                id,
-                isEditable
-            )
-        )
-    }
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentRecipeListBinding.inflate(layoutInflater)
-
         val adapter = RecipeListAdapter(RecipeListAdapter.OnClickListener { recipe, isEditable ->
             recipe.domainRecipe.id.let { id ->
-                if (isTablet) navigateToDetailsOnTablet(id, isEditable)
-                else navigateToDetails(id, isEditable)
+                navigateToDetails(id, isEditable)
             }
         })
 
@@ -135,45 +119,10 @@ class RecipeListFragment : Fragment() {
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        newRecipeBtn.show()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        newRecipeBtn.hide()
-    }
-
     override fun onStart() {
         super.onStart()
-        newRecipeBtn.apply {
-            /*setShowMotionSpecResource(R.animator.fab_show)
-            setHideMotionSpecResource(R.animator.fab_hide)*/
-            setOnClickListener {
-                bottomBarView.performHide()
-                bottomBarView.animate().setListener(object : AnimatorListenerAdapter() {
-                    var isCanceled = false
-                    override fun onAnimationEnd(animation: Animator?) {
-                        if (isCanceled) return
-
-                        bottomBarView.visibility = GONE
-                        newRecipeBtn.visibility = View.INVISIBLE
-                    }
-
-                    override fun onAnimationCancel(animation: Animator?) {
-                        isCanceled = true
-                    }
-                })
-
-                exitTransition = MaterialElevationScale(false).apply {
-                    duration = 300
-                }
-                reenterTransition = MaterialElevationScale(true).apply {
-                    duration = 300
-                }
-                navigateToDetails(-1, true)
-            }
+        newRecipeBtn.setOnClickListener {
+            (activity as RecipeListNavigationInterface).navigateToNewRecipe()
         }
     }
 

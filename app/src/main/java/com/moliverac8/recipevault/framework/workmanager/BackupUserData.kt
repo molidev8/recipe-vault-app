@@ -175,7 +175,7 @@ class BackupUserData(private val context: Context) {
     fun getBackupSize(): Long {
         val file = File(backupDir?.path + "/recipe-vault-backup.zip")
         return if (file.exists()) {
-            file.totalSpace
+            file.length()
         } else {
             0
         }

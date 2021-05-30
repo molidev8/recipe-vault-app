@@ -11,12 +11,12 @@
         android:label="RecipeListFragment"
         tools:layout="@layout/fragment_recipe_list">
         <action
-            android:id="@+id/action_recipeListFragment_to_recipePagerFragment"
-            app:destination="@id/recipePagerFragment" />
+            android:id="@+id/action_recipeListFragment_to_RecipePagerFragment"
+            app:destination="@id/RecipePagerFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/recipePagerFragment"
+        android:id="@+id/RecipePagerFragment"
         android:name="com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragment"
         android:label="RecipePagerFragment"
         tools:layout="@layout/fragment_recipe_pager">
