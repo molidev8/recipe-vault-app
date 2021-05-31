@@ -22,13 +22,13 @@ class RecipeListAdapter(private val onClickListener: OnClickListener) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         holder.itemView.setOnClickListener {
-            onClickListener.onClick(item)
+            onClickListener.onClick(item, false, position)
         }
         holder.bind(item)
     }
 
-    class OnClickListener(val clickListener: (recipe: RecipeWithIng, isEditable: Boolean) -> Unit) {
-        fun onClick(recipe: RecipeWithIng, isEditable: Boolean = false) = clickListener(recipe, isEditable)
+    class OnClickListener(val clickListener: (recipe: RecipeWithIng, isEditable: Boolean, position: Int) -> Unit) {
+        fun onClick(recipe: RecipeWithIng, isEditable: Boolean = false, position: Int) = clickListener(recipe, isEditable, position)
     }
 
     class ViewHolder private constructor(private val binding: ItemRecipeListBinding, private val onClickListener: OnClickListener) :

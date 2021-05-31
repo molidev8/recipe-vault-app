@@ -78,10 +78,16 @@ class RecipePagerFragment : Fragment() {
                 scrimColor = Color.TRANSPARENT
                 endContainerColor = resources.getColor(R.color.white)
                 containerColor = resources.getColor(R.color.white)
-                startContainerColor = resources.getColor(R.color.white)
+                startContainerColor = resources.getColor(R.color.start)
             }
             returnTransition = Slide().apply {
                 addTarget(R.id.recipe_pager)
+            }
+        } else {
+            sharedElementEnterTransition = MaterialContainerTransform().apply {
+                drawingViewId = R.id.fragmentMaster
+                scrimColor = Color.TRANSPARENT
+                endContainerColor = resources.getColor(R.color.white)
             }
         }
     }

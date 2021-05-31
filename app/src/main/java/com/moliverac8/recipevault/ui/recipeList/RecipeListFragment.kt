@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.children
+import androidx.core.view.doOnPreDraw
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomappbar.BottomAppBar
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mancj.materialsearchbar.MaterialSearchBar
@@ -32,16 +35,7 @@ class RecipeListFragment : Fragment() {
 
     interface RecipeListNavigationInterface {
         fun navigateToNewRecipe()
-        fun navigateToExistingRecipe()
-    }
-
-    private val navigateToDetails = { id: Int, isEditable: Boolean ->
-        findNavController().navigate(
-            RecipeListFragmentDirections.actionRecipeListFragmentToRecipePagerFragment(
-                id,
-                isEditable
-            )
-        )
+        fun navigateToExistingRecipe(id: Int, recipeCard: View)
     }
 
     override fun onCreateView(
@@ -50,9 +44,9 @@ class RecipeListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentRecipeListBinding.inflate(layoutInflater)
-        val adapter = RecipeListAdapter(RecipeListAdapter.OnClickListener { recipe, isEditable ->
+        val adapter = RecipeListAdapter(RecipeListAdapter.OnClickListener { recipe, isEditable, position ->
             recipe.domainRecipe.id.let { id ->
-                navigateToDetails(id, isEditable)
+                (activity as RecipeListNavigationInterface).navigateToExistingRecipe(id, binding.recipeList[position])
             }
         })
 
@@ -97,8 +91,7 @@ class RecipeListFragment : Fragment() {
 
         viewModel.updateRecipes()
 
-        binding.searchView.setOnSearchActionListener(object :
-            MaterialSearchBar.OnSearchActionListener {
+        binding.searchView.setOnSearchActionListener(object : MaterialSearchBar.OnSearchActionListener {
 
             override fun onSearchStateChanged(enabled: Boolean) {
 
@@ -117,6 +110,12 @@ class RecipeListFragment : Fragment() {
 
         binding.lifecycleOwner = this
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
     }
 
     override fun onStart() {

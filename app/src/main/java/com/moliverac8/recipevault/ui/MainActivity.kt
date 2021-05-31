@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.dropbox.core.android.Auth
@@ -101,6 +102,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun navigateToNewRecipe() {
+        animateNavigationToNewRecipe()
         navController.navigate(
             RecipeListFragmentDirections.actionRecipeListFragmentToRecipePagerFragment(
                 -1,
@@ -109,8 +111,15 @@ class MainActivity : AppCompatActivity(),
         )
     }
 
-    override fun navigateToExistingRecipe() {
-
+    override fun navigateToExistingRecipe(id: Int, recipeCard: View) {
+        animateNavigationToExistingRecipe()
+        val recipeDetailTransitionName = getString(R.string.recipe_card_detail_transition_name)
+        val extras = FragmentNavigatorExtras(recipeCard to recipeDetailTransitionName)
+        val directions = RecipeListFragmentDirections.actionRecipeListFragmentToRecipePagerFragment(
+            id,
+            false
+        )
+        navController.navigate(directions, extras)
     }
 
     override fun navigateHomeFromPager() {
@@ -183,7 +192,6 @@ class MainActivity : AppCompatActivity(),
                 binding.newRecipeBtn.hide()
             }
             R.id.RecipePagerFragment -> {
-                animateNavigationToNewRecipe()
                 hideBottomAppBar()
             }
         }

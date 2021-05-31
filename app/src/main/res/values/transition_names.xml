@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recipe_card_transition_name" translatable="false">from_recipe_list_to_detail_card_%d</string>
+    <string name="recipe_card_detail_transition_name" translatable="false">from_recipe_list_to_detail</string>
+</resources>
