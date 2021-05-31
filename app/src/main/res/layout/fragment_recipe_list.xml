@@ -24,8 +24,8 @@
                 <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#FFFFFF"
                     app:layout_scrollFlags="scroll|enterAlways"
+                    android:background="?attr/colorSurface"
                     android:scrollbars="none">
 
                     <com.google.android.material.chip.ChipGroup
