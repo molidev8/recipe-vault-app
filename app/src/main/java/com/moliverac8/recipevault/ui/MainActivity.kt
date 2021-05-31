@@ -11,6 +11,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import androidx.viewpager2.widget.ViewPager2
 import com.dropbox.core.android.Auth
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFadeThrough
@@ -18,6 +19,7 @@ import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.ActivityMainBinding
 import com.moliverac8.recipevault.framework.workmanager.BackupUserData
 import com.moliverac8.recipevault.framework.workmanager.DropboxManager
+import com.moliverac8.recipevault.ui.recipeDetail.RecipePager
 import com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragment
 import com.moliverac8.recipevault.ui.recipeList.RecipeListFragment
 import com.moliverac8.recipevault.ui.recipeList.RecipeListFragmentDirections
@@ -127,11 +129,19 @@ class MainActivity : AppCompatActivity(),
         navController.navigateUp()
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        if (currentNavigationFragment is RecipePagerFragment) {
-            navigateHomeFromPager()
+    override fun navigateToDetailsFromEdit(pager2: ViewPager2) {
+        currentNavigationFragment?.let {
+            pager2.visibility = View.GONE
+            pager2.adapter = RecipePager(it, false)
+            pager2.visibility = View.VISIBLE
         }
+    }
+
+    override fun onBackPressed() {
+        if (currentNavigationFragment is RecipePagerFragment)
+            (currentNavigationFragment as RecipePagerFragment).onBackPressed()
+        else
+            super.onBackPressed()
     }
 
     private fun hideBottomAppBar() {

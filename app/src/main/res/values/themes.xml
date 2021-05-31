@@ -13,6 +13,12 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="tabStyle">@style/Widget.App.TabLayout</item>
+        <!--  Elimina la transición por defecto al cambiar entre actividades  -->
+        <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
+    </style>
+
+    <style name="WindowAnimationStyle">
+        <item name="android:windowEnterAnimation">@android:anim/linear_interpolator</item>
     </style>
 
     <style name="roundedImageViewRounded">

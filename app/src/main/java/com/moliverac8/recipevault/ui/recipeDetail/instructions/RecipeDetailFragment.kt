@@ -4,15 +4,17 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.transition.TransitionManager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.chip.Chip
+import com.google.android.material.transition.MaterialFadeThrough
 import com.moliverac8.domain.DishType
 import com.moliverac8.recipevault.GENERAL
 import com.moliverac8.recipevault.R
@@ -20,12 +22,8 @@ import com.moliverac8.recipevault.databinding.FragmentRecipeDetailBinding
 import com.moliverac8.recipevault.ui.common.toListOfInstructions
 import com.moliverac8.recipevault.ui.recipeDetail.RecipeDetailVM
 import com.moliverac8.recipevault.ui.recipeDetail.RecipePager
-import com.moliverac8.recipevault.ui.recipeDetail.instructions.RecipeInstructionsAdapter
 import com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragment
-import com.moliverac8.recipevault.ui.recipeList.RecipeListFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class RecipeDetailFragment : Fragment() {
@@ -34,6 +32,11 @@ class RecipeDetailFragment : Fragment() {
     private val viewModel: RecipeDetailVM by viewModels(ownerProducer = { parentFragment as RecipePagerFragment })
     private lateinit var binding: FragmentRecipeDetailBinding
     private lateinit var adapter: RecipeInstructionsAdapter
+    private lateinit var pager: ViewPager2
+
+    interface DetailToEditNavigateInterface {
+        fun navigateToEdit(prepareNavigation: () -> Unit)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,13 +56,23 @@ class RecipeDetailFragment : Fragment() {
         })
 
         binding.editBtn.setOnClickListener {
-            val view = parentFragment?.view as CoordinatorLayout
-            val pager = view.findViewById<ViewPager2>(R.id.pager)
-            pager.adapter = RecipePager(requireParentFragment(), true)
+            (parentFragment as DetailToEditNavigateInterface).navigateToEdit {
+                setupTransitionToEdit()
+                pager.visibility = GONE
+                pager.adapter = RecipePager(requireParentFragment(), true)
+                pager.visibility = VISIBLE
+            }
         }
 
         binding.lifecycleOwner = this
         return binding.root
+    }
+
+    private fun setupTransitionToEdit() {
+        val view = parentFragment?.view as CoordinatorLayout
+        pager = view.findViewById(R.id.pager)
+        val transition = MaterialFadeThrough()
+        TransitionManager.beginDelayedTransition(view, transition)
     }
 
     private fun loadTimeToEatChips(dishType: List<DishType>) {

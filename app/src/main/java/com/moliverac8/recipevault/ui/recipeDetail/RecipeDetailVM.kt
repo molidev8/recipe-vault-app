@@ -31,6 +31,7 @@ class RecipeDetailVM @Inject constructor(
 
     private var tempIngs: List<Ingredient> = mutableListOf()
     private var tempRecipe: Recipe = Recipe()
+    var amIEditing: Boolean = false
 
     /**
      * Cuando la receta sea nueva, se coloca en livedata una receta vacía

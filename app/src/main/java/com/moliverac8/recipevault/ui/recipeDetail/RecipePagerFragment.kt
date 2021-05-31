@@ -7,20 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.transition.Slide
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.google.android.material.bottomappbar.BottomAppBar
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.transition.MaterialContainerTransform
 import com.moliverac8.recipevault.GENERAL
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.FragmentRecipePagerBinding
+import com.moliverac8.recipevault.ui.MainActivity
+import com.moliverac8.recipevault.ui.common.CustomOnBackPressedInterface
 import com.moliverac8.recipevault.ui.recipeDetail.edit.RecipeDetailEditFragment
 import com.moliverac8.recipevault.ui.recipeDetail.edit.RecipeIngsEditFragment
 import com.moliverac8.recipevault.ui.recipeDetail.ingredients.RecipeIngsFragment
@@ -28,7 +27,7 @@ import com.moliverac8.recipevault.ui.recipeDetail.instructions.RecipeDetailFragm
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RecipePagerFragment : Fragment() {
+class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigateInterface, CustomOnBackPressedInterface {
 
     private val args by navArgs<RecipePagerFragmentArgs>()
     private val viewModel: RecipeDetailVM by viewModels(ownerProducer = { this })
@@ -36,6 +35,20 @@ class RecipePagerFragment : Fragment() {
 
     interface RecipePagerNavigateInterface {
         fun navigateHomeFromPager()
+        fun navigateToDetailsFromEdit(pager2: ViewPager2)
+    }
+
+    private val goBackLogic = {
+        // Si es para crear una nueva receta
+        if (!viewModel.amIEditing) {
+            (activity as RecipePagerNavigateInterface).navigateHomeFromPager()
+        }
+        // Si es para editar una receta existente
+        else {
+            viewModel.amIEditing = false
+            showSaveButton(false)
+            (activity as RecipePagerNavigateInterface).navigateToDetailsFromEdit(binding.pager)
+        }
     }
 
     override fun onCreateView(
@@ -49,6 +62,9 @@ class RecipePagerFragment : Fragment() {
         // Cargo la receta nueva o la existente en el viewModel compartido por los fragmentos del viewpager
         Log.d(GENERAL, "PG - Receta ID ${args.recipeID}")
 
+        if (args.isEditable) showSaveButton(true)
+        else showSaveButton(false)
+
         binding.pager.adapter = RecipePager(this, args.isEditable)
         TabLayoutMediator(binding.tabs, binding.pager) { tab, position ->
             tab.text = when (position) {
@@ -58,9 +74,10 @@ class RecipePagerFragment : Fragment() {
         }.attach()
 
         binding.topBar.run {
-            navigationIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_arrow_back_24)
+            navigationIcon =
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_arrow_back_24)
             setNavigationOnClickListener {
-                (activity as RecipePagerNavigateInterface).navigateHomeFromPager()
+                goBackLogic()
             }
         }
 
@@ -90,6 +107,20 @@ class RecipePagerFragment : Fragment() {
                 endContainerColor = resources.getColor(R.color.white)
             }
         }
+    }
+
+    override fun navigateToEdit(prepareNavigation: () -> Unit) {
+        viewModel.amIEditing = true
+        showSaveButton(true)
+        prepareNavigation()
+    }
+
+    private fun showSaveButton(show: Boolean) {
+        binding.topBar.menu.getItem(0).isVisible = show
+    }
+
+    override fun onBackPressed() {
+        goBackLogic()
     }
 }
 
