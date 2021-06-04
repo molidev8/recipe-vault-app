@@ -57,4 +57,5 @@
     <string name="sign_in_help">Sign in to make backups of your recipes in Dropbox</string>
     <string name="back">Back</string>
     <string name="required_text">Required text</string>
+    <string name="search_recipe">Look for a recipe</string>
 </resources>

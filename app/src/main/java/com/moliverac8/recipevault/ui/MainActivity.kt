@@ -15,6 +15,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.dropbox.core.android.Auth
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFadeThrough
+import com.google.android.material.transition.MaterialSharedAxis
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.ActivityMainBinding
 import com.moliverac8.recipevault.framework.workmanager.BackupUserData
@@ -23,6 +24,7 @@ import com.moliverac8.recipevault.ui.recipeDetail.RecipePager
 import com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragment
 import com.moliverac8.recipevault.ui.recipeList.RecipeListFragment
 import com.moliverac8.recipevault.ui.recipeList.RecipeListFragmentDirections
+import com.moliverac8.recipevault.ui.search.SearchFragment
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,7 +37,8 @@ const val REQUEST_IMAGE_CAPTURE = 1
 class MainActivity : AppCompatActivity(),
     NavController.OnDestinationChangedListener,
     RecipeListFragment.RecipeListNavigationInterface,
-    RecipePagerFragment.RecipePagerNavigateInterface {
+    RecipePagerFragment.RecipePagerNavigateInterface,
+    SearchFragment.SearchFragmentNavigation {
 
     private val dropboxManager: DropboxManager by lazy {
         EntryPointAccessors.fromApplication(
@@ -94,6 +97,13 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
+    private fun animateNavigationToSearch() {
+        currentNavigationFragment?.apply {
+            enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
+            returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
+        }
+    }
+
     private fun setupBottomNavigation() {
         navController =
             (supportFragmentManager.findFragmentById(R.id.fragmentMaster) as NavHostFragment).navController.also {
@@ -113,6 +123,10 @@ class MainActivity : AppCompatActivity(),
         )
     }
 
+    override fun navigateToSearch() {
+        navController.navigate(RecipeListFragmentDirections.actionRecipeListFragmentToSearchFragment())
+    }
+
     override fun navigateToExistingRecipe(id: Int, recipeCard: View) {
         animateNavigationToExistingRecipe()
         val recipeDetailTransitionName = getString(R.string.recipe_card_detail_transition_name)
@@ -125,6 +139,11 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun navigateHomeFromPager() {
+        showBottomAppBar()
+        navController.navigateUp()
+    }
+
+    override fun navigateHomeFromSearch() {
         showBottomAppBar()
         navController.navigateUp()
     }
@@ -202,6 +221,10 @@ class MainActivity : AppCompatActivity(),
                 binding.newRecipeBtn.hide()
             }
             R.id.RecipePagerFragment -> {
+                hideBottomAppBar()
+            }
+            R.id.SearchFragment -> {
+                animateNavigationToSearch()
                 hideBottomAppBar()
             }
         }

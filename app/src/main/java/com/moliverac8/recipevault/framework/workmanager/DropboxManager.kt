@@ -24,7 +24,6 @@ class DropboxManager(private val context: Context) {
         .withHttpRequestor(OkHttp3Requestor(OkHttp3Requestor.defaultOkHttpClient()))
         .build()
     private var client: DbxClientV2? = null
-    private val backupDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
 
     fun startOAuth2Authentication() {
         Auth.startOAuth2PKCE(
@@ -47,14 +46,13 @@ class DropboxManager(private val context: Context) {
 
     fun uploadFile(input: FileInputStream): Boolean {
         return try {
-            /*val result = client?.files()?.deleteV2("/recipe-vault-backup.zip")
-            Log.d(BACKUP, "Eliminando copia en Dropbox ${result.toString()}")*/
-            client?.files()?.uploadBuilder("/recipe-vault-backup.zip")?.withMode(WriteMode.OVERWRITE)
+            client?.files()?.uploadBuilder("/recipe-vault-backup.zip")
+                ?.withMode(WriteMode.OVERWRITE)
                 ?.uploadAndFinish(input)
             true
         } catch (e: DbxException) {
             Log.d(BACKUP, "Error uploading files ${e.localizedMessage}")
-            throw DbxException("")
+            throw DbxException("Error uploading files ${e.localizedMessage}")
         }
     }
 
@@ -63,7 +61,7 @@ class DropboxManager(private val context: Context) {
             client?.files()?.download("/recipe-vault-backup.zip")?.download(output as OutputStream)
         } catch (e: DbxException) {
             Log.d(BACKUP, "Error downloading files ${e.localizedMessage}")
-            throw DbxException("")
+            throw DbxException("Error downloading files ${e.localizedMessage}")
         }
     }
 

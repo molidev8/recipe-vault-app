@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_recipeListFragment_to_RecipePagerFragment"
             app:destination="@id/RecipePagerFragment" />
+        <action
+            android:id="@+id/action_RecipeListFragment_to_searchFragment"
+            app:destination="@id/SearchFragment" />
     </fragment>
 
     <fragment
@@ -35,5 +38,10 @@
         tools:layout="@layout/fragment_account"
         android:name="com.moliverac8.recipevault.ui.account.AccountFragment"
         android:label="AccountFragment" />
+    <fragment
+        android:id="@+id/SearchFragment"
+        tools:layout="@layout/fragment_search"
+        android:name="com.moliverac8.recipevault.ui.search.SearchFragment"
+        android:label="SearchFragment" />
 
 </navigation>

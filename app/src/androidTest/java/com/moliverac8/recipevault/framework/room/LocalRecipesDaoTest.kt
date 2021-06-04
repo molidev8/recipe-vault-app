@@ -33,7 +33,7 @@ class LocalRecipesDaoTest {
         db = Room.inMemoryDatabaseBuilder(
             getApplicationContext(),
             LocalRecipeDatabase::class.java
-        ).build()
+        ).allowMainThreadQueries().build()
     }
 
     @After

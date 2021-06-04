@@ -13,13 +13,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-                <!--<com.mancj.materialsearchbar.MaterialSearchBar
-                    app:layout_scrollFlags="scroll|enterAlways"
-                    android:id="@+id/search_view"
-                    style="@style/MaterialSearchBarLight"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:mt_maxSuggestionsCount="10" />-->
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
                 <HorizontalScrollView
                     android:layout_width="match_parent"

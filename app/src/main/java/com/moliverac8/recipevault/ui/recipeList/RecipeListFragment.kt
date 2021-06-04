@@ -35,6 +35,7 @@ class RecipeListFragment : Fragment() {
     interface RecipeListNavigationInterface {
         fun navigateToNewRecipe()
         fun navigateToExistingRecipe(id: Int, recipeCard: View)
+        fun navigateToSearch()
     }
 
     override fun onCreateView(
@@ -83,22 +84,9 @@ class RecipeListFragment : Fragment() {
 
         viewModel.updateRecipes()
 
-        /*binding.searchView.setOnSearchActionListener(object : MaterialSearchBar.OnSearchActionListener {
-
-            override fun onSearchStateChanged(enabled: Boolean) {
-
-            }
-
-            override fun onSearchConfirmed(text: CharSequence?) {
-                adapter.submitList(unfilteredRecipes.filter {
-                    it.domainRecipe.name.contains(text.toString())
-                })
-            }
-
-            override fun onButtonClicked(buttonCode: Int) {
-
-            }
-        })*/
+        binding.searchView.setOnClickListener {
+            (activity as RecipeListNavigationInterface).navigateToSearch()
+        }
 
         binding.lifecycleOwner = this
 
