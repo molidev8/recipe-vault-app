@@ -20,7 +20,7 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class BackupRestoreUnitTest {
-
+/*
     private lateinit var backupUserData: BackupUserData
     private lateinit var context: Context
     private lateinit var db: LocalRecipeDatabase
@@ -56,5 +56,5 @@ class BackupRestoreUnitTest {
             insertIngredient(ing)
             insertRecipeIngCross(cross)
         }
-    }
+    }*/
 }

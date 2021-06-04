@@ -7,30 +7,27 @@ interface LocalRecipeDatabaseDao {
 
     @Transaction
     @Query("select * from Recipe where recipeID = (:id)")
-    fun getRecipeWithIngredientsByID(id: Int): RecipeWithIng
+    suspend fun getRecipeWithIngredientsByID(id: Int): RecipeWithIng
 
     @Transaction
     @Query("select * from Recipe")
-    fun getRecipeWithIngredients(): List<RecipeWithIng>
+    suspend fun getRecipeWithIngredients(): List<RecipeWithIng>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertRecipe(recipe: Recipe): Long
+    suspend fun insertRecipe(recipe: Recipe): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertIngredient(ing: Ingredient): Long
-
-    @Query("select * from Ingredient where ingID = (:id)")
-    fun getIngredient(id: Int): Ingredient
+    suspend fun insertIngredient(ing: Ingredient): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertRecipeIngCross(ref: Recipe_Ing): Long
+    suspend fun insertRecipeIngCross(ref: Recipe_Ing): Long
 
     @Update
-    fun updateRecipe(recipe: Recipe)
+    suspend fun updateRecipe(recipe: Recipe)
 
     @Update
-    fun updateRecipeIngCross(ref: Recipe_Ing)
+    suspend fun updateRecipeIngCross(ref: Recipe_Ing)
 
     @Update
-    fun updateIngredient(ing: Ingredient)
+    suspend fun updateIngredient(ing: Ingredient)
 }

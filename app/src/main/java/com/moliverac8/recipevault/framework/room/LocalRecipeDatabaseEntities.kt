@@ -78,7 +78,6 @@ class DietTypeConverter {
         "VEGAN" -> DietType.VEGAN
         else -> DietType.VEGETARIAN
     }
-
 }
 
 class UriConverter {

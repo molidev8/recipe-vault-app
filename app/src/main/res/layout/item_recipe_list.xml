@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="recipe"
             type="com.moliverac8.domain.Recipe" />
@@ -24,7 +23,7 @@
 
             <ImageView
                 android:id="@+id/recipeImg"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:contentDescription="@string/recipe_photo"
                 android:scaleType="centerCrop"

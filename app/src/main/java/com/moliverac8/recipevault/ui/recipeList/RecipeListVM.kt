@@ -5,7 +5,9 @@ import androidx.lifecycle.*
 import com.moliverac8.domain.RecipeWithIng
 import com.moliverac8.usecases.GetAllRecipes
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,7 +21,9 @@ class RecipeListVM @Inject constructor(
 
     fun updateRecipes() {
         viewModelScope.launch {
-            _recipes.value = getRecipes()
+            withContext(Dispatchers.IO) {
+                _recipes.postValue(getRecipes())
+            }
         }
     }
 }

@@ -28,7 +28,6 @@ class RecipeListFragment : Fragment() {
     private val viewModel: RecipeListVM by viewModels(ownerProducer = { this })
     private val filterList: MutableList<String> = mutableListOf()
     private lateinit var binding: FragmentRecipeListBinding
-    private lateinit var unfilteredRecipes: List<RecipeWithIng>
     private val newRecipeBtn: FloatingActionButton by lazy {
         requireActivity().findViewById(R.id.newRecipeBtn)
     }
@@ -73,25 +72,18 @@ class RecipeListFragment : Fragment() {
                         }
                     }
                 }
-                var list = unfilteredRecipes
-                filterList.forEach { filter ->
-                    list =
-                        list.filter { recipe -> recipe.domainRecipe.dietType.name == filter || recipe.domainRecipe.dishType.any { it.name == filter } }
-                }
-                adapter.submitList(list)
             }
         }
 
         binding.recipeList.adapter = adapter
 
         viewModel.recipes.observe(viewLifecycleOwner, { recipes ->
-            unfilteredRecipes = recipes
             adapter.submitList(recipes)
         })
 
         viewModel.updateRecipes()
 
-        binding.searchView.setOnSearchActionListener(object : MaterialSearchBar.OnSearchActionListener {
+        /*binding.searchView.setOnSearchActionListener(object : MaterialSearchBar.OnSearchActionListener {
 
             override fun onSearchStateChanged(enabled: Boolean) {
 
@@ -106,9 +98,10 @@ class RecipeListFragment : Fragment() {
             override fun onButtonClicked(buttonCode: Int) {
 
             }
-        })
+        })*/
 
         binding.lifecycleOwner = this
+
         return binding.root
     }
 

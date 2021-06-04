@@ -54,8 +54,6 @@ class AccountViewModel @Inject constructor(
     val firstTimeSetup: LiveData<Boolean>
         get() = _firstTimeSetup
 
-    var firstTime = false
-
     @EntryPoint
     @InstallIn(SingletonComponent::class)
     interface BackupEntryPoint {
