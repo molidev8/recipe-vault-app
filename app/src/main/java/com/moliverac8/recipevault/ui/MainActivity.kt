@@ -25,6 +25,7 @@ import com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragment
 import com.moliverac8.recipevault.ui.recipeList.RecipeListFragment
 import com.moliverac8.recipevault.ui.recipeList.RecipeListFragmentDirections
 import com.moliverac8.recipevault.ui.search.SearchFragment
+import com.moliverac8.recipevault.ui.search.SearchFragmentDirections
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
@@ -148,6 +149,10 @@ class MainActivity : AppCompatActivity(),
         navController.navigateUp()
     }
 
+    override fun navigateToSearchResult() {
+        navController.navigate(SearchFragmentDirections.actionSearchFragmentToRecipeListFragment())
+    }
+
     override fun navigateToDetailsFromEdit(pager2: ViewPager2) {
         currentNavigationFragment?.let {
             pager2.visibility = View.GONE
@@ -213,8 +218,9 @@ class MainActivity : AppCompatActivity(),
     ) {
         when (destination.id) {
             R.id.RecipeListFragment -> {
-                animateNavigationToRecipeList()
                 binding.newRecipeBtn.show()
+                showBottomAppBar()
+                animateNavigationToRecipeList()
             }
             R.id.AccountFragment -> {
                 animateNavigationToAccount()

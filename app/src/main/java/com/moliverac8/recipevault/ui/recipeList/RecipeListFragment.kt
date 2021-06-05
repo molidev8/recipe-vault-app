@@ -25,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class RecipeListFragment : Fragment() {
 
-    private val viewModel: RecipeListVM by viewModels(ownerProducer = { this })
+    private val viewModel: RecipeListVM by viewModels(ownerProducer = { requireActivity() })
     private val filterList: MutableList<String> = mutableListOf()
     private lateinit var binding: FragmentRecipeListBinding
     private val newRecipeBtn: FloatingActionButton by lazy {

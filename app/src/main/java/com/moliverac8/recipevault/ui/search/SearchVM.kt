@@ -1,4 +1,4 @@
-package com.moliverac8.recipevault.ui.recipeList
+package com.moliverac8.recipevault.ui.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class RecipeListVM @Inject constructor(
+class SearchVM @Inject constructor(
     private val getRecipes: GetAllRecipes
 ) : ViewModel() {
 
@@ -21,22 +21,14 @@ class RecipeListVM @Inject constructor(
     val recipes: LiveData<List<RecipeWithIng>>
         get() = _recipes
 
-    fun updateRecipes() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                _recipes.postValue(getRecipes())
-            }
-        }
-    }
-
     fun filterRecipes(filter: String) {
         viewModelScope.launch {
             withContext(Dispatchers.Default) {
-                val recipes = _recipes.value
-                val filteredRecipes = recipes?.filter { recipe ->
+                val recipes = getRecipes()
+                val filteredRecipes = recipes.filter { recipe ->
                     recipe.domainRecipe.name.contains(filter) || recipe.domainRecipe.description.contains(
                         filter) || recipe.ings.any { it.name.contains(filter) }
-                } ?: listOf()
+                }
                 _recipes.postValue(filteredRecipes)
             }
         }

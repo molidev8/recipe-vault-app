@@ -29,19 +29,34 @@
             app:argType="integer" />
         <argument
             android:name="isEditable"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
 
     <fragment
         android:id="@+id/AccountFragment"
-        tools:layout="@layout/fragment_account"
         android:name="com.moliverac8.recipevault.ui.account.AccountFragment"
-        android:label="AccountFragment" />
+        android:label="AccountFragment"
+        tools:layout="@layout/fragment_account" />
     <fragment
         android:id="@+id/SearchFragment"
-        tools:layout="@layout/fragment_search"
         android:name="com.moliverac8.recipevault.ui.search.SearchFragment"
-        android:label="SearchFragment" />
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_SearchFragment_to_RecipeListFragment"
+            app:destination="@id/SearchResultFragment"
+            app:popUpTo="@id/RecipeListFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/SearchResultFragment"
+        android:name="com.moliverac8.recipevault.ui.search.SearchResultFragment"
+        android:label="SearchResultFragment"
+        tools:layout="@layout/fragment_search_results" >
+        <action
+            android:id="@+id/action_SearchResultFragment_to_RecipePagerFragment"
+            app:destination="@id/RecipePagerFragment" />
+    </fragment>
 
 </navigation>
