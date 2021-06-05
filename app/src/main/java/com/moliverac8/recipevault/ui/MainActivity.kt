@@ -20,6 +20,7 @@ import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.ActivityMainBinding
 import com.moliverac8.recipevault.framework.workmanager.BackupUserData
 import com.moliverac8.recipevault.framework.workmanager.DropboxManager
+import com.moliverac8.recipevault.ui.account.AccountFragment
 import com.moliverac8.recipevault.ui.recipeDetail.RecipePager
 import com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragment
 import com.moliverac8.recipevault.ui.recipeList.RecipeListFragment
@@ -69,8 +70,8 @@ class MainActivity : AppCompatActivity(),
         }
 
         binding.newRecipeBtn.apply {
-            setShowMotionSpecResource(R.animator.fab_show)
-            setHideMotionSpecResource(R.animator.fab_hide)
+            /*setShowMotionSpecResource(R.animator.fab_show)
+            setHideMotionSpecResource(R.animator.fab_hide)*/
         }
 
         setupBottomNavigation()
@@ -218,13 +219,17 @@ class MainActivity : AppCompatActivity(),
     ) {
         when (destination.id) {
             R.id.RecipeListFragment -> {
-                binding.newRecipeBtn.show()
-                showBottomAppBar()
-                animateNavigationToRecipeList()
+                if (currentNavigationFragment !is RecipeListFragment) {
+                    binding.newRecipeBtn.show()
+                    showBottomAppBar()
+                    animateNavigationToRecipeList()
+                }
             }
             R.id.AccountFragment -> {
-                animateNavigationToAccount()
-                binding.newRecipeBtn.hide()
+                if (currentNavigationFragment !is AccountFragment) {
+                    binding.newRecipeBtn.hide()
+                    animateNavigationToAccount()
+                }
             }
             R.id.RecipePagerFragment -> {
                 hideBottomAppBar()

@@ -35,9 +35,6 @@ class AccountFragment : Fragment() {
     private val bottomBarView: BottomAppBar by lazy {
         requireActivity().findViewById(R.id.bottomBar)
     }
-    private val newRecipeBtn: FloatingActionButton by lazy {
-        requireActivity().findViewById(R.id.newRecipeBtn)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

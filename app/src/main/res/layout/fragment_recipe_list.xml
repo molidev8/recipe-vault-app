@@ -13,84 +13,101 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.SearchView
+            <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/search_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
 
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_scrollFlags="scroll|enterAlways"
-                    android:background="?attr/colorSurface"
-                    android:scrollbars="none">
+                    android:layout_marginEnd="16dp"
+                    android:tint="@color/secondaryTextColor"
+                    android:src="@drawable/ic_baseline_search_24"
+                    android:contentDescription="@string/search_recipe" />
 
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/filterChips"
+                <TextView
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/search_recipe"
+                    android:textColor="@color/secondaryTextColor" />
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorSurface"
+                android:scrollbars="none"
+                app:layout_scrollFlags="scroll|enterAlways">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/filterChips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    app:singleLine="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/breakfastChip"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        app:singleLine="true">
+                        android:checkable="true"
+                        android:text="@string/breakfast" />
 
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/breakfastChip"
-                            style="@style/Widget.MaterialComponents.Chip.Choice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checkable="true"
-                            android:text="@string/breakfast" />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/mealChip"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/meal" />
 
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/mealChip"
-                            style="@style/Widget.MaterialComponents.Chip.Choice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checkable="true"
-                            android:text="@string/meal" />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/dinnerChip"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/dinner" />
 
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/dinnerChip"
-                            style="@style/Widget.MaterialComponents.Chip.Choice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checkable="true"
-                            android:text="@string/dinner" />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/veganChip"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/vegan" />
 
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/veganChip"
-                            style="@style/Widget.MaterialComponents.Chip.Choice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checkable="true"
-                            android:text="@string/vegan" />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/vegetarianChip"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/vegetarian" />
 
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/vegetarianChip"
-                            style="@style/Widget.MaterialComponents.Chip.Choice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checkable="true"
-                            android:text="@string/vegetarian" />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/regularChip"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/regular" />
 
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/regularChip"
-                            style="@style/Widget.MaterialComponents.Chip.Choice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checkable="true"
-                            android:text="@string/regular" />
+                </com.google.android.material.chip.ChipGroup>
 
-                    </com.google.android.material.chip.ChipGroup>
-
-                </HorizontalScrollView>
+            </HorizontalScrollView>
 
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recipeList"
-            android:transitionGroup="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:transitionGroup="true"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/item_recipe_list" />
