@@ -5,11 +5,14 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.transition.MaterialSharedAxis
 import com.moliverac8.recipevault.databinding.FragmentSearchBinding
 import com.moliverac8.recipevault.hideSoftKeyboard
+import com.moliverac8.recipevault.ui.recipeList.RecipeListAdapter
+import com.moliverac8.recipevault.ui.recipeList.RecipeListFragment
 import com.moliverac8.recipevault.ui.recipeList.RecipeListVM
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,11 +20,11 @@ import dagger.hilt.android.AndroidEntryPoint
 class SearchFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
-    private val viewModel: SearchVM by viewModels(ownerProducer = { requireActivity() })
+    private val viewModel: SearchVM by viewModels()
 
     interface SearchFragmentNavigation {
         fun navigateHomeFromSearch()
-        fun navigateToSearchResult()
+        fun navigateToDetails(id: Int)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +40,21 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSearchBinding.inflate(layoutInflater)
+
+        val adapter =
+            RecipeListAdapter(RecipeListAdapter.OnClickListener { recipe, isEditable, position ->
+                recipe.domainRecipe.id.let { id ->
+                    (activity as SearchFragmentNavigation).navigateToDetails(
+                        id
+                    )
+                }
+            })
+        binding.searchResults.adapter = adapter
+
+        viewModel.recipes.observe(viewLifecycleOwner) { recipes ->
+            adapter.submitList(recipes)
+        }
+
         return binding.root
     }
 
@@ -54,7 +72,6 @@ class SearchFragment : Fragment() {
                 binding.searchEdit.isCursorVisible = false
                 val filter = binding.searchEdit.text.toString()
                 viewModel.filterRecipes(filter)
-                (activity as SearchFragmentNavigation).navigateToSearchResult()
                 return@setOnKeyListener true
             }
             false

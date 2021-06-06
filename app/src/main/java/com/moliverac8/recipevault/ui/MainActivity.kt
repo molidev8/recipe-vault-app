@@ -11,6 +11,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.dropbox.core.android.Auth
 import com.google.android.material.transition.MaterialElevationScale
@@ -111,7 +112,7 @@ class MainActivity : AppCompatActivity(),
             (supportFragmentManager.findFragmentById(R.id.fragmentMaster) as NavHostFragment).navController.also {
                 it.addOnDestinationChangedListener(this)
             }
-        NavigationUI.setupWithNavController(binding.bottomNav, navController)
+        binding.bottomNav.setupWithNavController(navController)
 
     }
 
@@ -150,8 +151,8 @@ class MainActivity : AppCompatActivity(),
         navController.navigateUp()
     }
 
-    override fun navigateToSearchResult() {
-        navController.navigate(SearchFragmentDirections.actionSearchFragmentToRecipeListFragment())
+    override fun navigateToDetails(id: Int) {
+        navController.navigate(SearchFragmentDirections.actionSearchFragmentToRecipePagerFragment(id))
     }
 
     override fun navigateToDetailsFromEdit(pager2: ViewPager2) {

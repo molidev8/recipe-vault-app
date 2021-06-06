@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/RecipeListFragment"
+        android:id="@+id/my_recipes"
         android:icon="@drawable/ic_menu_book_white_18dp"
         android:title="@string/my_recipes" />
 
@@ -12,7 +12,7 @@
         android:title="" />
 
     <item
-        android:id="@+id/AccountFragment"
+        android:id="@+id/account"
         android:icon="@drawable/account_circle_black_24dp"
         android:title="@string/my_account" />
 

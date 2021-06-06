@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_recipes"
+    app:startDestination="@id/RecipeListFragment">
+
+    <fragment
+        android:id="@+id/RecipeListFragment"
+        android:name="com.moliverac8.recipevault.ui.recipeList.RecipeListFragment"
+        android:label="RecipeListFragment"
+        tools:layout="@layout/fragment_recipe_list">
+        <action
+            android:id="@+id/action_recipeListFragment_to_RecipePagerFragment"
+            app:destination="@id/RecipePagerFragment" />
+        <action
+            android:id="@+id/action_RecipeListFragment_to_searchFragment"
+            app:destination="@id/SearchFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/RecipePagerFragment"
+        android:name="com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragment"
+        android:label="RecipePagerFragment"
+        tools:layout="@layout/fragment_recipe_pager">
+        <argument
+            android:name="recipeID"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <argument
+            android:name="isEditable"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/SearchFragment"
+        android:name="com.moliverac8.recipevault.ui.search.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_SearchFragment_to_RecipePagerFragment"
+            app:destination="@id/RecipePagerFragment" />
+    </fragment>
+
+</navigation>
