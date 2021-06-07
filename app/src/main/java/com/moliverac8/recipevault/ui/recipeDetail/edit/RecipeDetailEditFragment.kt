@@ -58,6 +58,9 @@ class RecipeDetailEditFragment : Fragment() {
     private val topBar: MaterialToolbar by lazy {
         (requireParentFragment().view as CoordinatorLayout).findViewById(R.id.top_bar)
     }
+    private val isFormFilled: Boolean
+        get() = binding.setTitleEdit.text.toString()
+            .isNotBlank() && binding.setTimeToCookEdit.text.toString().isNotBlank()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -117,9 +120,18 @@ class RecipeDetailEditFragment : Fragment() {
         topBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.save_recipe -> {
-                    saveRecipeInfo()
-                    findNavController().popBackStack()
-                    true
+                    if (isFormFilled) {
+                        saveRecipeInfo()
+                        findNavController().navigateUp()
+                    } else {
+                        if (binding.setTitleEdit.text.toString().isEmpty()) {
+                            binding.setTitle.error = getString(R.string.required_text)
+                        }
+                        if (binding.setTimeToCookEdit.text.toString().isEmpty()) {
+                            binding.setTimeToCook.error = getString(R.string.required_text)
+                        }
+                    }
+                    false
                 }
                 else -> false
             }

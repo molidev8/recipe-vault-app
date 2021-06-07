@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moliverac8.domain.RecipeWithIng
+import com.moliverac8.recipevault.toListOfString
 import com.moliverac8.usecases.GetAllRecipes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -21,22 +22,35 @@ class RecipeListVM @Inject constructor(
     val recipes: LiveData<List<RecipeWithIng>>
         get() = _recipes
 
-    fun updateRecipes() {
+    private var originalRecipes = listOf<RecipeWithIng>()
+
+    fun loadOriginalRecipes() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                _recipes.postValue(getRecipes())
+                _recipes.postValue(originalRecipes)
             }
         }
     }
 
-    fun filterRecipes(filter: String) {
+    fun updateRecipes() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                originalRecipes = getRecipes()
+                _recipes.postValue(originalRecipes)
+            }
+        }
+    }
+
+    fun filterByChips(filters: List<String>) {
         viewModelScope.launch {
             withContext(Dispatchers.Default) {
-                val recipes = _recipes.value
-                val filteredRecipes = recipes?.filter { recipe ->
-                    recipe.domainRecipe.name.contains(filter) || recipe.domainRecipe.description.contains(
-                        filter) || recipe.ings.any { it.name.contains(filter) }
-                } ?: listOf()
+                val recipes = originalRecipes
+                val filteredRecipes = recipes.filter { recipe ->
+                    filters.any { it == recipe.domainRecipe.dietType.name } ||
+                            filters.any {
+                                recipe.domainRecipe.dishType.toListOfString().contains(it)
+                            }
+                }
                 _recipes.postValue(filteredRecipes)
             }
         }

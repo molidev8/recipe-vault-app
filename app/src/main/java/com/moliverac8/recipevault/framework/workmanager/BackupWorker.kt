@@ -5,12 +5,11 @@ import androidx.work.*
 import java.util.concurrent.TimeUnit
 
 class BackupWorker(
-    private val context: Context,
+    context: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(context, workerParams) {
 
     private val backup: BackupUserData = BackupUserData(applicationContext)
-
 
     override suspend fun doWork(): Result {
         return if (backup.doBackup()) Result.success()

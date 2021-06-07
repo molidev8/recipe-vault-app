@@ -1,23 +1,20 @@
 package com.moliverac8.recipevault.ui.recipeList
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.children
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.mancj.materialsearchbar.MaterialSearchBar
 import com.moliverac8.domain.DietType
 import com.moliverac8.domain.DishType
-import com.moliverac8.domain.RecipeWithIng
+import com.moliverac8.recipevault.GENERAL
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.FragmentRecipeListBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,25 +29,23 @@ class RecipeListFragment : Fragment() {
         requireActivity().findViewById(R.id.newRecipeBtn)
     }
 
-    interface RecipeListNavigationInterface {
-        fun navigateToNewRecipe()
-        fun navigateToExistingRecipe(id: Int, recipeCard: View)
-        fun navigateToSearch()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentRecipeListBinding.inflate(layoutInflater)
-        val adapter = RecipeListAdapter(RecipeListAdapter.OnClickListener { recipe, isEditable, position ->
-            recipe.domainRecipe.id.let { id ->
-                (activity as RecipeListNavigationInterface).navigateToExistingRecipe(id, binding.recipeList[position])
-            }
-        })
+        val adapter =
+            RecipeListAdapter(RecipeListAdapter.OnClickListener { recipe, isEditable, view ->
+                recipe.domainRecipe.id.let { id ->
+                    (activity as RecipeListNavigation).navigateToExistingRecipe(
+                        id,
+                        view.itemView
+                    )
+                }
+            })
 
-        binding.filterChips.children.forEach { it ->
+        binding.filterChips.children.forEach {
             it.setOnClickListener { chip ->
                 with(chip as Chip) {
                     if (isChecked) {
@@ -73,6 +68,12 @@ class RecipeListFragment : Fragment() {
                         }
                     }
                 }
+                Log.d(GENERAL, "Filtros: ${filterList}")
+                if (filterList.isEmpty()) {
+                    viewModel.loadOriginalRecipes()
+                } else {
+                    viewModel.filterByChips(filterList)
+                }
             }
         }
 
@@ -85,7 +86,7 @@ class RecipeListFragment : Fragment() {
         viewModel.updateRecipes()
 
         binding.searchView.setOnClickListener {
-            (activity as RecipeListNavigationInterface).navigateToSearch()
+            (activity as RecipeListNavigation).navigateToSearch()
         }
 
         binding.lifecycleOwner = this
@@ -102,7 +103,7 @@ class RecipeListFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         newRecipeBtn.setOnClickListener {
-            (activity as RecipeListNavigationInterface).navigateToNewRecipe()
+            (activity as RecipeListNavigation).navigateToNewRecipe()
         }
     }
 

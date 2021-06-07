@@ -33,21 +33,16 @@ class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigat
     private val viewModel: RecipeDetailVM by viewModels(ownerProducer = { this })
     private lateinit var binding: FragmentRecipePagerBinding
 
-    interface RecipePagerNavigateInterface {
-        fun navigateHomeFromPager()
-        fun navigateToDetailsFromEdit(pager2: ViewPager2)
-    }
-
     private val goBackLogic = {
         // Si es para crear una nueva receta
         if (!viewModel.amIEditing) {
-            (activity as RecipePagerNavigateInterface).navigateHomeFromPager()
+            (activity as RecipePagerNavigate).navigateHomeFromPager()
         }
         // Si es para editar una receta existente
         else {
             viewModel.amIEditing = false
             showSaveButton(false)
-            (activity as RecipePagerNavigateInterface).navigateToDetailsFromEdit(binding.pager)
+            (activity as RecipePagerNavigate).navigateToDetailsFromEdit(binding.pager)
         }
     }
 

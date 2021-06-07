@@ -24,10 +24,13 @@ import com.moliverac8.recipevault.framework.workmanager.DropboxManager
 import com.moliverac8.recipevault.ui.account.AccountFragment
 import com.moliverac8.recipevault.ui.recipeDetail.RecipePager
 import com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragment
+import com.moliverac8.recipevault.ui.recipeDetail.RecipePagerNavigate
 import com.moliverac8.recipevault.ui.recipeList.RecipeListFragment
 import com.moliverac8.recipevault.ui.recipeList.RecipeListFragmentDirections
+import com.moliverac8.recipevault.ui.recipeList.RecipeListNavigation
 import com.moliverac8.recipevault.ui.search.SearchFragment
 import com.moliverac8.recipevault.ui.search.SearchFragmentDirections
+import com.moliverac8.recipevault.ui.search.SearchFragmentNavigation
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,9 +42,9 @@ const val REQUEST_IMAGE_CAPTURE = 1
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(),
     NavController.OnDestinationChangedListener,
-    RecipeListFragment.RecipeListNavigationInterface,
-    RecipePagerFragment.RecipePagerNavigateInterface,
-    SearchFragment.SearchFragmentNavigation {
+    RecipeListNavigation,
+    RecipePagerNavigate,
+    SearchFragmentNavigation {
 
     private val dropboxManager: DropboxManager by lazy {
         EntryPointAccessors.fromApplication(
@@ -71,12 +74,31 @@ class MainActivity : AppCompatActivity(),
         }
 
         binding.newRecipeBtn.apply {
-            /*setShowMotionSpecResource(R.animator.fab_show)
+           /* setShowMotionSpecResource(R.animator.fab_show)
             setHideMotionSpecResource(R.animator.fab_hide)*/
         }
 
         setupBottomNavigation()
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        val prefs = getSharedPreferences("recipe-vault", MODE_PRIVATE)
+
+        val serializedCredential = prefs.getString("credential", null)
+
+        if (serializedCredential == null) {
+            val credential = Auth.getDbxCredential()
+
+            if (credential != null) {
+                prefs.edit().putString("credential", credential.toString()).apply()
+                dropboxManager.initDropboxClient(credential)
+            }
+        }
+    }
+
+    /* ----------- NAVIGATION SETUP ----------- */
 
     private fun animateNavigationToAccount() {
         currentNavigationFragment?.exitTransition = MaterialFadeThrough()
@@ -116,58 +138,43 @@ class MainActivity : AppCompatActivity(),
 
     }
 
-    override fun navigateToNewRecipe() {
-        animateNavigationToNewRecipe()
-        navController.navigate(
-            RecipeListFragmentDirections.actionRecipeListFragmentToRecipePagerFragment(
-                -1,
-                true
-            )
-        )
-    }
-
-    override fun navigateToSearch() {
-        navController.navigate(RecipeListFragmentDirections.actionRecipeListFragmentToSearchFragment())
-    }
-
-    override fun navigateToExistingRecipe(id: Int, recipeCard: View) {
-        animateNavigationToExistingRecipe()
-        val recipeDetailTransitionName = getString(R.string.recipe_card_detail_transition_name)
-        val extras = FragmentNavigatorExtras(recipeCard to recipeDetailTransitionName)
-        val directions = RecipeListFragmentDirections.actionRecipeListFragmentToRecipePagerFragment(
-            id,
-            false
-        )
-        navController.navigate(directions, extras)
-    }
-
-    override fun navigateHomeFromPager() {
-        showBottomAppBar()
-        navController.navigateUp()
-    }
-
-    override fun navigateHomeFromSearch() {
-        showBottomAppBar()
-        navController.navigateUp()
-    }
-
-    override fun navigateToDetails(id: Int) {
-        navController.navigate(SearchFragmentDirections.actionSearchFragmentToRecipePagerFragment(id))
-    }
-
-    override fun navigateToDetailsFromEdit(pager2: ViewPager2) {
-        currentNavigationFragment?.let {
-            pager2.visibility = View.GONE
-            pager2.adapter = RecipePager(it, false)
-            pager2.visibility = View.VISIBLE
-        }
-    }
-
     override fun onBackPressed() {
         if (currentNavigationFragment is RecipePagerFragment)
             (currentNavigationFragment as RecipePagerFragment).onBackPressed()
         else
             super.onBackPressed()
+    }
+
+    /**
+     * Prepara la transición entre elementos de la navegación inferior
+     */
+    override fun onDestinationChanged(
+        controller: NavController,
+        destination: NavDestination,
+        arguments: Bundle?
+    ) {
+        when (destination.id) {
+            R.id.RecipeListFragment -> {
+                if (currentNavigationFragment !is RecipeListFragment) {
+                    binding.newRecipeBtn.show()
+                    showBottomAppBar()
+                    animateNavigationToRecipeList()
+                }
+            }
+            R.id.AccountFragment -> {
+                if (currentNavigationFragment !is AccountFragment) {
+                    // FAB hides onViewCreated in the fragment to avoid stutter
+//                    animateNavigationToAccount()
+                }
+            }
+            R.id.RecipePagerFragment -> {
+                hideBottomAppBar()
+            }
+            R.id.SearchFragment -> {
+                animateNavigationToSearch()
+                hideBottomAppBar()
+            }
+        }
     }
 
     private fun hideBottomAppBar() {
@@ -193,52 +200,57 @@ class MainActivity : AppCompatActivity(),
         binding.newRecipeBtn.visibility = View.VISIBLE
     }
 
-    override fun onResume() {
-        super.onResume()
+    /* ----------- RECIPE LIST NAVIGATION ----------- */
 
-        val prefs = getSharedPreferences("recipe-vault", MODE_PRIVATE)
+    override fun navigateToNewRecipe() {
+        animateNavigationToNewRecipe()
+        navController.navigate(
+            RecipeListFragmentDirections.actionRecipeListFragmentToRecipePagerFragment(
+                -1,
+                true
+            )
+        )
+    }
 
-        val serializedCredential = prefs.getString("credential", null)
+    override fun navigateToSearch() {
+        navController.navigate(RecipeListFragmentDirections.actionRecipeListFragmentToSearchFragment())
+    }
 
-        if (serializedCredential == null) {
-            val credential = Auth.getDbxCredential()
+    override fun navigateToExistingRecipe(id: Int, recipeCard: View) {
+        animateNavigationToExistingRecipe()
+        val recipeDetailTransitionName = getString(R.string.recipe_card_detail_transition_name)
+        val extras = FragmentNavigatorExtras(recipeCard to recipeDetailTransitionName)
+        val directions = RecipeListFragmentDirections.actionRecipeListFragmentToRecipePagerFragment(
+            id,
+            false
+        )
+        navController.navigate(directions, extras)
+    }
 
-            if (credential != null) {
-                prefs.edit().putString("credential", credential.toString()).apply()
-                dropboxManager.initDropboxClient(credential)
-            }
+    /* ----------- RECIPE PAGER NAVIGATION ----------- */
+
+    override fun navigateHomeFromPager() {
+        showBottomAppBar()
+        navController.navigateUp()
+    }
+
+    override fun navigateToDetailsFromEdit(pager2: ViewPager2) {
+        currentNavigationFragment?.let {
+            pager2.visibility = View.GONE
+            pager2.adapter = RecipePager(it, false)
+            pager2.visibility = View.VISIBLE
         }
     }
 
-    /**
-     * Prepara la transición entre elementos de la navegación inferior
-     */
-    override fun onDestinationChanged(
-        controller: NavController,
-        destination: NavDestination,
-        arguments: Bundle?
-    ) {
-        when (destination.id) {
-            R.id.RecipeListFragment -> {
-                if (currentNavigationFragment !is RecipeListFragment) {
-                    binding.newRecipeBtn.show()
-                    showBottomAppBar()
-                    animateNavigationToRecipeList()
-                }
-            }
-            R.id.AccountFragment -> {
-                if (currentNavigationFragment !is AccountFragment) {
-                    binding.newRecipeBtn.hide()
-                    animateNavigationToAccount()
-                }
-            }
-            R.id.RecipePagerFragment -> {
-                hideBottomAppBar()
-            }
-            R.id.SearchFragment -> {
-                animateNavigationToSearch()
-                hideBottomAppBar()
-            }
-        }
+    /* ----------- SEARCH NAVIGATION ----------- */
+
+    override fun navigateHomeFromSearch() {
+        showBottomAppBar()
+        navController.navigateUp()
     }
+
+    override fun navigateToDetails(id: Int) {
+        navController.navigate(SearchFragmentDirections.actionSearchFragmentToRecipePagerFragment(id))
+    }
+
 }

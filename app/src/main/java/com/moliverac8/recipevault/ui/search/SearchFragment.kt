@@ -22,11 +22,6 @@ class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
     private val viewModel: SearchVM by viewModels()
 
-    interface SearchFragmentNavigation {
-        fun navigateHomeFromSearch()
-        fun navigateToDetails(id: Int)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

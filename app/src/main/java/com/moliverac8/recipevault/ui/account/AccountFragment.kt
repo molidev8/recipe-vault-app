@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomappbar.BottomAppBar
@@ -35,6 +36,9 @@ class AccountFragment : Fragment() {
     private val bottomBarView: BottomAppBar by lazy {
         requireActivity().findViewById(R.id.bottomBar)
     }
+    private val newRecipeBtn: FloatingActionButton by lazy {
+        requireActivity().findViewById(R.id.newRecipeBtn)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +46,6 @@ class AccountFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAccountBinding.inflate(layoutInflater)
-        enterTransition = MaterialFadeThrough()
 
         val firstTime = prefs.getBoolean(FIRST_TIME_LOGIN, true)
 
@@ -55,6 +58,12 @@ class AccountFragment : Fragment() {
         updateMetadata(binding)
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+//        enterTransition = MaterialFadeThrough()
+        newRecipeBtn.hide()
     }
 
     override fun onResume() {
@@ -124,7 +133,6 @@ class AccountFragment : Fragment() {
                 }
                 BackupWorkerManager(requireContext()).launchWorker(interval)
             }
-
         } else {
             binding.loginBtn.setOnClickListener {
                 viewModel.loginToDropbox()
