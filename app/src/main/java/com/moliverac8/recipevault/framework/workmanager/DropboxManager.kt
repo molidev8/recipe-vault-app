@@ -60,7 +60,6 @@ class DropboxManager(private val context: Context) {
         try {
             client?.files()?.download("/recipe-vault-backup.zip")?.download(output as OutputStream)
         } catch (e: DbxException) {
-            Log.d(BACKUP, "Error downloading files ${e.localizedMessage}")
             throw DbxException("Error downloading files ${e.localizedMessage}")
         }
     }

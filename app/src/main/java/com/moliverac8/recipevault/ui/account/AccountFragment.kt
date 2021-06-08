@@ -1,5 +1,6 @@
 package com.moliverac8.recipevault.ui.account
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -62,10 +63,13 @@ class AccountFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        enterTransition = MaterialFadeThrough()
+        enterTransition = MaterialFadeThrough().apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
         newRecipeBtn.hide()
     }
 
+    @SuppressLint("ShowToast")
     override fun onResume() {
         super.onResume()
         val serializedCredential = prefs.getString(DROPBOX_CREDENTIAL, null)

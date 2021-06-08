@@ -31,5 +31,4 @@ class BackupWorkerManager(context: Context) {
                 )
                 .build()
         )
-
 }

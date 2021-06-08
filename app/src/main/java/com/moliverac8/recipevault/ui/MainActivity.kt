@@ -10,7 +10,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.dropbox.core.android.Auth
@@ -21,14 +20,11 @@ import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.ActivityMainBinding
 import com.moliverac8.recipevault.framework.workmanager.BackupUserData
 import com.moliverac8.recipevault.framework.workmanager.DropboxManager
-import com.moliverac8.recipevault.ui.account.AccountFragment
 import com.moliverac8.recipevault.ui.recipeDetail.RecipePager
 import com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragment
 import com.moliverac8.recipevault.ui.recipeDetail.RecipePagerNavigate
-import com.moliverac8.recipevault.ui.recipeList.RecipeListFragment
 import com.moliverac8.recipevault.ui.recipeList.RecipeListFragmentDirections
 import com.moliverac8.recipevault.ui.recipeList.RecipeListNavigation
-import com.moliverac8.recipevault.ui.search.SearchFragment
 import com.moliverac8.recipevault.ui.search.SearchFragmentDirections
 import com.moliverac8.recipevault.ui.search.SearchFragmentNavigation
 import dagger.hilt.EntryPoint
@@ -74,8 +70,8 @@ class MainActivity : AppCompatActivity(),
         }
 
         binding.newRecipeBtn.apply {
-            setShowMotionSpecResource(R.animator.fab_show)
-            setHideMotionSpecResource(R.animator.fab_hide)
+            /*setShowMotionSpecResource(R.animator.fab_show)
+            setHideMotionSpecResource(R.animator.fab_hide)*/
         }
 
         setupBottomNavigation()
@@ -101,7 +97,9 @@ class MainActivity : AppCompatActivity(),
     /* ----------- NAVIGATION SETUP ----------- */
 
     private fun animateNavigationToAccount() {
-        currentNavigationFragment?.exitTransition = MaterialFadeThrough()
+        currentNavigationFragment?.exitTransition = MaterialFadeThrough().apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
     }
 
     private fun animateNavigationToRecipeList() {
@@ -155,17 +153,14 @@ class MainActivity : AppCompatActivity(),
     ) {
         when (destination.id) {
             R.id.RecipeListFragment -> {
-                if (currentNavigationFragment !is RecipeListFragment) {
-                    binding.newRecipeBtn.show()
-                    showBottomAppBar()
-                    animateNavigationToRecipeList()
-                }
+                binding.newRecipeBtn.show()
+                showBottomAppBar()
+                animateNavigationToRecipeList()
             }
             R.id.AccountFragment -> {
-                if (currentNavigationFragment !is AccountFragment) {
-                    // FAB hides onViewCreated in the fragment to avoid stutter
-//                    animateNavigationToAccount()
-                }
+                // FAB hides onViewCreated in the fragment to avoid stutter
+                animateNavigationToAccount()
+
             }
             R.id.RecipePagerFragment -> {
                 hideBottomAppBar()

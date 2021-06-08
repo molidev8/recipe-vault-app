@@ -86,9 +86,9 @@ class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigat
         if (args.recipeID == -1) {
             enterTransition = MaterialContainerTransform().apply {
                 startView = requireActivity().findViewById(R.id.newRecipeBtn)
-                endView = binding.tabs
+                endView = binding.recipePager
                 scrimColor = Color.TRANSPARENT
-                startContainerColor = resources.getColor(R.color.secondaryColor)
+//                startContainerColor = resources.getColor(R.color.secondaryColor)
                 containerColor = resources.getColor(R.color.secondaryColor)
                 endContainerColor = resources.getColor(R.color.colorSurface)
             }

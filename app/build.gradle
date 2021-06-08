@@ -8,6 +8,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('C:\\Users\\moliv\\keystores\\test.jks')
+            storePassword '111111'
+            keyAlias 'test'
+            keyPassword '111111'
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
