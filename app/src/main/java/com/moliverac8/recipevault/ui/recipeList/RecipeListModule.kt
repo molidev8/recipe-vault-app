@@ -1,6 +1,7 @@
 package com.moliverac8.recipevault.ui.recipeList
 
 import com.moliverac8.data.RecipesRepository
+import com.moliverac8.usecases.DeleteRecipe
 import com.moliverac8.usecases.GetAllRecipes
 import dagger.Module
 import dagger.Provides
@@ -15,4 +16,8 @@ class RecipeListModule {
     @Provides
     fun getAllRecipes(recipesRepository: RecipesRepository): GetAllRecipes =
         GetAllRecipes(recipesRepository)
+
+    @Provides
+    fun deleteRecipe(recipesRepository: RecipesRepository): DeleteRecipe =
+        DeleteRecipe(recipesRepository)
 }

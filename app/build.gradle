@@ -140,6 +140,5 @@ dependencies {
     implementation 'com.dropbox.core:dropbox-core-sdk:4.0.0'
     api 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-    implementation 'com.github.mancj:MaterialSearchBar:0.8.5'
 }
 

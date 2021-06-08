@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moliverac8.domain.RecipeWithIng
 import com.moliverac8.recipevault.toListOfString
+import com.moliverac8.usecases.DeleteRecipe
 import com.moliverac8.usecases.GetAllRecipes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecipeListVM @Inject constructor(
-    private val getRecipes: GetAllRecipes
+    private val getRecipes: GetAllRecipes,
+    private val deleteRecipe: DeleteRecipe
 ) : ViewModel() {
 
     private val _recipes = MutableLiveData<List<RecipeWithIng>>()
@@ -37,6 +39,34 @@ class RecipeListVM @Inject constructor(
             withContext(Dispatchers.IO) {
                 originalRecipes = getRecipes()
                 _recipes.postValue(originalRecipes)
+            }
+        }
+    }
+
+    fun deleteRecipeOnDatabase(recipe: RecipeWithIng) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                deleteRecipe(recipe)
+            }
+        }
+    }
+
+    fun removeRecipeFromObservable(recipe: RecipeWithIng) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                _recipes.postValue(recipes.value?.toMutableList()?.apply {
+                    remove(recipe)
+                })
+            }
+        }
+    }
+
+    fun addRecipeFromObservable(recipe: RecipeWithIng) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                _recipes.postValue(recipes.value?.toMutableList()?.apply {
+                    add(recipe)
+                })
             }
         }
     }

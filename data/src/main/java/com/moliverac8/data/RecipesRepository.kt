@@ -15,4 +15,7 @@ class RecipesRepository(private val localRecipeDatabase: LocalRecipesDataSource)
 
     suspend fun updateRecipeWithIngredients(old: RecipeWithIng, new: RecipeWithIng) =
         localRecipeDatabase.updateRecipeWithIng(old, new)
+
+    suspend fun deleteRecipeWithIng(recipe: RecipeWithIng) =
+        localRecipeDatabase.deleteRecipeWithIng(recipe)
 }

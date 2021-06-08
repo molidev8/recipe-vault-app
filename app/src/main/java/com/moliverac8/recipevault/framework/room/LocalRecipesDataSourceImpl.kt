@@ -9,7 +9,10 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
 
-class LocalRecipesDataSourceImpl(db: LocalRecipeDatabase, private val dispatcher: CoroutineDispatcher = IO) :
+class LocalRecipesDataSourceImpl(
+    db: LocalRecipeDatabase,
+    private val dispatcher: CoroutineDispatcher = IO
+) :
     LocalRecipesDataSource {
 
     private val dao = db.dao()
@@ -20,7 +23,12 @@ class LocalRecipesDataSourceImpl(db: LocalRecipeDatabase, private val dispatcher
             val list = recipeWithIng.ings.map { it.toRoom() }
             list.forEach { ingredient ->
                 val idIng = dao.insertIngredient(ingredient)
-                dao.insertRecipeIngCross(Recipe_Ing(idRecipe.toInt(), idIng.toInt()))
+                dao.insertRecipeIngCross(
+                    Recipe_Ing(
+                        idRecipe.toInt(), if (idIng != -1L) idIng.toInt()
+                        else ingredient.ingID
+                    )
+                )
             }
             return@withContext idRecipe
         }
@@ -52,6 +60,15 @@ class LocalRecipesDataSourceImpl(db: LocalRecipeDatabase, private val dispatcher
                 } else {
                     dao.updateIngredient(ingredient)
                 }
+            }
+        }
+    }
+
+    override suspend fun deleteRecipeWithIng(recipe: RecipeWithIng) {
+        withContext(dispatcher) {
+            dao.deleteRecipe(recipe.domainRecipe.toRoom())
+            recipe.ings.forEach { ing ->
+                dao.deleteRecipeIngCross(Recipe_Ing(recipe.domainRecipe.id, ing.id))
             }
         }
     }

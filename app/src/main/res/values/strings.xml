@@ -58,4 +58,6 @@
     <string name="back">Back</string>
     <string name="required_text">Required text</string>
     <string name="search_recipe">Look for a recipe</string>
+    <string name="undo">Undo</string>
+    <string name="recipe_removed">Recipe removed</string>
 </resources>

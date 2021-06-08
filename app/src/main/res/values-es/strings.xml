@@ -59,4 +59,6 @@
     <string name="back">Atrás</string>
     <string name="required_text">Campo necesario</string>
     <string name="search_recipe">Busca una receta</string>
+    <string name="undo">Deshacer</string>
+    <string name="recipe_removed">Receta eliminada</string>
 </resources>

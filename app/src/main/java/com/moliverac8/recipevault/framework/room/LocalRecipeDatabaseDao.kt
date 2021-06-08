@@ -16,7 +16,7 @@ interface LocalRecipeDatabaseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecipe(recipe: Recipe): Long
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertIngredient(ing: Ingredient): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -30,4 +30,13 @@ interface LocalRecipeDatabaseDao {
 
     @Update
     suspend fun updateIngredient(ing: Ingredient)
+
+    @Delete
+    suspend fun deleteRecipe(recipe: Recipe)
+
+    @Delete
+    suspend fun deleteRecipeIngCross(ref: Recipe_Ing)
+
+    @Delete
+    suspend fun deleteIngredient(ing: Ingredient)
 }

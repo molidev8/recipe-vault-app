@@ -20,7 +20,6 @@ fun DomainIngredient.toRoom(): Ingredient {
     return Ingredient(aux, name, unit, quantity)
 }
 
-
 fun Ingredient.toDomain(): DomainIngredient =
     DomainIngredient(ingID, ingName, unit, quantity)
 

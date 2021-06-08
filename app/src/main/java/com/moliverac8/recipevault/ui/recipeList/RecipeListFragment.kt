@@ -7,9 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
 import androidx.core.view.doOnPreDraw
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ItemTouchHelper
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.moliverac8.domain.DietType
@@ -17,6 +18,7 @@ import com.moliverac8.domain.DishType
 import com.moliverac8.recipevault.GENERAL
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.FragmentRecipeListBinding
+import com.moliverac8.recipevault.ui.common.SwipeToDeleteRecipeList
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -78,6 +80,7 @@ class RecipeListFragment : Fragment() {
         }
 
         binding.recipeList.adapter = adapter
+        ItemTouchHelper(SwipeToDeleteRecipeList(viewModel, adapter, newRecipeBtn)).attachToRecyclerView(binding.recipeList)
 
         viewModel.recipes.observe(viewLifecycleOwner, { recipes ->
             adapter.submitList(recipes)
