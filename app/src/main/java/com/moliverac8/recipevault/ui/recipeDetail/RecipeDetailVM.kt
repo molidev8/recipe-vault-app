@@ -42,7 +42,6 @@ class RecipeDetailVM @Inject constructor(
                 if (id == -1) _recipeWithIng.postValue(RecipeWithIng(Recipe(), listOf()))
                 else {
                     val rec = getRecipeByID(id)
-                    Log.d(GENERAL, "VM - Receta cargada $rec")
                     _recipeWithIng.postValue(rec)
                 }
             }

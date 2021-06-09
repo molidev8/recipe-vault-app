@@ -56,7 +56,6 @@ class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigat
         viewModel.getRecipe(args.recipeID)
 
         // Cargo la receta nueva o la existente en el viewModel compartido por los fragmentos del viewpager
-        Log.d(GENERAL, "PG - Receta ID ${args.recipeID}")
 
         if (args.isEditable) showSaveButton(true)
         else showSaveButton(false)
@@ -87,7 +86,7 @@ class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigat
         if (args.recipeID == -1) {
             enterTransition = MaterialContainerTransform().apply {
                 startView = newRecipeBtn
-                endView = binding.topBar
+                endView = binding.recipePager
                 scrimColor = Color.TRANSPARENT
                 duration = resources.getInteger(R.integer.motion_duration_large).toLong()
                 startContainerColor = resources.getColor(R.color.secondaryColor)

@@ -52,7 +52,7 @@ class LocalRecipesDataSourceImpl(
         withContext(dispatcher) {
             dao.updateRecipe(new.domainRecipe.toRoom())
             val ings = new.ings.subtract(old.ings).map { it.toRoom() }
-            Log.d(GENERAL, "Nueva $ings")
+
             ings.forEach { ingredient ->
                 if (ingredient.ingID == 0) {
                     val idIng = dao.insertIngredient(ingredient)

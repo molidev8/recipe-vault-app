@@ -51,7 +51,6 @@ class DropboxManager(private val context: Context) {
                 ?.uploadAndFinish(input)
             true
         } catch (e: DbxException) {
-            Log.d(BACKUP, "Error uploading files ${e.localizedMessage}")
             throw DbxException("Error uploading files ${e.localizedMessage}")
         }
     }

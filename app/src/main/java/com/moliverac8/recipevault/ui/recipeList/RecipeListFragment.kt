@@ -70,7 +70,6 @@ class RecipeListFragment : Fragment() {
                         }
                     }
                 }
-                Log.d(GENERAL, "Filtros: ${filterList}")
                 if (filterList.isEmpty()) {
                     viewModel.loadOriginalRecipes()
                 } else {

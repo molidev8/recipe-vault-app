@@ -105,7 +105,6 @@ class RecipeDetailEditFragment : Fragment() {
                 Permissions.requestPermissionsFragment(::requestPermissions)
             } else {
                 launchCamera()
-                Log.d(PERMISSION, "Permisos concedidos up")
             }
         }
 
@@ -217,7 +216,6 @@ class RecipeDetailEditFragment : Fragment() {
     private fun recoverInstructions() {
         binding.instructions.forEachIndexed { idx, view ->
             if (view is TextInputLayout) {
-                Log.d(GENERAL, view.editText?.text.toString())
                 mapOfInstructions[idx] = view.editText?.text.toString()
             }
         }
@@ -228,7 +226,6 @@ class RecipeDetailEditFragment : Fragment() {
         val photoFile: File? = try {
             createImageFile()
         } catch (ex: IOException) {
-            Log.d(IO, "Error al lanzar la camara")
             null
         }
         photoUri = FileProvider.getUriForFile(
@@ -268,10 +265,8 @@ class RecipeDetailEditFragment : Fragment() {
     ) {
         if (requestCode == Permissions.PERMISSION_CODE) {
             if (grantResults.isEmpty() || (grantResults.any { it == PackageManager.PERMISSION_DENIED })) {
-                Log.d(PERMISSION, "Permisos denegados")
             } else {
                 launchCamera()
-                Log.d(PERMISSION, "Permisos concedidos")
             }
         }
     }

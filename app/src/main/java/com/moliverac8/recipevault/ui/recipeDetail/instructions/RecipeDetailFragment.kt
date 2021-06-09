@@ -49,7 +49,6 @@ class RecipeDetailFragment : Fragment() {
         binding.instructions.adapter = adapter
 
         viewModel.recipeWithIng.observe(viewLifecycleOwner, { recipe ->
-            Log.d(GENERAL, "FG - Receta cargada $recipe")
             binding.recipe = recipe.domainRecipe
             loadTimeToEatChips(recipe.domainRecipe.dishType)
             adapter.submitList(recipe.domainRecipe.instructions.toListOfInstructions())

@@ -63,7 +63,6 @@ class BackupUserData(private val context: Context) {
             backupDir?.listFiles()?.find { it.name == "recipe-vault-backup.zip" })
         uploadToDropbox(zipFile)
     } catch (e: FileNotFoundException) {
-        Log.d(BACKUP, "File Not Found ${e.localizedMessage}")
         throw Exception()
     } catch (e: Exception) {
         throw Exception()
@@ -77,7 +76,6 @@ class BackupUserData(private val context: Context) {
         restoreRoomDatabase()
         LocalRecipeDatabase.getInstance(context)
     } catch (e: Exception) {
-        Log.d(BACKUP, e.localizedMessage!!)
         throw Exception()
     }
 
@@ -120,13 +118,10 @@ class BackupUserData(private val context: Context) {
             }
             zipOutput.close()
         } catch (e: IllegalArgumentException) {
-            Log.d(BACKUP, "Filename too long ${e.localizedMessage}")
             throw Exception()
         } catch (e: ZipException) {
-            Log.d(BACKUP, "Zip formatting error ${e.localizedMessage}")
             throw Exception()
         } catch (e: IOException) {
-            Log.d(BACKUP, "IO error ${e.localizedMessage}")
             throw Exception()
         }
     }
@@ -141,7 +136,6 @@ class BackupUserData(private val context: Context) {
         try {
             backupFile?.copyTo(dbPath, true)
         } catch (e: Exception) {
-            Log.d(BACKUP, "Error al restaurar fichero $e")
         }
     }
 
