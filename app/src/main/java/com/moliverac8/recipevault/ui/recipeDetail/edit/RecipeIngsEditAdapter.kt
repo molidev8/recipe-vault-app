@@ -53,12 +53,12 @@ class RecipeIngsEditAdapter(
         fun bind(item: Ingredient) {
             binding.ingredient = item
             binding.units.setOnClickListener {
-                val pos = adapterPosition
+                val pos = absoluteAdapterPosition
                 onClickListener.onClick(adapter, pos, ings)
             }
 
             binding.ingEdit.doAfterTextChanged {
-                val pos = adapterPosition
+                val pos = absoluteAdapterPosition
                 val ing = ings[pos]
                 ings[pos] = Ingredient(
                     ing.id,

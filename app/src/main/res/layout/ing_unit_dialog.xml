@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="Cantidad"
+            android:text="@string/quantity"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,7 @@
             app:layout_constraintTop_toBottomOf="@id/title">
 
             <AutoCompleteTextView
-                android:hint="Metrica"
+                android:hint="@string/metrica"
                 android:id="@+id/options"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:scaleX="0.9"
             android:scaleY="0.9"
-            android:text="Guardar"
+            android:text="@string/save"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/number" />
 
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:scaleX="0.9"
             android:scaleY="0.9"
-            android:text="Cancelar"
+            android:text="@string/cancel"
             app:layout_constraintEnd_toStartOf="@id/save"
             app:layout_constraintTop_toBottomOf="@id/number" />
 

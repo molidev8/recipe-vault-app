@@ -2,7 +2,6 @@ package com.moliverac8.recipevault.ui.recipeDetail
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +11,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.transition.Slide
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.transition.MaterialContainerTransform
-import com.moliverac8.recipevault.GENERAL
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.FragmentRecipePagerBinding
 import com.moliverac8.recipevault.themeColor
@@ -27,7 +26,8 @@ import com.moliverac8.recipevault.ui.recipeDetail.instructions.RecipeDetailFragm
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigateInterface, CustomOnBackPressedInterface {
+class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigateInterface,
+    CustomOnBackPressedInterface {
 
     private val args by navArgs<RecipePagerFragmentArgs>()
     private val viewModel: RecipeDetailVM by viewModels(ownerProducer = { this })
@@ -38,13 +38,33 @@ class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigat
     private val goBackLogic = {
         // Si es para crear una nueva receta
         if (!viewModel.amIEditing) {
-            (activity as RecipePagerNavigate).navigateHomeFromPager()
+            if (args.isEditable) {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.user_confirmation)
+                    .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
+                        (activity as RecipePagerNavigate).navigateHomeFromPager()
+                    }
+                    .setNegativeButton(resources.getString(R.string.cancel)) { _, _ ->
+
+                    }
+                    .show()
+            } else {
+                (activity as RecipePagerNavigate).navigateHomeFromPager()
+            }
         }
         // Si es para editar una receta existente
         else {
-            viewModel.amIEditing = false
-            showSaveButton(false)
-            (activity as RecipePagerNavigate).navigateToDetailsFromEdit(binding.pager)
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.user_confirmation)
+                .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
+                    viewModel.amIEditing = false
+                    showSaveButton(false)
+                    (activity as RecipePagerNavigate).navigateToDetailsFromEdit(binding.pager)
+                }
+                .setNegativeButton(resources.getString(R.string.cancel)) { _, _ ->
+
+                }
+                .show()
         }
     }
 

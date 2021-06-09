@@ -61,4 +61,9 @@
     <string name="search_recipe">Busca una receta</string>
     <string name="undo">Deshacer</string>
     <string name="recipe_removed">Receta eliminada</string>
+    <string name="metrica">Métrica</string>
+    <string name="cancel">Cancelar</string>
+    <string name="quantity">Cantidad</string>
+    <string name="user_confirmation">¿Está seguro?</string>
+    <string name="ok">Ok</string>
 </resources>
