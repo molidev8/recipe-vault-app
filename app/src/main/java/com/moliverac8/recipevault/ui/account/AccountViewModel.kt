@@ -10,6 +10,7 @@ import com.moliverac8.recipevault.BACKUP_SIZE
 import com.moliverac8.recipevault.CLOUD_BACKUP_TIME
 import com.moliverac8.recipevault.framework.workmanager.BackupUserData
 import com.moliverac8.recipevault.framework.workmanager.DropboxManager
+import com.moliverac8.recipevault.ui.common.Event
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -38,16 +39,16 @@ class AccountViewModel @Inject constructor(
             BackupUserData.BackupEntryPoint::class.java
         ).dropboxManager()
     }
-    private val _doingBackup = MutableLiveData(false)
-    val doingBackup: LiveData<Boolean>
+    private val _doingBackup = MutableLiveData<Event<Boolean>>()
+    val doingBackup: LiveData<Event<Boolean>>
         get() = _doingBackup
 
-    private val _doingRestore = MutableLiveData<Boolean>()
-    val doingRestore: LiveData<Boolean>
+    private val _doingRestore = MutableLiveData<Event<Boolean>>()
+    val doingRestore: LiveData<Event<Boolean>>
         get() = _doingRestore
 
-    private val _isFinished = MutableLiveData<Long>()
-    val isFinished: LiveData<Long>
+    private val _isFinished = MutableLiveData<Event<Long>>()
+    val isFinished: LiveData<Event<Long>>
         get() = _isFinished
 
     private val _firstTimeSetup = MutableLiveData<Boolean>()
@@ -64,17 +65,17 @@ class AccountViewModel @Inject constructor(
 
     fun makeBackup(coroutineExceptionHandler: CoroutineExceptionHandler) =
         CoroutineScope(IO + coroutineExceptionHandler).launch {
-            _doingBackup.postValue(true)
+            _doingBackup.postValue(Event(true))
             backupUserData.doBackup()
-            _doingBackup.postValue(false)
-            _isFinished.postValue(backupUserData.getBackupSize())
+            _doingBackup.postValue(Event(false))
+            _isFinished.postValue(Event(backupUserData.getBackupSize()))
         }
 
     fun restoreBackup(coroutineExceptionHandler: CoroutineExceptionHandler) =
         CoroutineScope(IO + coroutineExceptionHandler).launch {
-            _doingRestore.postValue(true)
+            _doingRestore.postValue(Event(true))
             backupUserData.restoreBackup()
-            _doingRestore.postValue(false)
+            _doingRestore.postValue(Event(false))
         }
 
     fun saveSizeOfCloudBackup(prefs: SharedPreferences) {

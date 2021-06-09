@@ -18,6 +18,7 @@ import com.google.android.material.transition.MaterialContainerTransform
 import com.moliverac8.recipevault.GENERAL
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.FragmentRecipePagerBinding
+import com.moliverac8.recipevault.themeColor
 import com.moliverac8.recipevault.ui.common.CustomOnBackPressedInterface
 import com.moliverac8.recipevault.ui.recipeDetail.edit.RecipeDetailEditFragment
 import com.moliverac8.recipevault.ui.recipeDetail.edit.RecipeIngsEditFragment
@@ -89,9 +90,9 @@ class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigat
                 endView = binding.recipePager
                 scrimColor = Color.TRANSPARENT
                 duration = resources.getInteger(R.integer.motion_duration_large).toLong()
-                startContainerColor = resources.getColor(R.color.secondaryColor)
-                containerColor = resources.getColor(R.color.colorSurface)
-                endContainerColor = resources.getColor(R.color.colorSurface)
+                startContainerColor = requireContext().themeColor(R.attr.colorSecondary)
+                containerColor = requireContext().themeColor(R.attr.colorSurface)
+                endContainerColor = requireContext().themeColor(R.attr.colorSurface)
             }
             returnTransition = Slide().apply {
                 addTarget(R.id.recipe_pager)

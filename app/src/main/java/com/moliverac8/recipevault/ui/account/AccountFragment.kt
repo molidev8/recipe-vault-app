@@ -7,9 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.children
-import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomappbar.BottomAppBar
@@ -77,32 +74,45 @@ class AccountFragment : Fragment() {
 
         if (serializedCredential != null) {
             viewModel.isFinished.observe(viewLifecycleOwner) { backupSize ->
-                prefs.edit().putLong(BACKUP_SIZE, backupSize).apply()
-                binding.progressBar.hide()
-                Snackbar.make(requireView(), getString(R.string.backup_done_ok), Snackbar.LENGTH_SHORT)
-                    .setAnchorView(bottomBarView).show()
-                updateMetadata(binding)
+                backupSize.getContentIfNotHandled()?.let {
+                    prefs.edit().putLong(BACKUP_SIZE, it).apply()
+                    binding.progressBar.hide()
+                    Snackbar.make(
+                        requireView(),
+                        getString(R.string.backup_done_ok),
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .setAnchorView(bottomBarView).show()
+                    updateMetadata(binding)
+                }
+
             }
 
             viewModel.doingBackup.observe(viewLifecycleOwner) { isWorking ->
-                if (isWorking) {
-                    binding.progressBar.show()
-                    with(prefs.edit()) {
-                        val time = Calendar.getInstance()
-                        putLong(LOCAL_BACKUP_TIME, time.timeInMillis).apply()
-                        putLong(CLOUD_BACKUP_TIME, time.timeInMillis).apply()
+                isWorking.getContentIfNotHandled()?.let {
+                    if (it) {
+                        binding.progressBar.show()
+                        with(prefs.edit()) {
+                            val time = Calendar.getInstance()
+                            putLong(LOCAL_BACKUP_TIME, time.timeInMillis).apply()
+                            putLong(CLOUD_BACKUP_TIME, time.timeInMillis).apply()
+                        }
                     }
                 }
             }
 
             viewModel.doingRestore.observe(viewLifecycleOwner) { isWorking ->
-                if (isWorking) {
-                    binding.progressBar.show()
-                } else {
-                    binding.progressBar.show()
-                    Snackbar.make(binding.root, getString(R.string.restore_done_ok), Snackbar.LENGTH_SHORT)
-                        .setAnchorView(bottomBarView).show()
-                    binding.progressBar.hide()
+                isWorking.getContentIfNotHandled()?.let {
+                    if (it) {
+                        binding.progressBar.show()
+                    } else {
+                        Snackbar.make(
+                            binding.root,
+                            getString(R.string.restore_done_ok),
+                            Snackbar.LENGTH_SHORT
+                        ).setAnchorView(bottomBarView).show()
+                        binding.progressBar.hide()
+                    }
                 }
             }
 
