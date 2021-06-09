@@ -12,13 +12,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.transition.Slide
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.transition.MaterialContainerTransform
 import com.moliverac8.recipevault.GENERAL
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.FragmentRecipePagerBinding
-import com.moliverac8.recipevault.ui.MainActivity
 import com.moliverac8.recipevault.ui.common.CustomOnBackPressedInterface
 import com.moliverac8.recipevault.ui.recipeDetail.edit.RecipeDetailEditFragment
 import com.moliverac8.recipevault.ui.recipeDetail.edit.RecipeIngsEditFragment
@@ -32,7 +31,9 @@ class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigat
     private val args by navArgs<RecipePagerFragmentArgs>()
     private val viewModel: RecipeDetailVM by viewModels(ownerProducer = { this })
     private lateinit var binding: FragmentRecipePagerBinding
-
+    private val newRecipeBtn: FloatingActionButton by lazy {
+        requireActivity().findViewById(R.id.newRecipeBtn)
+    }
     private val goBackLogic = {
         // Si es para crear una nueva receta
         if (!viewModel.amIEditing) {
@@ -85,15 +86,17 @@ class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigat
         super.onViewCreated(view, savedInstanceState)
         if (args.recipeID == -1) {
             enterTransition = MaterialContainerTransform().apply {
-                startView = requireActivity().findViewById(R.id.newRecipeBtn)
-                endView = binding.recipePager
+                startView = newRecipeBtn
+                endView = binding.topBar
                 scrimColor = Color.TRANSPARENT
-//                startContainerColor = resources.getColor(R.color.secondaryColor)
-                containerColor = resources.getColor(R.color.secondaryColor)
+                duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+                startContainerColor = resources.getColor(R.color.secondaryColor)
+                containerColor = resources.getColor(R.color.colorSurface)
                 endContainerColor = resources.getColor(R.color.colorSurface)
             }
             returnTransition = Slide().apply {
                 addTarget(R.id.recipe_pager)
+                resources.getInteger(R.integer.motion_duration_large).toLong()
             }
         } else {
             sharedElementEnterTransition = MaterialContainerTransform().apply {

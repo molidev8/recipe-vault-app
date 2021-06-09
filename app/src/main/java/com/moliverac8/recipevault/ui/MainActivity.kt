@@ -108,8 +108,12 @@ class MainActivity : AppCompatActivity(),
 
     private fun animateNavigationToNewRecipe() {
         currentNavigationFragment?.apply {
-            exitTransition = MaterialElevationScale(false)
-            reenterTransition = MaterialElevationScale(true)
+            exitTransition = MaterialElevationScale(false).apply {
+                resources.getInteger(R.integer.motion_duration_large).toLong()
+            }
+            reenterTransition = MaterialElevationScale(true).apply {
+                resources.getInteger(R.integer.motion_duration_large).toLong()
+            }
         }
     }
 
@@ -160,7 +164,6 @@ class MainActivity : AppCompatActivity(),
             R.id.AccountFragment -> {
                 // FAB hides onViewCreated in the fragment to avoid stutter
                 animateNavigationToAccount()
-
             }
             R.id.RecipePagerFragment -> {
                 hideBottomAppBar()
