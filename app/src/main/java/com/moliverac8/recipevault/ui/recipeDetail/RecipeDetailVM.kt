@@ -29,6 +29,10 @@ class RecipeDetailVM @Inject constructor(
         get() = _recipeWithIng
     private val _recipeWithIng = MutableLiveData<RecipeWithIng>()
 
+    private val _dialogIng = MutableLiveData<Ingredient>()
+    val dialogIng: LiveData<Ingredient>
+        get() = _dialogIng
+
     private var tempIngs: List<Ingredient> = mutableListOf()
     private var tempRecipe: Recipe = Recipe()
     var amIEditing: Boolean = false
@@ -46,6 +50,10 @@ class RecipeDetailVM @Inject constructor(
                 }
             }
         }
+    }
+
+    fun updateDialogIng(ingredient: Ingredient) {
+        _dialogIng.value = ingredient
     }
 
     fun saveIngredients(ings: List<Ingredient>) {

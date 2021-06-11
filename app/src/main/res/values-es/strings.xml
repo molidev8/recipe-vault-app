@@ -66,4 +66,5 @@
     <string name="quantity">Cantidad</string>
     <string name="user_confirmation">¿Está seguro?</string>
     <string name="ok">Ok</string>
+    <string name="ing_title">Ingrediente</string>
 </resources>

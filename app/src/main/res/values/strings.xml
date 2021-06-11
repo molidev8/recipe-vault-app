@@ -65,4 +65,5 @@
     <string name="quantity">Quantity</string>
     <string name="user_confirmation">Are you sure?</string>
     <string name="ok">Ok</string>
+    <string name="ing_title">Ingredient</string>
 </resources>

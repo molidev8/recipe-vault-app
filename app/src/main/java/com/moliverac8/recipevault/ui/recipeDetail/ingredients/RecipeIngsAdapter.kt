@@ -45,7 +45,7 @@ class RecipeIngsAdapter :
 class IngsDiffCallback : DiffUtil.ItemCallback<Ingredient>() {
 
     override fun areItemsTheSame(oldItem: Ingredient, newItem: Ingredient): Boolean =
-        oldItem.id == newItem.id
+        oldItem.name == newItem.name || oldItem.id == newItem.id
 
     override fun areContentsTheSame(oldItem: Ingredient, newItem: Ingredient): Boolean =
         oldItem == newItem

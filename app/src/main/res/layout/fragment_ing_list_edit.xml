@@ -16,7 +16,7 @@
             app:layout_constraintBottom_toTopOf="@id/guideline2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:listitem="@layout/item_ing_edit_list" />
+            tools:listitem="@layout/item_ing_list" />
 
         <View
             android:id="@+id/divider_left"

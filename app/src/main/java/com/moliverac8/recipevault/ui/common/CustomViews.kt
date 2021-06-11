@@ -1,24 +1,26 @@
 package com.moliverac8.recipevault.ui.common
 
 import android.content.Context
-import android.graphics.Point
 import android.os.Bundle
+import android.text.Editable
 import android.util.AttributeSet
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ArrayAdapter
+import android.widget.EditText
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.NestedScrollingChild3
 import androidx.core.view.NestedScrollingChildHelper
-import androidx.databinding.adapters.TextViewBindingAdapter.setText
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.ViewModel
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputLayout
 import com.moliverac8.domain.Ingredient
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.IngUnitDialogBinding
-import com.moliverac8.recipevault.databinding.ItemIngEditListBinding
 import com.moliverac8.recipevault.ui.recipeDetail.RecipeDetailVM
-import com.moliverac8.recipevault.ui.recipeDetail.edit.RecipeIngsEditAdapter
 
 class Dots(
     context: Context?,
@@ -35,27 +37,16 @@ class Dots(
     }
 }
 
-class IngQuantityDialog(
-    private val adapter: RecipeIngsEditAdapter,
-    private val pos: Int,
-    private val ings: MutableList<Ingredient>
-) : DialogFragment() {
+class IngQuantityDialog(private val viewModel: RecipeDetailVM, private val ing: Ingredient? = null) : DialogFragment() {
 
     lateinit var binding: IngUnitDialogBinding
 
     override fun onResume() {
         super.onResume()
-        val window = dialog?.window
-        if (window != null) {
-            val size = Point()
-
-            val display = window.windowManager.defaultDisplay
-            display.getSize(size)
-            val width: Int = size.x
-
-            window.setLayout((width * 0.9).toInt(), WindowManager.LayoutParams.WRAP_CONTENT)
-            window.setGravity(Gravity.CENTER)
-        }
+        val params: ViewGroup.LayoutParams = dialog!!.window!!.attributes
+        params.width = ConstraintLayout.LayoutParams.MATCH_PARENT
+        params.height = ConstraintLayout.LayoutParams.WRAP_CONTENT
+        dialog!!.window!!.attributes = params as WindowManager.LayoutParams
     }
 
     override fun onCreateView(
@@ -90,20 +81,62 @@ class IngQuantityDialog(
             minValue = 1
         }
 
+        val watcher = { cont: TextInputLayout ->
+            { text: Editable? ->
+                if (text.isNullOrBlank()) {
+                    cont.error = getString(R.string.required_text)
+                } else {
+                    cont.isErrorEnabled = false
+                }
+            }
+        }
+        val focusListener = { cont: TextInputLayout ->
+            View.OnFocusChangeListener { v, hasFocus ->
+                with(v as EditText) {
+                    if (!hasFocus) {
+                        if (text.isNullOrBlank()) {
+                            cont.error = getString(R.string.required_text)
+                        } else {
+                            cont.isErrorEnabled = false
+                        }
+                    }
+                }
+            }
+        }
+
+        ing?.let {
+            binding.ingEdit.setText(it.name)
+            binding.number.value = it.quantity.toInt()
+            binding.menu.editText?.setText(it.unit)
+        }
+
+        binding.ingEdit.apply {
+            doAfterTextChanged(watcher(binding.ing))
+            onFocusChangeListener = focusListener(binding.ing)
+        }
+
         binding.save.setOnClickListener {
-            val ing = ings[pos]
-            ings[pos] = Ingredient(
-                ing.id,
-                ing.name,
-                binding.menu.editText?.text.toString(),
-                binding.number.value.toDouble()
-            )
-            adapter.notifyItemChanged(pos)
-            onStop()
+            if (binding.ingEdit.text.toString().isNotBlank()) {
+                binding.number.clearFocus()
+                val id = ing?.id ?: -1
+                viewModel.updateDialogIng(
+                    Ingredient(
+                        id,
+                        binding.ingEdit.text.toString(),
+                        binding.menu.editText?.text.toString(),
+                        binding.number.value.toDouble()
+                    )
+                )
+                dismiss()
+            } else {
+                if (binding.ingEdit.text.toString().isEmpty()) {
+                    binding.ingEdit.error = getString(R.string.required_text)
+                }
+            }
         }
 
         binding.cancel.setOnClickListener {
-            onStop()
+            dismiss()
         }
 
         return binding.root
@@ -139,7 +172,8 @@ class NestedCoordinatorLayout : CoordinatorLayout, NestedScrollingChild3 {
         helper.isNestedScrollingEnabled = enabled
     }
 
-    override fun hasNestedScrollingParent(type: Int): Boolean = helper.hasNestedScrollingParent(type)
+    override fun hasNestedScrollingParent(type: Int): Boolean =
+        helper.hasNestedScrollingParent(type)
 
     override fun hasNestedScrollingParent(): Boolean = helper.hasNestedScrollingParent()
 
@@ -171,18 +205,46 @@ class NestedCoordinatorLayout : CoordinatorLayout, NestedScrollingChild3 {
         consumed[1] = superConsumed[1] + thisConsumed[1]
     }
 
-    override fun onNestedScroll(target: View, dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int, type: Int, consumed: IntArray) {
+    override fun onNestedScroll(
+        target: View,
+        dxConsumed: Int,
+        dyConsumed: Int,
+        dxUnconsumed: Int,
+        dyUnconsumed: Int,
+        type: Int,
+        consumed: IntArray
+    ) {
         dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, null, type)
-        super.onNestedScroll(target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed)
+        super.onNestedScroll(
+            target,
+            dxConsumed,
+            dyConsumed,
+            dxUnconsumed,
+            dyUnconsumed,
+            type,
+            consumed
+        )
     }
 
-    override fun onNestedScroll(target: View, dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int, type: Int
+    override fun onNestedScroll(
+        target: View,
+        dxConsumed: Int,
+        dyConsumed: Int,
+        dxUnconsumed: Int,
+        dyUnconsumed: Int,
+        type: Int
     ) {
         super.onNestedScroll(target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type)
         dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, null, type)
     }
 
-    override fun onNestedScroll(target: View, dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int) {
+    override fun onNestedScroll(
+        target: View,
+        dxConsumed: Int,
+        dyConsumed: Int,
+        dxUnconsumed: Int,
+        dyUnconsumed: Int
+    ) {
         super.onNestedScroll(target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed)
         dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, null)
     }
@@ -202,12 +264,18 @@ class NestedCoordinatorLayout : CoordinatorLayout, NestedScrollingChild3 {
         return dispatchNestedPreFling(velocityX, velocityY) || superResult
     }
 
-    override fun onNestedFling(target: View, velocityX: Float, velocityY: Float, consumed: Boolean): Boolean {
+    override fun onNestedFling(
+        target: View,
+        velocityX: Float,
+        velocityY: Float,
+        consumed: Boolean
+    ): Boolean {
         val superResult = super.onNestedFling(target, velocityX, velocityY, consumed)
         return dispatchNestedFling(velocityX, velocityY, consumed) || superResult
     }
 
-    override fun startNestedScroll(axes: Int, type: Int): Boolean = helper.startNestedScroll(axes, type)
+    override fun startNestedScroll(axes: Int, type: Int): Boolean =
+        helper.startNestedScroll(axes, type)
 
     override fun startNestedScroll(axes: Int): Boolean = helper.startNestedScroll(axes)
 
@@ -219,26 +287,67 @@ class NestedCoordinatorLayout : CoordinatorLayout, NestedScrollingChild3 {
         helper.stopNestedScroll()
     }
 
-    override fun dispatchNestedScroll(dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int, offsetInWindow: IntArray?, type: Int, consumed: IntArray) {
-        helper.dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, offsetInWindow, type, consumed)
+    override fun dispatchNestedScroll(
+        dxConsumed: Int,
+        dyConsumed: Int,
+        dxUnconsumed: Int,
+        dyUnconsumed: Int,
+        offsetInWindow: IntArray?,
+        type: Int,
+        consumed: IntArray
+    ) {
+        helper.dispatchNestedScroll(
+            dxConsumed,
+            dyConsumed,
+            dxUnconsumed,
+            dyUnconsumed,
+            offsetInWindow,
+            type,
+            consumed
+        )
     }
 
-    override fun dispatchNestedScroll(dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int,
-                                      offsetInWindow: IntArray?, type: Int
-    ): Boolean = helper.dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, offsetInWindow, type)
+    override fun dispatchNestedScroll(
+        dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int,
+        offsetInWindow: IntArray?, type: Int
+    ): Boolean = helper.dispatchNestedScroll(
+        dxConsumed,
+        dyConsumed,
+        dxUnconsumed,
+        dyUnconsumed,
+        offsetInWindow,
+        type
+    )
 
-    override fun dispatchNestedScroll(dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int,
-                                      dyUnconsumed: Int, offsetInWindow: IntArray?
-    ): Boolean = helper.dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, offsetInWindow)
+    override fun dispatchNestedScroll(
+        dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int,
+        dyUnconsumed: Int, offsetInWindow: IntArray?
+    ): Boolean = helper.dispatchNestedScroll(
+        dxConsumed,
+        dyConsumed,
+        dxUnconsumed,
+        dyUnconsumed,
+        offsetInWindow
+    )
 
-    override fun dispatchNestedPreScroll(dx: Int, dy: Int, consumed: IntArray?,
-                                         offsetInWindow: IntArray?, type: Int
+    override fun dispatchNestedPreScroll(
+        dx: Int, dy: Int, consumed: IntArray?,
+        offsetInWindow: IntArray?, type: Int
     ): Boolean = helper.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow, type)
 
-    override fun dispatchNestedPreScroll(dx: Int, dy: Int, consumed: IntArray?, offsetInWindow: IntArray?): Boolean =
+    override fun dispatchNestedPreScroll(
+        dx: Int,
+        dy: Int,
+        consumed: IntArray?,
+        offsetInWindow: IntArray?
+    ): Boolean =
         helper.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow)
 
-    override fun dispatchNestedFling(velocityX: Float, velocityY: Float, consumed: Boolean): Boolean =
+    override fun dispatchNestedFling(
+        velocityX: Float,
+        velocityY: Float,
+        consumed: Boolean
+    ): Boolean =
         helper.dispatchNestedFling(velocityX, velocityY, consumed)
 
     override fun dispatchNestedPreFling(velocityX: Float, velocityY: Float): Boolean =

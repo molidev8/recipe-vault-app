@@ -5,24 +5,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.children
-import androidx.core.view.forEachIndexed
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
-import com.google.android.material.chip.Chip
-import com.google.android.material.textfield.TextInputLayout
-import com.moliverac8.domain.Ingredient
 import com.moliverac8.recipevault.GENERAL
 import com.moliverac8.recipevault.databinding.FragmentIngListEditBinding
 import com.moliverac8.recipevault.ui.common.IngQuantityDialog
 import com.moliverac8.recipevault.ui.recipeDetail.RecipeDetailVM
 import com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragment
+import com.moliverac8.recipevault.ui.recipeDetail.ingredients.RecipeIngsAdapter
 
 class RecipeIngsEditFragment : Fragment() {
 
     private lateinit var binding: FragmentIngListEditBinding
-    private lateinit var ings: MutableList<Ingredient>
     private lateinit var adapter: RecipeIngsEditAdapter
     private val viewModel: RecipeDetailVM by viewModels(ownerProducer = { parentFragment as RecipePagerFragment })
 
@@ -34,19 +29,36 @@ class RecipeIngsEditFragment : Fragment() {
         binding = FragmentIngListEditBinding.inflate(layoutInflater)
 
         viewModel.recipeWithIng.observe(viewLifecycleOwner, { recipe ->
-            ings = recipe.ings.toMutableList()
 
-            adapter = RecipeIngsEditAdapter(ings, RecipeIngsEditAdapter.OnClickListener { adapter, pos, ings ->
-                IngQuantityDialog(adapter, pos, ings).show(parentFragmentManager, "")
+            adapter = RecipeIngsEditAdapter(RecipeIngsEditAdapter.OnClickListener { ing ->
+                parentFragmentManager.beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .add(IngQuantityDialog(viewModel, ing), null).addToBackStack(null).commit()
             })
 
             binding.ingredients.adapter = adapter
-            adapter.submitList(ings)
+            adapter.submitList(recipe.ings)
         })
 
         binding.addBtn.setOnClickListener {
-            ings.add(Ingredient())
-            adapter.notifyItemInserted(ings.size - 1)
+            parentFragmentManager.beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .add(IngQuantityDialog(viewModel), null).addToBackStack(null).commit()
+        }
+
+        viewModel.dialogIng.observe(viewLifecycleOwner) { ing ->
+            Log.d(GENERAL, "ing $ing \n list ${adapter.currentList}")
+            val list = adapter.currentList.toMutableList()
+            val result = adapter.currentList.find { it.name == ing.name }
+            if (result != null) {
+                list.removeIf { it.name == ing.name }
+                list.add(ing)
+                adapter.submitList(list)
+            } else {
+                adapter.submitList(adapter.currentList.toMutableList().apply {
+                    add(ing)
+                })
+            }
         }
 
         return binding.root
