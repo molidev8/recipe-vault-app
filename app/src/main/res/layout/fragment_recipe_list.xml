@@ -16,14 +16,15 @@
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/search_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll|enterAlways">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:src="@drawable/ic_baseline_search_24"
                     android:contentDescription="@string/search_recipe"
+                    android:src="@drawable/ic_baseline_search_24"
                     app:tint="@color/secondaryTextColor" />
 
                 <TextView

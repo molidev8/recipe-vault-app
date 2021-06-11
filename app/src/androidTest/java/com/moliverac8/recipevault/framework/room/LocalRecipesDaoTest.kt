@@ -16,6 +16,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.internal.matchers.ThrowableCauseMatcher
 import org.junit.runner.RunWith
 
 @ExperimentalCoroutinesApi
@@ -95,5 +96,33 @@ class LocalRecipesDaoTest {
         //THEN
         assertThat(loaded.recipe, `is`(updatedRecipe))
         assertThat(loaded.ings.first(), `is`(updatedIng))
+    }
+
+    @Test
+    fun insertAndDeleteRecipeWithIng() = runBlockingTest {
+        //GIVEN
+        val recipe = Recipe(
+            1, "Ensalada", 20, listOf(DishType.MEAL),
+            DietType.VEGETARIAN, "Cocinar", Uri.parse("dummyUri"),
+            "Lorem ipsum")
+        val ing = Ingredient(1, "Lechuga", "hojas", 3.0)
+        val cross = Recipe_Ing(1, 1)
+
+        //WHEN
+        db.dao().apply {
+            insertRecipe(recipe)
+            insertIngredient(ing)
+            insertRecipeIngCross(cross)
+        }
+
+        db.dao().deleteRecipe(recipe)
+        db.dao().deleteRecipeIngCross(cross)
+
+        try {
+            val loaded = db.dao().getRecipeWithIngredientsByID(recipe.recipeID)
+        } catch (e: NullPointerException) {
+            //THEN
+            assertThat(e, `is`(NullPointerException()))
+        }
     }
 }

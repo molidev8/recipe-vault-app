@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,10 +25,17 @@ class SearchVM @Inject constructor(
     fun filterRecipes(filter: String) {
         viewModelScope.launch {
             withContext(Dispatchers.Default) {
+                val lowerCaseFilter = filter.lowercase(Locale.getDefault())
                 val recipes = getRecipes()
                 val filteredRecipes = recipes.filter { recipe ->
-                    recipe.domainRecipe.name.contains(filter) || recipe.domainRecipe.description.contains(
-                        filter) || recipe.ings.any { it.name.contains(filter) }
+                    recipe.domainRecipe.name.lowercase(Locale.getDefault())
+                        .contains(lowerCaseFilter) || recipe.domainRecipe.description.lowercase(
+                        Locale.getDefault()
+                    ).contains(
+                        lowerCaseFilter
+                    ) || recipe.ings.any {
+                        it.name.lowercase(Locale.getDefault()).contains(lowerCaseFilter)
+                    }
                 }
                 _recipes.postValue(filteredRecipes)
             }

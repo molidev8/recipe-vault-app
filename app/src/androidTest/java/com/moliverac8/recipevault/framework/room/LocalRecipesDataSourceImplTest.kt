@@ -95,7 +95,7 @@ class LocalRecipesDataSourceImplTest {
     }
 
     @Test
-    fun updateTask() = runBlockingTest {
+    fun updateAvailableRecipe() = runBlockingTest {
         //GIVEN
         val updatedRecipe = com.moliverac8.domain.Recipe(
             2, "EnsaladaUpdated", 200, listOf(DishType.MEAL),
@@ -120,6 +120,27 @@ class LocalRecipesDataSourceImplTest {
 
         //THEN
         assertThat(loaded, `is`(new))
+    }
+
+    @Test
+    fun insertAndDeleteRecipe() = runBlockingTest {
+        //GIVEN
+        val recipe = com.moliverac8.domain.Recipe(
+            2, "Ensalada2", 200, listOf(DishType.MEAL),
+            DietType.VEGETARIAN, "Cocinar", "dummyUri",
+            "Lorem ipsum"
+        )
+        val ing = com.moliverac8.domain.Ingredient(2, "Lechuga", "hojas", 3.0)
+
+        //WHEN
+        dataSource.insertRecipeWithIng(RecipeWithIng(recipe, mutableListOf(ing)))
+
+        try {
+            val loaded = dataSource.getRecipeWithIngById(recipe.id)
+        } catch (e: NullPointerException) {
+            //THEN
+            assertThat(e, `is`(NullPointerException()))
+        }
     }
 
 
