@@ -13,7 +13,7 @@ android {
         release {
             storeFile file('C:\\Users\\moliv\\keystores\\test.jks')
             storePassword '123456'
-            keyAlias '123456'
+            keyAlias 'test'
             keyPassword '123456'
         }
     }

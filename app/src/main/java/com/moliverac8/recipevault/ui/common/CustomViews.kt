@@ -21,6 +21,7 @@ import com.moliverac8.domain.Ingredient
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.IngUnitDialogBinding
 import com.moliverac8.recipevault.ui.recipeDetail.RecipeDetailVM
+import java.util.*
 
 class Dots(
     context: Context?,
@@ -37,7 +38,10 @@ class Dots(
     }
 }
 
-class IngQuantityDialog(private val viewModel: RecipeDetailVM, private val ing: Ingredient? = null) : DialogFragment() {
+class IngQuantityDialog(
+    private val viewModel: RecipeDetailVM,
+    private val ing: Ingredient? = null
+) : DialogFragment() {
 
     lateinit var binding: IngUnitDialogBinding
 
@@ -66,7 +70,19 @@ class IngQuantityDialog(private val viewModel: RecipeDetailVM, private val ing: 
 
         val options = ArrayAdapter(requireContext(), R.layout.ing_unit_dropdown, UNITS)
         binding.options.apply {
-            setText(UNITS[0])
+            if (ing != null) {
+                binding.options.setText(
+                    when (ing.unit.lowercase(Locale.getDefault())) {
+                        getString(R.string.uds).lowercase(Locale.getDefault()) -> UNITS[0]
+                        getString(R.string.grams).lowercase(Locale.getDefault()) -> UNITS[1]
+                        getString(R.string.liters).lowercase(Locale.getDefault()) -> UNITS[2]
+                        getString(R.string.cups).lowercase(Locale.getDefault()) -> UNITS[3]
+                        else -> UNITS[0]
+                    }
+                )
+            } else {
+                setText(UNITS[0])
+            }
             setAdapter(options)
         }
         val range = mutableListOf<Int>()
@@ -107,7 +123,6 @@ class IngQuantityDialog(private val viewModel: RecipeDetailVM, private val ing: 
         ing?.let {
             binding.ingEdit.setText(it.name)
             binding.number.value = it.quantity.toInt()
-            binding.menu.editText?.setText(it.unit)
         }
 
         binding.ingEdit.apply {
