@@ -17,9 +17,10 @@ import com.moliverac8.recipevault.ui.recipeDetail.ingredients.RecipeIngsAdapter
 
 class RecipeIngsEditFragment : Fragment() {
 
+    // I retrieved the ViewModel associated with the RecipePager fragment to share its data between the loaded fragments in the ViewPager
+    private val viewModel: RecipeDetailVM by viewModels(ownerProducer = { parentFragment as RecipePagerFragment })
     private lateinit var binding: FragmentIngListEditBinding
     private lateinit var adapter: RecipeIngsEditAdapter
-    private val viewModel: RecipeDetailVM by viewModels(ownerProducer = { parentFragment as RecipePagerFragment })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,12 +41,14 @@ class RecipeIngsEditFragment : Fragment() {
             adapter.submitList(recipe.ings)
         })
 
+        // Launches the DialogFragment to select the ingredient name and quantity in a new fragment
         binding.addBtn.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .add(IngQuantityDialog(viewModel), null).addToBackStack(null).commit()
         }
 
+        // Updates the ingredients list with the data filled by the user in the DialogFragment
         viewModel.dialogIng.observe(viewLifecycleOwner) { ing ->
             Log.d(GENERAL, "ing $ing \n list ${adapter.currentList}")
             val list = adapter.currentList.toMutableList()

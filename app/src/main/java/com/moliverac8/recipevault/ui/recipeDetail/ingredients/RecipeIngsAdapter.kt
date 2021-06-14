@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.moliverac8.domain.Ingredient
 import com.moliverac8.recipevault.databinding.ItemIngListBinding
 
+/**
+ * Adapter for the ingredients list recyclerview with automatic detection of differences in items with DiffUtil
+ */
 class RecipeIngsAdapter :
     ListAdapter<Ingredient, RecipeIngsAdapter.ViewHolder>(IngsDiffCallback()) {
 
@@ -22,7 +25,6 @@ class RecipeIngsAdapter :
         val item = getItem(position)
         holder.bind(item)
     }
-
 
     class ViewHolder private constructor(private val binding: ItemIngListBinding) :
         RecyclerView.ViewHolder(binding.root) {

@@ -10,6 +10,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
+/**
+ * Hilt module to inject dependencies in the RecipePager codebase attached to the
+ * application component following the Singleton pattern
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 class RecipeDetailModule {

@@ -1,7 +1,6 @@
 package com.moliverac8.recipevault.ui.recipeDetail.instructions
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -16,7 +15,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.chip.Chip
 import com.google.android.material.transition.MaterialFadeThrough
 import com.moliverac8.domain.DishType
-import com.moliverac8.recipevault.GENERAL
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.FragmentRecipeDetailBinding
 import com.moliverac8.recipevault.ui.common.toListOfInstructions
@@ -28,7 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class RecipeDetailFragment : Fragment() {
 
-    // Obtengo el ViewModel generado en RecipePagerFragment (asociado a su contexto/ciclo de vida)
+    // I retrieved the ViewModel associated with the RecipePager fragment to share its data between the loaded fragments in the ViewPager
     private val viewModel: RecipeDetailVM by viewModels(ownerProducer = { parentFragment as RecipePagerFragment })
     private lateinit var binding: FragmentRecipeDetailBinding
     private lateinit var adapter: RecipeInstructionsAdapter

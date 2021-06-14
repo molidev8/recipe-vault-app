@@ -28,12 +28,8 @@ import com.moliverac8.domain.DietType
 import com.moliverac8.domain.DishType
 import com.moliverac8.domain.Recipe
 import com.moliverac8.domain.RecipeWithIng
-import com.moliverac8.recipevault.GENERAL
-import com.moliverac8.recipevault.IO
-import com.moliverac8.recipevault.PERMISSION
-import com.moliverac8.recipevault.R
+import com.moliverac8.recipevault.*
 import com.moliverac8.recipevault.databinding.FragmentRecipeDetailEditBinding
-import com.moliverac8.recipevault.ui.REQUEST_IMAGE_CAPTURE
 import com.moliverac8.recipevault.ui.common.Permissions
 import com.moliverac8.recipevault.ui.common.toJsonInstructions
 import com.moliverac8.recipevault.ui.common.toListOfInstructions
@@ -46,10 +42,11 @@ import java.util.*
 
 class RecipeDetailEditFragment : Fragment() {
 
+    // I retrieved the ViewModel associated with the RecipePager fragment to share its data between the loaded fragments in the ViewPager
+    private val viewModel: RecipeDetailVM by viewModels(ownerProducer = { parentFragment as RecipePagerFragment })
     private lateinit var binding: FragmentRecipeDetailEditBinding
     private lateinit var recipe: RecipeWithIng
     private lateinit var instructions: MutableList<String>
-    private val viewModel: RecipeDetailVM by viewModels(ownerProducer = { parentFragment as RecipePagerFragment })
     private lateinit var photoUri: Uri
     private val mapOfInstructions = mutableMapOf<Int, String>()
     private var nInstructions = 0
@@ -71,6 +68,7 @@ class RecipeDetailEditFragment : Fragment() {
         adapter = RecipeInstructionsEditAdapter()
         binding.instructions.adapter = adapter
 
+        // Loads the data of the recipe that it's being edited
         viewModel.recipeWithIng.observe(viewLifecycleOwner, { recipe ->
             this.recipe = recipe
             if (recipe.domainRecipe.name.isNotBlank()) {
@@ -100,6 +98,10 @@ class RecipeDetailEditFragment : Fragment() {
             adapter.submitList(instructions)
         })
 
+        /**
+         * Checks if the user has concede permissions or asks for them to access the camera and the storage before
+         * launching the camera app.
+         */
         binding.photoBtn.setOnClickListener {
             if (!Permissions.hasPermissions(requireContext())) {
                 Permissions.requestPermissionsFragment(::requestPermissions)
@@ -116,6 +118,7 @@ class RecipeDetailEditFragment : Fragment() {
             adapter.notifyItemInserted(instructions.size - 1)
         }
 
+        // Checks if the user has filled the required fields in order to save the recipe
         topBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.save_recipe -> {
@@ -221,6 +224,7 @@ class RecipeDetailEditFragment : Fragment() {
         }
     }
 
+    // Loads the camera app installed in the device
     private fun launchCamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val photoFile: File? = try {
@@ -238,6 +242,7 @@ class RecipeDetailEditFragment : Fragment() {
         startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
     }
 
+    // Generates the path in which the photos is going to be stored
     @Throws(IOException::class)
     @SuppressLint("SimpleDateFormat")
     private fun createImageFile(): File {

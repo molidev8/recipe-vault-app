@@ -1,6 +1,5 @@
 package com.moliverac8.recipevault.ui.recipeList
 
-import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.moliverac8.domain.RecipeWithIng
 import com.moliverac8.recipevault.databinding.ItemRecipeListBinding
 
+/**
+ * Adapter for the recipe list recyclerview with automatic detection of difference in items with DiffUtil
+ */
 class RecipeListAdapter(private val onClickListener: OnClickListener) :
     ListAdapter<RecipeWithIng, RecipeListAdapter.ViewHolder>(RecipeListDiffCallback()) {
 
@@ -28,10 +30,14 @@ class RecipeListAdapter(private val onClickListener: OnClickListener) :
     }
 
     class OnClickListener(val clickListener: (recipe: RecipeWithIng, isEditable: Boolean, position: ViewHolder) -> Unit) {
-        fun onClick(recipe: RecipeWithIng, isEditable: Boolean = false, position: ViewHolder) = clickListener(recipe, isEditable, position)
+        fun onClick(recipe: RecipeWithIng, isEditable: Boolean = false, position: ViewHolder) =
+            clickListener(recipe, isEditable, position)
     }
 
-    class ViewHolder private constructor(private val binding: ItemRecipeListBinding, private val onClickListener: OnClickListener) :
+    class ViewHolder private constructor(
+        private val binding: ItemRecipeListBinding,
+        private val onClickListener: OnClickListener
+    ) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: RecipeWithIng) {

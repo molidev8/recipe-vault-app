@@ -33,8 +33,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
 
-const val REQUEST_IMAGE_CAPTURE = 1
-
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(),
     NavController.OnDestinationChangedListener,
@@ -42,13 +40,13 @@ class MainActivity : AppCompatActivity(),
     RecipePagerNavigate,
     SearchFragmentNavigation {
 
+    private lateinit var binding: ActivityMainBinding
     private val dropboxManager: DropboxManager by lazy {
         EntryPointAccessors.fromApplication(
             applicationContext,
             BackupUserData.BackupEntryPoint::class.java
         ).dropboxManager()
     }
-    private lateinit var binding: ActivityMainBinding
     private val currentNavigationFragment: Fragment?
         get() = supportFragmentManager.findFragmentById(R.id.fragmentMaster)
             ?.childFragmentManager
@@ -95,6 +93,12 @@ class MainActivity : AppCompatActivity(),
     }
 
     /* ----------- NAVIGATION SETUP ----------- */
+    /**
+     * Prepares all the animated transition for the fragment transactions aside the ones inside
+     * the RecipePagerFragment. Every transition must be called in the implementation of
+     * onDestinationChanged() method
+     */
+
 
     private fun animateNavigationToAccount() {
         currentNavigationFragment?.exitTransition = MaterialFadeThrough().apply {
@@ -147,9 +151,6 @@ class MainActivity : AppCompatActivity(),
             super.onBackPressed()
     }
 
-    /**
-     * Prepara la transición entre elementos de la navegación inferior
-     */
     override fun onDestinationChanged(
         controller: NavController,
         destination: NavDestination,
@@ -179,6 +180,7 @@ class MainActivity : AppCompatActivity(),
         binding.bottomBar.performHide()
         binding.bottomBar.animate().setListener(object : AnimatorListenerAdapter() {
             var isCanceled = false
+
             override fun onAnimationEnd(animation: Animator?) {
                 if (isCanceled) return
 
@@ -199,6 +201,10 @@ class MainActivity : AppCompatActivity(),
     }
 
     /* ----------- RECIPE LIST NAVIGATION ----------- */
+    /**
+     * Manages the calls to the navigation component to launch the fragment transactions from the
+     * list of recipes to all the available destinations from this fragment
+     */
 
     override fun navigateToNewRecipe() {
         animateNavigationToNewRecipe()
@@ -226,6 +232,10 @@ class MainActivity : AppCompatActivity(),
     }
 
     /* ----------- RECIPE PAGER NAVIGATION ----------- */
+    /**
+     * Manages the transactions to get out of the RecipePagerFragment and the edit mode launched from
+     * the RecipePagerFragment
+     */
 
     override fun navigateHomeFromPager() {
         showBottomAppBar()
@@ -241,6 +251,10 @@ class MainActivity : AppCompatActivity(),
     }
 
     /* ----------- SEARCH NAVIGATION ----------- */
+    /**
+     * Manages the calls to the navigation component to launch the search recipe screen and access the
+     * details of the recipes returned by the search query
+     */
 
     override fun navigateHomeFromSearch() {
         showBottomAppBar()

@@ -12,6 +12,9 @@ import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.ItemInstructionsListBinding
 import com.moliverac8.recipevault.databinding.ItemRecipeListBinding
 
+/**
+ * Adapter for the instructions list recyclerview with automatic detection of difference in items with DiffUtil
+ */
 class RecipeInstructionsAdapter :
     ListAdapter<String, RecipeInstructionsAdapter.ViewHolder>(InstructionDiffCallback()) {
 

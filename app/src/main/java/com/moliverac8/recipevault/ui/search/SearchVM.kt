@@ -22,6 +22,10 @@ class SearchVM @Inject constructor(
     val recipes: LiveData<List<RecipeWithIng>>
         get() = _recipes
 
+    /**
+     * Filters the recipes from the complete collection of recipes obtained from the database.
+     * It includes filter by recipe name, ingredients and description
+     */
     fun filterRecipes(filter: String) {
         viewModelScope.launch {
             withContext(Dispatchers.Default) {

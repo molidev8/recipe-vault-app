@@ -12,12 +12,10 @@ import androidx.navigation.fragment.navArgs
 import androidx.transition.Slide
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.transition.MaterialContainerTransform
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.FragmentRecipePagerBinding
-import com.moliverac8.recipevault.themeColor
 import com.moliverac8.recipevault.ui.common.CustomOnBackPressedInterface
 import com.moliverac8.recipevault.ui.recipeDetail.edit.RecipeDetailEditFragment
 import com.moliverac8.recipevault.ui.recipeDetail.edit.RecipeIngsEditFragment
@@ -32,11 +30,9 @@ class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigat
     private val args by navArgs<RecipePagerFragmentArgs>()
     private val viewModel: RecipeDetailVM by viewModels(ownerProducer = { this })
     private lateinit var binding: FragmentRecipePagerBinding
-    private val newRecipeBtn: FloatingActionButton by lazy {
-        requireActivity().findViewById(R.id.newRecipeBtn)
-    }
+
     private val goBackLogic = {
-        // Si es para crear una nueva receta
+        // If a new recipe is being created
         if (!viewModel.amIEditing) {
             if (args.isEditable) {
                 MaterialAlertDialogBuilder(requireContext())
@@ -52,7 +48,7 @@ class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigat
                 (activity as RecipePagerNavigate).navigateHomeFromPager()
             }
         }
-        // Si es para editar una receta existente
+        // If an existing recipe is being edited
         else {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.user_confirmation)
@@ -75,8 +71,6 @@ class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigat
     ): View {
         binding = FragmentRecipePagerBinding.inflate(layoutInflater)
         viewModel.getRecipe(args.recipeID)
-
-        // Cargo la receta nueva o la existente en el viewModel compartido por los fragmentos del viewpager
 
         if (args.isEditable) showSaveButton(true)
         else showSaveButton(false)
@@ -103,19 +97,19 @@ class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigat
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         if (args.recipeID == -1) {
             enterTransition = MaterialContainerTransform().apply {
-                startView = newRecipeBtn
-                endView = binding.recipePager
+                startView = requireActivity().findViewById(R.id.newRecipeBtn)
+                endView = binding.tabs
                 scrimColor = Color.TRANSPARENT
                 duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+                /*containerColor = requireContext().themeColor(R.attr.colorSurface)
                 startContainerColor = requireContext().themeColor(R.attr.colorSecondary)
-                containerColor = requireContext().themeColor(R.attr.colorSurface)
-                endContainerColor = requireContext().themeColor(R.attr.colorSurface)
+                endContainerColor = requireContext().themeColor(R.attr.colorSurface)*/
             }
+
             returnTransition = Slide().apply {
-                addTarget(R.id.recipe_pager)
+                addTarget(R.id.parentLayout)
                 resources.getInteger(R.integer.motion_duration_large).toLong()
             }
         } else {

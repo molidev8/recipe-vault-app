@@ -9,6 +9,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.FragmentComponent
 import dagger.hilt.components.SingletonComponent
 
+/**
+ * Hilt module to inject dependencies in the RecipeListFragment codebase attached to the
+ * application component following the Singleton pattern
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 class RecipeListModule {

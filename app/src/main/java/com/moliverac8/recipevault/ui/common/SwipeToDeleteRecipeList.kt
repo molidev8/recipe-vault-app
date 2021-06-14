@@ -25,7 +25,6 @@ class SwipeToDeleteRecipeList(
 
     private lateinit var recipeToRemove: RecipeWithIng
     private lateinit var snackBar: Snackbar
-    private val trashIcon = Drawables.get(R.drawable.ic_baseline_delete_24)
 
     override fun onMove(
         recyclerView: RecyclerView,
@@ -44,25 +43,13 @@ class SwipeToDeleteRecipeList(
         actionState: Int,
         isCurrentlyActive: Boolean
     ) {
-        c.clipRect(
-            0f, viewHolder.itemView.top.toFloat(),
-            dX, viewHolder.itemView.bottom.toFloat()
-        )
 
-        if (dX < viewHolder.itemView.width / 4)
-            c.drawColor(Color.GRAY)
-        else
-            c.drawColor(Color.RED)
+        if (dX == 0f) {
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+            return
+        }
 
-        trashIcon?.bounds = Rect(
-            4,
-            viewHolder.itemView.top + 200,
-            4 + trashIcon?.intrinsicWidth!!,
-            viewHolder.itemView.top + trashIcon.intrinsicHeight
-                    + 200
-        )
-
-        trashIcon.draw(c)
+        SwipeBackgroundHelper.paintDrawCommandToStart(c, viewHolder.itemView, R.drawable.ic_baseline_delete_24, dX)
 
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
     }

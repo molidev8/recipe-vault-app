@@ -11,12 +11,14 @@ import com.dropbox.core.oauth.DbxCredential
 import com.dropbox.core.v2.DbxClientV2
 import com.dropbox.core.v2.files.WriteMode
 import com.moliverac8.recipevault.BACKUP
+import com.moliverac8.recipevault.R
+import com.moliverac8.recipevault.Strings
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.OutputStream
 import java.util.*
 
-private const val API_KEY = "1an6pdc5pzzppws"
+private var API_KEY = Strings.get(R.string.dropbox_key)
 
 class DropboxManager(private val context: Context) {
 

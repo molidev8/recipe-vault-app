@@ -10,6 +10,9 @@ import com.moliverac8.recipevault.databinding.ItemIngEditListBinding
 import com.moliverac8.recipevault.ui.recipeDetail.RecipeDetailVM
 import com.moliverac8.recipevault.ui.recipeList.RecipeListAdapter
 
+/**
+ * Adapter for the ingredients editable list recyclerview with automatic detection of difference in items with DiffUtil
+ */
 class RecipeIngsEditAdapter(private val onClickListener: OnClickListener) :
     ListAdapter<Ingredient, RecipeIngsEditAdapter.ViewHolder>(IngsDiffCallback()) {
 

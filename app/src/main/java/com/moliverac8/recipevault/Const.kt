@@ -12,3 +12,6 @@ const val PERMISSION = "MY_PERMISSIONS"
 const val GENERAL = "GENERAL"
 const val IO = "MY_IO"
 const val BACKUP = "BACKUP"
+
+// ACTIVITIES
+const val REQUEST_IMAGE_CAPTURE = 1

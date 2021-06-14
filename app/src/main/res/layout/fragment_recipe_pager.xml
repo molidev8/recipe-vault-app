@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/recipe_pager"
+        android:id="@+id/parentLayout"
+        android:background="@color/colorSurface"
         android:transitionName="@string/recipe_card_detail_transition_name"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

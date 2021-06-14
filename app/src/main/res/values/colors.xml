@@ -2,6 +2,7 @@
 <resources>
     <color name="start">#039be5</color>
     <color name="darkBlack">#000000</color>
+    <color name="deleteRed">#EF5350</color>
 
     <color name="primaryColor">#1e88e5</color>
     <color name="primaryLightColor">#6ab7ff</color>

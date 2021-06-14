@@ -38,7 +38,7 @@ class RecipeDetailVM @Inject constructor(
     var amIEditing: Boolean = false
 
     /**
-     * Cuando la receta sea nueva, se coloca en livedata una receta vacía
+     * When a new recipe arrives, LiveData object stores an empty Recipe
      */
     fun getRecipe(id: Int) {
         viewModelScope.launch {

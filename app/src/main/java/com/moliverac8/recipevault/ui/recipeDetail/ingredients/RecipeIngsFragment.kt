@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class RecipeIngsFragment : Fragment() {
 
-    // Obtengo el ViewModel generado en RecipePagerFragment (asociado a su contexto/ciclo de vida)
+    // I retrieved the ViewModel associated with the RecipePager fragment to share its data between the loaded fragments in the ViewPager
     private val viewModel: RecipeDetailVM by viewModels(ownerProducer = { parentFragment as RecipePagerFragment })
 
     override fun onCreateView(
