@@ -16,7 +16,11 @@ const val DATABASE_NAME = "recipes_db"
 
 @TypeConverters(DishTypeConverter::class, DietTypeConverter::class, UriConverter::class)
 
-
+/**
+ * Represents an access point to the SQLite [RoomDatabase]
+ * @constructor Creates an unique instance of [LocalRecipeDatabase] that lives with the lifecycle
+ * of the application
+ */
 abstract class LocalRecipeDatabase : RoomDatabase() {
     abstract fun dao(): LocalRecipeDatabaseDao
 
@@ -24,6 +28,12 @@ abstract class LocalRecipeDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: LocalRecipeDatabase? = null
 
+        /**
+         * Creates an instance of [LocalRecipeDatabase] following the Singleton pattern
+         * @param context context of the application
+         * @constructor returns an unique instance of [LocalRecipeDatabase]
+         * @return an instance of [LocalRecipeDatabase]
+         */
         fun getInstance(context: Context): LocalRecipeDatabase {
             synchronized(this) {
                 var instance = INSTANCE

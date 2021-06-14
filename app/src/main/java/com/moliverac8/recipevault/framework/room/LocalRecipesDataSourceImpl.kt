@@ -1,14 +1,18 @@
 package com.moliverac8.recipevault.framework.room
 
-import android.util.Log
 import com.moliverac8.data.LocalRecipesDataSource
 import com.moliverac8.domain.RecipeWithIng
-import com.moliverac8.recipevault.GENERAL
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
-
+/**
+ * Implements the [LocalRecipesDataSource] methods to access the [LocalRecipeDatabase]
+ * @param db An instance of the [LocalRecipeDatabase]
+ * @param dispatcher The [CoroutineDispatcher] chosen to run the database queries
+ * @returns An instance of the [LocalRecipesDataSourceImpl] data source
+ * @constructor Creates a [LocalRecipesDataSource] instance
+ */
 class LocalRecipesDataSourceImpl(
     db: LocalRecipeDatabase,
     private val dispatcher: CoroutineDispatcher = IO

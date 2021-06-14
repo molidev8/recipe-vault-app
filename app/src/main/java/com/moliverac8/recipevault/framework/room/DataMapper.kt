@@ -5,6 +5,10 @@ import com.moliverac8.domain.Recipe as DomainRecipe
 import com.moliverac8.domain.Ingredient as DomainIngredient
 import com.moliverac8.domain.RecipeWithIng as DomainRecipeWithIng
 
+/**
+ * Contains extensions functions to transform from the Domain data types to Room data types
+ */
+
 fun DomainRecipe.toRoom(): Recipe {
     val aux = if (id != -1) id
     else 0
