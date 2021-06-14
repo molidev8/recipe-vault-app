@@ -169,6 +169,7 @@ dependencies {
     implementation 'com.dropbox.core:dropbox-core-sdk:4.0.0'
     api 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation group: 'org.jetbrains.dokka', name: 'dokka-cli', version: '1.4.32'
 
 }
 

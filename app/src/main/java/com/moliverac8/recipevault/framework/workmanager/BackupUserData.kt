@@ -19,7 +19,9 @@ import java.util.zip.ZipException
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 
-
+/**
+ * Class to manage and execute all the tasks related with the backup/restore of the user data
+ */
 class BackupUserData(private val context: Context) {
 
     private val dropboxManager: DropboxManager by lazy {
@@ -165,7 +167,10 @@ class BackupUserData(private val context: Context) {
         }
     }
 
-    // Devuelve el tamaño de la copia en bytes
+    /**
+     * Retrieves the size of the last uploaded backup
+     * @return the number of bytes of the last backup
+     */
     fun getBackupSize(): Long {
         val file = File(backupDir?.path + "/recipe-vault-backup.zip")
         return if (file.exists()) {

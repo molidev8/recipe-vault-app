@@ -20,6 +20,12 @@ import java.util.*
 
 private var API_KEY = Strings.get(R.string.dropbox_key)
 
+/**
+ * Manages all the interaction with the Dropbox backend
+ *
+ * @property context context in which the manager is loaded
+ * @constructor Creates a [DropboxManager] to access the backend
+ */
 class DropboxManager(private val context: Context) {
 
     private val config: DbxRequestConfig = DbxRequestConfig.newBuilder("recipe-vault")
@@ -27,6 +33,9 @@ class DropboxManager(private val context: Context) {
         .build()
     private var client: DbxClientV2? = null
 
+    /**
+     * Launches the browser for the user to log in to Dropbox and get the credentials
+     */
     fun startOAuth2Authentication() {
         Auth.startOAuth2PKCE(
             context, API_KEY, config,
@@ -34,6 +43,10 @@ class DropboxManager(private val context: Context) {
         )
     }
 
+    /**
+     * Loads the Dropbox [DbxClientV2] to access backend functions
+     * @param credential Represents the user credentials
+     */
     fun initDropboxClient(credential: DbxCredential) {
         val newCredential = DbxCredential(
             credential.accessToken,
@@ -46,6 +59,11 @@ class DropboxManager(private val context: Context) {
         }
     }
 
+    /**
+     * Uploads a file into the user's Dropbox
+     * @param input A [FileInputStream] to the file that is going to be uploaded
+     * @return true in case the upload went well, false otherwise
+     */
     fun uploadFile(input: FileInputStream): Boolean {
         return try {
             client?.files()?.uploadBuilder("/recipe-vault-backup.zip")
@@ -57,6 +75,10 @@ class DropboxManager(private val context: Context) {
         }
     }
 
+    /**
+     * Downloads a file from the user's Dropbox
+     * @param output A [FileOutputStream] to the path where is going to be downloaded
+     */
     fun downloadFile(output: FileOutputStream) {
         try {
             client?.files()?.download("/recipe-vault-backup.zip")?.download(output as OutputStream)
@@ -65,11 +87,18 @@ class DropboxManager(private val context: Context) {
         }
     }
 
+    /**
+     * Retrieves the date of the last backup uploaded to the user's Dropbox
+     * @returns a [Date] of the last upload
+     */
     fun getDateOfLastBackup(): Date? {
         return client?.files()?.download("/recipe-vault-backup.zip")?.result?.serverModified
     }
 
-    // Devuelve el tamaño de la copia en bytes
+    /**
+     * Retrieves the size of the last uploaded backup
+     * @return the number of bytes of the last backup
+     */
     fun getSizeOfLastBackup(): Long {
         return client?.files()?.download("/recipe-vault-backup.zip")?.result?.size ?: 0L
     }
