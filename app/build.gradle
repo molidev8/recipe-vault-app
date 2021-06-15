@@ -8,7 +8,7 @@ plugins {
     id 'org.jetbrains.dokka'
 }
 
- android {
+android {
     signingConfigs {
 
         release {
@@ -20,15 +20,13 @@ plugins {
     }
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
-
-
     packagingOptions {
         exclude 'META-INF/LGPL2.1'
         exclude 'META-INF/AL2.0'
     }
-
     defaultConfig {
         applicationId "com.moliverac8.recipevault"
+        testApplicationId "com.moliverac8.recipevault.test"
         minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
@@ -37,8 +35,10 @@ plugins {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release
     }
-
     buildTypes {
+
+        // Debug version does not explicitly show
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -51,16 +51,15 @@ plugins {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
     buildFeatures {
         dataBinding true
     }
-
-    dokka {
-        outputFormat = 'gfm'
-        outputDirectory = "$buildDir/javadoc"
+    configurations {
+        all {
+            exclude group: "com.fasterxml.jackson.core"
+            exclude group: "org.jetbrains.dokka"
+        }
     }
-
     testOptions.unitTests {
         includeAndroidResources = true
     }
