@@ -74,4 +74,25 @@ class SearchVMTest {
 
         assertThat(value.first(), `is`(recipeWithIng))
     }
+
+    @Test
+    fun filterRecipesByDescription() = runBlockingTest {
+        //GIVEN
+        val recipe = com.moliverac8.domain.Recipe(
+            1, "Ensalada", 20, listOf(DishType.MEAL),
+            DietType.VEGETARIAN, "Cocinar", "dummyUri",
+            "Lorem ipsum"
+        )
+        val ing = com.moliverac8.domain.Ingredient(1, "Lechuga", "hojas", 3.0)
+        val recipeWithIng = RecipeWithIng(recipe, mutableListOf(ing))
+        repository.insertRecipeWithIngredient(recipeWithIng)
+
+        //WHEN
+        viewModel.filterRecipes("lorem ipsum")
+
+        //THEN
+        val value = viewModel.recipes.getOrAwaitValue()
+
+        assertThat(value.first(), `is`(recipeWithIng))
+    }
 }

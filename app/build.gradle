@@ -31,16 +31,17 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release
     }
+
     buildTypes {
 
         // Debug version does not explicitly show
 
         release {
-            minifyEnabled false
+            shrinkResources true //false
+            minifyEnabled true //false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

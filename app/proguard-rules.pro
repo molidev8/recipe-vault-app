@@ -19,3 +19,10 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keep class * implements androidx.navigation.NavArgs
+-keep class * extends androidx.navigation.NavArgsLazy
+-keep class kotlin.reflect.KClass
+-keep class * extends android.os.Bundle
+-keep class RecipeListFragmen
+-keepnames class android.os.Bundle
+-keep class android.os.Parcelable

@@ -21,6 +21,9 @@ import java.util.zip.ZipOutputStream
 
 /**
  * Class to manage and execute all the tasks related with the backup/restore of the user data
+ *
+ * @property context context in which the manager is loaded
+ * @constructor Creates a [BackupUserData] to access the backend
  */
 class BackupUserData(private val context: Context) {
 
@@ -53,10 +56,10 @@ class BackupUserData(private val context: Context) {
     }
 
     /**
-     * La función retorna un Bool para que WorkManager sepa que la tarea se ha realizado sin errores
+     * Initiates the backup process
+     * @return true in case the upload went well, false otherwise
      */
     fun doBackup(): Boolean = try {
-        // Cierro la base de datos antes de realizar operaciones
         LocalRecipeDatabase.getInstance(context).close()
 
         val output = FileOutputStream(backupDir?.path + "/recipe-vault-backup.zip")
@@ -70,7 +73,9 @@ class BackupUserData(private val context: Context) {
         throw Exception()
     }
 
-
+    /**
+     * Initiates the restore process
+     */
     fun restoreBackup() = try {// Cierro la base de datos antes de realizar operaciones
         LocalRecipeDatabase.getInstance(context).close()
         downloadFromDropbox(FileOutputStream(File(backupDir, "recipe-vault-backup.zip")))
@@ -95,6 +100,11 @@ class BackupUserData(private val context: Context) {
         return@withContext tempFile
     }*/
 
+    /**
+     * Compress all the files for the backup into a .zip file
+     * @param output A [FileOutputStream] where the zip file is going to be saved
+     * @param input The files that are going to be compressed into the .zip file
+     */
     private fun zipFiles(output: FileOutputStream, vararg input: File?) {
         val zipOutput = ZipOutputStream(BufferedOutputStream(output))
 
@@ -128,8 +138,16 @@ class BackupUserData(private val context: Context) {
         }
     }
 
+    /**
+     * Uploads a file into the user's Dropbox
+     * @param input A [FileInputStream] to the file that is going to be uploaded
+     * @return true in case the upload went well, false otherwise
+     */
     private fun uploadToDropbox(input: FileInputStream): Boolean = dropboxManager.uploadFile(input)
 
+    /**
+     * Restores the local Room database with the backup downloaded from Dropbox
+     */
     private fun restoreRoomDatabase() {
 
         val dbPath = context.getDatabasePath(DATABASE_NAME)
@@ -141,8 +159,16 @@ class BackupUserData(private val context: Context) {
         }
     }
 
+    /**
+     * Downloads the backup store in the Dropbox's user
+     * @param output A [FileOutputStream] where the files is going to be downloaded
+     */
     private fun downloadFromDropbox(output: FileOutputStream) = dropboxManager.downloadFile(output)
 
+
+    /**
+     * Decompresses the .zip file with the files for the restoration process into the Documents folder
+     */
     private fun unzipBackupFiles() {
         val input =
             ZipFile(backupDir?.path + "/recipe-vault-backup.zip")
