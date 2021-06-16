@@ -23,6 +23,4 @@ object Permissions {
     fun requestPermissionActivity(context: Activity) =
         ActivityCompat.requestPermissions(context, PERMISSIONS.toTypedArray(), PERMISSION_CODE)
 
-
-
 }

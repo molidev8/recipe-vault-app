@@ -11,12 +11,12 @@ plugins {
 android {
     signingConfigs {
 
-        release {
+        /*release {
             storeFile file('C:\\Users\\moliv\\keystores\\test.jks')
             storePassword '123456'
             keyAlias 'test'
             keyPassword '123456'
-        }
+        }*/
     }
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -32,7 +32,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        signingConfig signingConfigs.release
+//        signingConfig signingConfigs.release
     }
 
     buildTypes {
@@ -40,8 +40,8 @@ android {
         // Debug version does not explicitly show
 
         release {
-            shrinkResources true //false
-            minifyEnabled true //false
+            shrinkResources false //false
+            minifyEnabled false //false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

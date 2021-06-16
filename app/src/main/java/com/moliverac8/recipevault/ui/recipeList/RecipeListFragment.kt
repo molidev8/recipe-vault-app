@@ -79,7 +79,7 @@ class RecipeListFragment : Fragment() {
         }
 
         binding.recipeList.adapter = adapter
-        ItemTouchHelper(SwipeToDeleteRecipeList(viewModel, adapter, newRecipeBtn)).attachToRecyclerView(binding.recipeList)
+        ItemTouchHelper(SwipeToDeleteRecipeList(requireContext(), viewModel, adapter, newRecipeBtn)).attachToRecyclerView(binding.recipeList)
 
         viewModel.recipes.observe(viewLifecycleOwner, { recipes ->
             adapter.submitList(recipes)
