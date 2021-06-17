@@ -6,6 +6,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.moliverac8.domain.RecipeWithIng
+import com.moliverac8.recipevault.GENERAL
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.Strings
 import com.moliverac8.recipevault.ui.recipeList.RecipeListAdapter
@@ -84,7 +86,7 @@ class SwipeToDeleteRecipeList(
 
         when (progress) {
             in 0f..swipeThreshold -> {
-                iconScale =
+                iconScale = 1f - (progress * 0.2f)
             }
             else -> {
                 // The radius is the progress relative to the swipeThreshold multiplied by the width and the acceleration
@@ -92,7 +94,7 @@ class SwipeToDeleteRecipeList(
                 circleRadius = (progress - swipeThreshold) * width * CIRCLE_ACCELERATION
                 iconColor = reverseSurfaceColor
                 iconScale = when(progress) {
-                    in iconPopThreshold..iconPopFinishedThreshold ->
+                    in iconPopThreshold..iconPopFinishedThreshold -> 1.2f - progress * 0.2f
                     else -> 1f
                 }
             }
@@ -100,15 +102,15 @@ class SwipeToDeleteRecipeList(
 
         trashIcon?.let {
             // 64 is the padding of the icon, divided by 2 to get the center of the icon
-            val centerInXAxis = left + 64 + it.intrinsicWidth * iconScale / 2f
-            val centerInYAxis = top + 64 + it.intrinsicHeight * iconScale / 2f
+            val centerInXAxis = left + 64 + it.intrinsicWidth / 2f
+            val centerInYAxis = top + 64 + it.intrinsicHeight / 2f
 
             //Sets the position of the icon inside the child view
             it.setBounds(
-                (centerInXAxis - it.intrinsicWidth).toInt(),
-                (centerInYAxis - it.intrinsicHeight).toInt(),
-                (centerInXAxis + it.intrinsicWidth).toInt(),
-                (centerInYAxis + it.intrinsicHeight).toInt()
+                (centerInXAxis - it.intrinsicWidth * iconScale).toInt(),
+                (centerInYAxis - it.intrinsicHeight * iconScale).toInt(),
+                (centerInXAxis + it.intrinsicWidth * iconScale).toInt(),
+                (centerInYAxis + it.intrinsicHeight * iconScale).toInt()
             )
 
             // Sets the color of the icon
