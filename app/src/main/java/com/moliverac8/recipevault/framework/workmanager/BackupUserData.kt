@@ -184,10 +184,8 @@ class BackupUserData(private val context: Context) {
             }
 
             val data = input.getInputStream(entry)
-            do {
-                val byte = data.read()
-                output?.write(byte)
-            } while (byte != -1)
+            val bytes = data.readBytes()
+            output?.write(bytes)
             data.close()
             output?.close()
         }

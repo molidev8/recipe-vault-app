@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.FileProvider
 import androidx.core.view.forEachIndexed
@@ -53,7 +54,7 @@ class RecipeDetailEditFragment : Fragment() {
     private lateinit var adapter: RecipeInstructionsEditAdapter
     private lateinit var recipePhotoPath: String
     private val topBar: MaterialToolbar by lazy {
-        (requireParentFragment().view as CoordinatorLayout).findViewById(R.id.top_bar)
+        (requireParentFragment().view as ConstraintLayout).findViewById(R.id.top_bar)
     }
     private val isFormFilled: Boolean
         get() = binding.setTitleEdit.text.toString()

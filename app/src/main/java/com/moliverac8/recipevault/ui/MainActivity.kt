@@ -68,8 +68,8 @@ class MainActivity : AppCompatActivity(),
         }
 
         binding.newRecipeBtn.apply {
-            /*setShowMotionSpecResource(R.animator.fab_show)
-            setHideMotionSpecResource(R.animator.fab_hide)*/
+            setShowMotionSpecResource(R.animator.fab_show)
+            setHideMotionSpecResource(R.animator.fab_hide)
         }
 
         setupBottomNavigation()

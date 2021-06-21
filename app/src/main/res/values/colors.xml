@@ -13,7 +13,7 @@
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#ffffff</color>
     <color name="colorSurface">#FFFFFF</color>
-    <color name="colorSurfaceAccent">#E6E5E5</color>
+    <color name="colorSurfaceAccent">#F4F4F4</color>
 
 
     <color name="purple_200">#FFBB86FC</color>

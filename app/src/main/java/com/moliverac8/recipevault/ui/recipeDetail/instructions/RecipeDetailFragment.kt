@@ -66,7 +66,7 @@ class RecipeDetailFragment : Fragment() {
     }
 
     private fun setupTransitionToEdit() {
-        val view = parentFragment?.view as CoordinatorLayout
+        val view = parentFragment?.view as ConstraintLayout
         pager = view.findViewById(R.id.pager)
         val transition = MaterialFadeThrough()
         TransitionManager.beginDelayedTransition(view, transition)

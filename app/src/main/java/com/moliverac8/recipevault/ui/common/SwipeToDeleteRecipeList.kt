@@ -34,7 +34,7 @@ class SwipeToDeleteRecipeList(
     private val circleColor = ContextCompat.getColor(context, R.color.deleteRed)
     private val circlePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = circleColor }
     private val reverseSurfaceColor = ContextCompat.getColor(context, R.color.primaryTextColor)
-    private val CIRCLE_ACCELERATION = 4f
+    private val CIRCLE_ACCELERATION = 6f
 
     override fun onMove(
         recyclerView: RecyclerView,
@@ -82,7 +82,9 @@ class SwipeToDeleteRecipeList(
         val iconPopThreshold = swipeThreshold + 0.125f
         val iconPopFinishedThreshold = iconPopThreshold + 0.125f
         var circleRadius = 0f
-        var iconScale = 1f
+        val iconScale: Float
+
+        Log.d(GENERAL, "top $top bottom $bottom")
 
         when (progress) {
             in 0f..swipeThreshold -> {
@@ -117,7 +119,7 @@ class SwipeToDeleteRecipeList(
             it.colorFilter = PorterDuffColorFilter(iconColor, PorterDuff.Mode.SRC_IN)
 
             if (circleRadius > 0) {
-                c.drawCircle(centerInXAxis, centerInXAxis, circleRadius, circlePaint)
+                c.drawCircle(centerInXAxis, centerInYAxis, circleRadius, circlePaint)
             }
             it.draw(c)
         }
@@ -130,10 +132,10 @@ class SwipeToDeleteRecipeList(
         if (direction == ItemTouchHelper.RIGHT) {
             with(viewHolder.absoluteAdapterPosition) {
                 recipeToRemove = adapter.currentList[this]
-                //viewModel.removeRecipeFromObservable(recipeToRemove)
                 removeFromAdapterList(recipeToRemove)
+                viewModel.deleteRecipeOnDatabase(recipeToRemove)
                 setupSnackbar(viewHolder.itemView) {
-                    //viewModel.addRecipeFromObservable(recipeToRemove)
+                    viewModel.addRecipeToDatabase(recipeToRemove)
                     addToAdapterList(recipeToRemove)
                 }
                 snackBar.show()
@@ -144,26 +146,26 @@ class SwipeToDeleteRecipeList(
     private fun addToAdapterList(recipe: RecipeWithIng) {
         adapter.submitList(adapter.currentList.toMutableList().apply {
             add(recipe)
-        })
+        }.sortedBy { it.domainRecipe.name })
     }
 
     private fun removeFromAdapterList(recipe: RecipeWithIng) {
         adapter.submitList(adapter.currentList.toMutableList().apply {
             remove(recipe)
-        })
+        }.sortedBy { it.domainRecipe.name })
     }
 
     @SuppressLint("ShowToast")
     private fun setupSnackbar(view: View, undoAction: (View) -> Unit) {
         snackBar =
-            Snackbar.make(view, Strings.get(R.string.recipe_removed), Snackbar.LENGTH_LONG).apply {
+            Snackbar.make(view, Strings.get(R.string.recipe_removed), Snackbar.LENGTH_SHORT).apply {
                 setAction(Strings.get(R.string.undo), undoAction)
                 anchorView = fab
                 addCallback(object : Snackbar.Callback() {
                     override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                         super.onDismissed(transientBottomBar, event)
                         if (event == DISMISS_EVENT_SWIPE || event == DISMISS_EVENT_TIMEOUT || event == DISMISS_EVENT_CONSECUTIVE) {
-                            viewModel.deleteRecipeOnDatabase(recipeToRemove)
+//                            viewModel.deleteRecipeOnDatabase(recipeToRemove)
                         }
                     }
                 })

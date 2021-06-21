@@ -8,6 +8,7 @@ import com.moliverac8.domain.RecipeWithIng
 import com.moliverac8.recipevault.toListOfString
 import com.moliverac8.usecases.DeleteRecipe
 import com.moliverac8.usecases.GetAllRecipes
+import com.moliverac8.usecases.SaveRecipe
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class RecipeListVM @Inject constructor(
     private val getRecipes: GetAllRecipes,
-    private val deleteRecipe: DeleteRecipe
+    private val deleteRecipe: DeleteRecipe,
+    private val saveRecipe: SaveRecipe
 ) : ViewModel() {
 
     private val _recipes = MutableLiveData<List<RecipeWithIng>>()
@@ -38,7 +40,7 @@ class RecipeListVM @Inject constructor(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 originalRecipes = getRecipes()
-                _recipes.postValue(originalRecipes)
+                _recipes.postValue(originalRecipes.sortedBy { it.domainRecipe.name })
             }
         }
     }
@@ -51,22 +53,10 @@ class RecipeListVM @Inject constructor(
         }
     }
 
-    fun removeRecipeFromObservable(recipe: RecipeWithIng) {
+    fun addRecipeToDatabase(recipe: RecipeWithIng) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                _recipes.postValue(recipes.value?.toMutableList()?.apply {
-                    remove(recipe)
-                })
-            }
-        }
-    }
-
-    fun addRecipeFromObservable(recipe: RecipeWithIng) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                _recipes.postValue(recipes.value?.toMutableList()?.apply {
-                    add(recipe)
-                })
+                saveRecipe(recipe)
             }
         }
     }
@@ -74,7 +64,7 @@ class RecipeListVM @Inject constructor(
     fun filterByChips(filters: List<String>) {
         viewModelScope.launch {
             withContext(Dispatchers.Default) {
-                val recipes = originalRecipes
+                val recipes = getRecipes()
                 val filteredRecipes = recipes.filter { recipe ->
                     filters.any { it == recipe.domainRecipe.dietType.name } ||
                             filters.any {

@@ -10,11 +10,11 @@ import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
-import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.moliverac8.domain.DietType
 import com.moliverac8.domain.DishType
+import com.moliverac8.domain.RecipeWithIng
 import com.moliverac8.recipevault.GENERAL
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.FragmentRecipeListBinding
@@ -27,9 +27,8 @@ class RecipeListFragment : Fragment() {
     private val viewModel: RecipeListVM by viewModels(ownerProducer = { requireActivity() })
     private val filterList: MutableList<String> = mutableListOf()
     private lateinit var binding: FragmentRecipeListBinding
-    private val newRecipeBtn: FloatingActionButton by lazy {
-        requireActivity().findViewById(R.id.newRecipeBtn)
-    }
+    private lateinit var adapter: RecipeListAdapter
+    private lateinit var previousList: List<RecipeWithIng>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +36,7 @@ class RecipeListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentRecipeListBinding.inflate(layoutInflater)
-        val adapter =
+        adapter =
             RecipeListAdapter(RecipeListAdapter.OnClickListener { recipe, isEditable, view ->
                 recipe.domainRecipe.id.let { id ->
                     (activity as RecipeListNavigation).navigateToExistingRecipe(
@@ -79,9 +78,9 @@ class RecipeListFragment : Fragment() {
         }
 
         binding.recipeList.adapter = adapter
-        ItemTouchHelper(SwipeToDeleteRecipeList(requireContext(), viewModel, adapter, newRecipeBtn)).attachToRecyclerView(binding.recipeList)
 
         viewModel.recipes.observe(viewLifecycleOwner, { recipes ->
+            previousList = recipes
             adapter.submitList(recipes)
         })
 
@@ -102,12 +101,33 @@ class RecipeListFragment : Fragment() {
         view.doOnPreDraw { startPostponedEnterTransition() }
     }
 
+    override fun onStop() {
+        super.onStop()
+        /*Log.d(GENERAL, "${hasAnyRecipeBeenRemoved()}")
+        if (hasAnyRecipeBeenRemoved()) {
+            val diff = adapter.currentList.minus(previousList)
+            diff.forEach {
+                viewModel.deleteRecipeOnDatabase(it)
+            }
+        }*/
+    }
+
     override fun onStart() {
         super.onStart()
-        newRecipeBtn.setOnClickListener {
+        ItemTouchHelper(
+            SwipeToDeleteRecipeList(
+                requireContext(),
+                viewModel,
+                adapter,
+                requireActivity().findViewById<FloatingActionButton>(R.id.newRecipeBtn)
+            )
+        ).attachToRecyclerView(binding.recipeList)
+        requireActivity().findViewById<FloatingActionButton>(R.id.newRecipeBtn).setOnClickListener {
             (activity as RecipeListNavigation).navigateToNewRecipe()
         }
     }
+
+    private fun hasAnyRecipeBeenRemoved(): Boolean = adapter.currentList != previousList
 
     companion object {
         fun newInstance(): RecipeListFragment = RecipeListFragment()

@@ -2,46 +2,39 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/parentLayout"
-        android:background="@color/colorSurface"
-        android:transitionName="@string/recipe_card_detail_transition_name"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/recipe_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:transitionName="@string/recipe_card_detail_transition_name">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_bar"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/menu_top_bar_new_recipe" />
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/top_bar"
-                style="@style/Widget.MaterialComponents.Toolbar.Primary"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:menu="@menu/menu_top_bar_new_recipe" />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/top_bar"
+            app:tabMode="fixed" />
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/top_bar"
-                app:tabMode="fixed" />
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tabs">
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/pager"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tabs">
+        </androidx.viewpager2.widget.ViewPager2>
 
-            </androidx.viewpager2.widget.ViewPager2>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

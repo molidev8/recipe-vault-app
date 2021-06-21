@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.transition.Slide
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.transition.MaterialContainerTransform
 import com.moliverac8.recipevault.R
@@ -100,23 +101,23 @@ class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigat
         if (args.recipeID == -1) {
             enterTransition = MaterialContainerTransform().apply {
                 startView = requireActivity().findViewById(R.id.newRecipeBtn)
-                endView = binding.tabs
-                scrimColor = Color.TRANSPARENT
+                endView = binding.recipePager
                 duration = resources.getInteger(R.integer.motion_duration_large).toLong()
-                /*containerColor = requireContext().themeColor(R.attr.colorSurface)
-                startContainerColor = requireContext().themeColor(R.attr.colorSecondary)
-                endContainerColor = requireContext().themeColor(R.attr.colorSurface)*/
+                scrimColor = Color.TRANSPARENT
+                containerColor = ContextCompat.getColor(requireContext(), R.color.secondaryColor)
+                startContainerColor = ContextCompat.getColor(requireContext(), R.color.secondaryColor)
+                endContainerColor = ContextCompat.getColor(requireContext(), R.color.colorSurface)
             }
 
             returnTransition = Slide().apply {
-                addTarget(R.id.parentLayout)
+                addTarget(R.id.recipe_pager)
                 resources.getInteger(R.integer.motion_duration_large).toLong()
             }
         } else {
             sharedElementEnterTransition = MaterialContainerTransform().apply {
                 drawingViewId = R.id.fragmentMaster
                 scrimColor = Color.TRANSPARENT
-                endContainerColor = resources.getColor(R.color.white)
+                endContainerColor = ContextCompat.getColor(requireContext(), R.color.colorSurface)
             }
         }
     }
