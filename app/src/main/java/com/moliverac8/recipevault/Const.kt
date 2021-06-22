@@ -15,3 +15,4 @@ const val BACKUP = "BACKUP"
 
 // ACTIVITIES
 const val REQUEST_IMAGE_CAPTURE = 1
+const val SERVICE_ID = "com.moliverac8.recipevault"

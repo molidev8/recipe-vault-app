@@ -170,6 +170,8 @@ dependencies {
     api 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation group: 'org.jetbrains.dokka', name: 'dokka-cli', version: '1.4.32'
+    implementation 'com.google.android.gms:play-services-nearby:18.0.0'
+    implementation 'com.google.code.gson:gson:2.8.7'
 
 }
 

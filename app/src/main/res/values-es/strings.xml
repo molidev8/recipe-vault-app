@@ -67,4 +67,7 @@
     <string name="user_confirmation">¿Está seguro?</string>
     <string name="ok">Ok</string>
     <string name="ing_title">Ingrediente</string>
+    <string name="accept_connection">Aceptar conexión con %s</string>
+    <string name="confirm_code">Confirma que el código es el mismo en ambos dispositivos: %s</string>
+    <string name="accept">Aceptar</string>
 </resources>
