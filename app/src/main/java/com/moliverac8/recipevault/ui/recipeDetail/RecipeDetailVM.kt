@@ -29,6 +29,10 @@ class RecipeDetailVM @Inject constructor(
         get() = _recipeWithIng
     private val _recipeWithIng = MutableLiveData<RecipeWithIng>()
 
+    private val _nearbyRecipe = MutableLiveData<RecipeWithIng>()
+    val nearbyRecipe: LiveData<RecipeWithIng>
+        get() = _nearbyRecipe
+
     private val _dialogIng = MutableLiveData<Ingredient>()
     val dialogIng: LiveData<Ingredient>
         get() = _dialogIng
@@ -36,7 +40,6 @@ class RecipeDetailVM @Inject constructor(
     private var tempIngs: List<Ingredient> = mutableListOf()
     private var tempRecipe: Recipe = Recipe()
     var amIEditing: Boolean = false
-
     /**
      * When a new recipe arrives, LiveData object stores an empty Recipe
      */
@@ -70,6 +73,15 @@ class RecipeDetailVM @Inject constructor(
                 tempRecipe = recipe
             }
         }
+    }
+
+    fun updateWithRecipeReceivedWithNearby() {
+        _recipeWithIng.value = _nearbyRecipe.value
+        tempIngs = _nearbyRecipe.value?.ings!!
+    }
+
+    fun setRecipeReceivedWithNearby(recipe: RecipeWithIng) {
+        _nearbyRecipe.value = recipe
     }
 
     fun updateRecipe(old: RecipeWithIng) {

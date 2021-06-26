@@ -5,11 +5,15 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 
 object Permissions {
 
-    private val PERMISSIONS = listOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION)
+    private val PERMISSIONS = listOf(
+        Manifest.permission.CAMERA,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.READ_EXTERNAL_STORAGE
+    )
     const val PERMISSION_CODE = 1
 
     fun hasPermissions(context: Context): Boolean = PERMISSIONS.all {

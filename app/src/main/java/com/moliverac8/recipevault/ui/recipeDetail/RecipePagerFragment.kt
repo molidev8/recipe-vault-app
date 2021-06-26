@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,7 @@ import com.google.gson.Gson
 import com.moliverac8.domain.RecipeWithIng
 import com.moliverac8.recipevault.*
 import com.moliverac8.recipevault.databinding.FragmentRecipePagerBinding
+import com.moliverac8.recipevault.framework.nearby.NearbyConnectionManager
 import com.moliverac8.recipevault.ui.common.CustomOnBackPressedInterface
 import com.moliverac8.recipevault.ui.recipeDetail.edit.RecipeDetailEditFragment
 import com.moliverac8.recipevault.ui.recipeDetail.edit.RecipeIngsEditFragment
@@ -39,6 +41,7 @@ class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigat
     private val args by navArgs<RecipePagerFragmentArgs>()
     private val viewModel: RecipeDetailVM by viewModels(ownerProducer = { this })
     private lateinit var binding: FragmentRecipePagerBinding
+    private lateinit var nearby: NearbyConnectionManager
     private val goBackLogic = {
         // If a new recipe is being created
         if (!viewModel.amIEditing) {
@@ -127,7 +130,8 @@ class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigat
             }
 
             //RECEIVER
-            startDiscovering()
+            nearby = NearbyConnectionManager(requireContext(), false, viewModel)
+            nearby.startDiscovering()
 
         } else {
             sharedElementEnterTransition = MaterialContainerTransform().apply {
@@ -140,7 +144,8 @@ class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigat
             binding.topBar.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.share_recipe -> {
-                        startAdvertising()
+                        nearby = NearbyConnectionManager(requireContext(), true, viewModel)
+                        nearby.startAdvertising()
                     }
                 }
                 false
@@ -148,120 +153,6 @@ class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigat
 
         }
     }
-
-    private fun startAdvertising() {
-        val advertisingOptions =
-            AdvertisingOptions.Builder().setStrategy(Strategy.P2P_POINT_TO_POINT).build()
-        Nearby.getConnectionsClient(requireContext()).startAdvertising(
-            "test", SERVICE_ID, ConnectingProcessCallback(), advertisingOptions
-        )
-            .addOnSuccessListener {
-                Log.d(GENERAL, "advertising...")
-            }
-            .addOnFailureListener {
-                Log.d(GENERAL, "failure advertising...")
-            }
-    }
-
-    private inner class ConnectingProcessCallback : ConnectionLifecycleCallback() {
-        override fun onConnectionInitiated(endPointId: String, info: ConnectionInfo) {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(Strings.get(R.string.accept_connection, info.endpointName))
-                .setMessage(Strings.get(R.string.confirm_code, info.authenticationDigits))
-                .setPositiveButton(Strings.get(R.string.accept)) { _: DialogInterface, _: Int ->
-                    Nearby.getConnectionsClient(requireContext())
-                        .acceptConnection(endPointId, DataReceivedCallback())
-                }
-                .setNegativeButton(Strings.get(R.string.cancel)) { _: DialogInterface, _: Int ->
-                    Nearby.getConnectionsClient(requireContext()).rejectConnection(endPointId)
-                }
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show()
-        }
-
-        override fun onConnectionResult(endPointId: String, result: ConnectionResolution) {
-            when (result.status.statusCode) {
-                ConnectionsStatusCodes.STATUS_OK -> {
-                    val gson = Gson()
-                    val jsonRecipe = gson.toJson(viewModel.recipeWithIng.value)
-                    sendText(jsonRecipe, endPointId)
-                }
-                ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED -> {
-                    Log.d(GENERAL, "conexion rechazada")
-                }
-                ConnectionsStatusCodes.STATUS_ERROR -> {
-                    Log.d(GENERAL, "DESCONEXION")
-                }
-            }
-        }
-
-        override fun onDisconnected(endPointId: String) {
-            Log.d(GENERAL, "DESCONEXION OK")
-        }
-    }
-
-    private inner class DataReceivedCallback : PayloadCallback() {
-        override fun onPayloadReceived(endPointId: String, payload: Payload) {
-            if (payload.type == Payload.Type.BYTES) {
-                val gson = Gson()
-                val recipe = gson.fromJson(String(payload.asBytes()!!), RecipeWithIng::class.java)
-                Log.d(GENERAL, recipe.toString())
-            }
-        }
-
-        override fun onPayloadTransferUpdate(endPointId: String, update: PayloadTransferUpdate) {
-
-        }
-    }
-
-    private fun sendText(text: String, endPointId: String) {
-        val payload = Payload.fromBytes(text.toByteArray())
-        Nearby.getConnectionsClient(requireContext()).sendPayload(endPointId, payload)
-    }
-
-    private fun sendImage(uri: String, endPointId: String) {
-        val file = File(uri)
-        try {
-            val payload = Payload.fromFile(
-                requireActivity().contentResolver.openFileDescriptor(
-                    Uri.parse(uri),
-                    "r"
-                )!!
-            )
-//            val payload = Payload.fromFile(file)
-            Nearby.getConnectionsClient(requireContext()).sendPayload(endPointId, payload)
-        } catch (e: FileNotFoundException) {
-            Log.d(IO, "File not found", e)
-        }
-    }
-
-    private fun startDiscovering() {
-        val discoveryOptions =
-            DiscoveryOptions.Builder().setStrategy(Strategy.P2P_POINT_TO_POINT).build()
-        Nearby.getConnectionsClient(requireContext())
-            .startDiscovery(SERVICE_ID, object : EndpointDiscoveryCallback() {
-                override fun onEndpointFound(endPointId: String, info: DiscoveredEndpointInfo) {
-                    Nearby.getConnectionsClient(requireContext())
-                        .requestConnection("test", endPointId, ConnectingProcessCallback())
-                        .addOnSuccessListener {
-
-                        }.addOnFailureListener {
-                        }
-                }
-
-                override fun onEndpointLost(endPointId: String) {
-                    Log.d(GENERAL, "endpoint lost")
-                }
-            }, discoveryOptions)
-            .addOnSuccessListener { Log.d(GENERAL, "discovering...") }
-            .addOnFailureListener {
-                Log.d(GENERAL, "failure discovering...")
-            }
-    }
-
-    private fun stopAdvertising() = Nearby.getConnectionsClient(requireContext()).stopAdvertising()
-    private fun stopDiscovering() = Nearby.getConnectionsClient(requireContext()).stopDiscovery()
-
 
     override fun navigateToEdit(prepareNavigation: () -> Unit) {
         viewModel.amIEditing = true
@@ -284,8 +175,10 @@ class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigat
 
     override fun onStop() {
         super.onStop()
-        if (args.recipeID != -1) stopAdvertising()
-        else stopDiscovering()
+        if (::nearby.isInitialized) {
+            if (args.recipeID != -1) nearby.stopAdvertising()
+            else nearby.stopDiscovering()
+        }
     }
 }
 

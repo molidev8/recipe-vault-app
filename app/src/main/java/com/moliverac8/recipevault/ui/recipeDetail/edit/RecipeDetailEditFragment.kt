@@ -9,13 +9,11 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.text.Editable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.FileProvider
 import androidx.core.view.forEachIndexed
 import androidx.core.widget.doAfterTextChanged
@@ -29,7 +27,8 @@ import com.moliverac8.domain.DietType
 import com.moliverac8.domain.DishType
 import com.moliverac8.domain.Recipe
 import com.moliverac8.domain.RecipeWithIng
-import com.moliverac8.recipevault.*
+import com.moliverac8.recipevault.R
+import com.moliverac8.recipevault.REQUEST_IMAGE_CAPTURE
 import com.moliverac8.recipevault.databinding.FragmentRecipeDetailEditBinding
 import com.moliverac8.recipevault.ui.common.Permissions
 import com.moliverac8.recipevault.ui.common.toJsonInstructions
@@ -79,7 +78,10 @@ class RecipeDetailEditFragment : Fragment() {
                 binding.setTimeToCookEdit.setText(recipe.domainRecipe.timeToCook.toString())
             }
             binding.setDescriptionEdit.setText(recipe.domainRecipe.description)
-            photoUri = Uri.parse(recipe.domainRecipe.image)
+            if (recipe.domainRecipe.image != "") {
+                photoUri = Uri.parse(recipe.domainRecipe.image)
+                Glide.with(this).load(photoUri).into(binding.photoBtn)
+            }
             when (recipe.domainRecipe.dietType) {
                 DietType.VEGAN -> binding.veganChip.isChecked = true
                 DietType.VEGETARIAN -> binding.vegetarianChip.isChecked = true
