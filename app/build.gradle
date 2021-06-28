@@ -40,8 +40,8 @@ android {
         // Debug version does not explicitly show
 
         release {
-            shrinkResources false //false
-            minifyEnabled false //false
+            shrinkResources true //false
+            minifyEnabled true //false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -150,6 +150,8 @@ dependencies {
 }
 
 dependencies {
+
+    androidTestImplementation 'androidx.test:rules:1.4.0-beta02'
     implementation "androidx.work:work-runtime-ktx:2.5.0"
     implementation 'androidx.camera:camera-camera2:1.1.0-alpha05'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

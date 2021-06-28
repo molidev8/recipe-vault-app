@@ -81,6 +81,8 @@ class RecipeDetailEditFragment : Fragment() {
             if (recipe.domainRecipe.image != "") {
                 photoUri = Uri.parse(recipe.domainRecipe.image)
                 Glide.with(this).load(photoUri).into(binding.photoBtn)
+            } else {
+                photoUri = Uri.parse("")
             }
             when (recipe.domainRecipe.dietType) {
                 DietType.VEGAN -> binding.veganChip.isChecked = true
