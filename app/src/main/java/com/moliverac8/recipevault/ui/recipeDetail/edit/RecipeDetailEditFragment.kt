@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
+import androidx.core.view.doOnPreDraw
 import androidx.core.view.forEachIndexed
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment

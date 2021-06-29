@@ -23,6 +23,11 @@
 -keep class * extends androidx.navigation.NavArgsLazy
 -keep class kotlin.reflect.KClass
 -keep class * extends android.os.Bundle
--keep class RecipeListFragmen
+# Workaround for Kotlin Safe Args issue
+-if public class ** implements androidx.navigation.NavArgs
+-keepclassmembers public class <1> {
+    public static ** Companion;
+    ** fromBundle(android.os.Bundle);
+}
 -keepnames class android.os.Bundle
 -keep class android.os.Parcelable
