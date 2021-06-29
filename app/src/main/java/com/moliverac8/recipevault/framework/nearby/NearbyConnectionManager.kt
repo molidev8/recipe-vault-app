@@ -1,17 +1,22 @@
 package com.moliverac8.recipevault.framework.nearby
 
 import android.content.Context
+import android.content.DialogInterface
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import androidx.collection.SimpleArrayMap
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.moliverac8.domain.Recipe
 import com.moliverac8.domain.RecipeWithIng
 import com.moliverac8.recipevault.GENERAL
+import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.SERVICE_ID
+import com.moliverac8.recipevault.Strings
 import com.moliverac8.recipevault.ui.recipeDetail.RecipeDetailVM
 import java.io.*
 
@@ -82,19 +87,18 @@ class NearbyConnectionManager(
 
     private inner class ConnectingProcessCallback : ConnectionLifecycleCallback() {
         override fun onConnectionInitiated(endPointId: String, info: ConnectionInfo) {
-            /*MaterialAlertDialogBuilder(requireContext())
+            MaterialAlertDialogBuilder(context)
                 .setTitle(Strings.get(R.string.accept_connection, info.endpointName))
                 .setMessage(Strings.get(R.string.confirm_code, info.authenticationDigits))
                 .setPositiveButton(Strings.get(R.string.accept)) { _: DialogInterface, _: Int ->
-                    Nearby.getConnectionsClient(requireContext())
+                    Nearby.getConnectionsClient(context)
                         .acceptConnection(endPointId, DataReceivedCallback())
                 }
                 .setNegativeButton(Strings.get(R.string.cancel)) { _: DialogInterface, _: Int ->
-                    Nearby.getConnectionsClient(requireContext()).rejectConnection(endPointId)
+                    Nearby.getConnectionsClient(context).rejectConnection(endPointId)
                 }
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show()*/
-            client.acceptConnection(endPointId, DataReceivedCallback())
+                .setIcon(R.drawable.outline_warning_24)
+                .show()
         }
 
         override fun onConnectionResult(endPointId: String, result: ConnectionResolution) {
@@ -182,7 +186,7 @@ class NearbyConnectionManager(
         val advertisingOptions =
             AdvertisingOptions.Builder().setStrategy(Strategy.P2P_POINT_TO_POINT).build()
         client.startAdvertising(
-            "test", SERVICE_ID, ConnectingProcessCallback(), advertisingOptions
+            android.os.Build.MODEL, SERVICE_ID, ConnectingProcessCallback(), advertisingOptions
         )
             .addOnSuccessListener {
                 Log.d(GENERAL, "advertising...")
@@ -198,7 +202,7 @@ class NearbyConnectionManager(
         client
             .startDiscovery(SERVICE_ID, object : EndpointDiscoveryCallback() {
                 override fun onEndpointFound(endPointId: String, info: DiscoveredEndpointInfo) {
-                    client.requestConnection("test", endPointId, ConnectingProcessCallback())
+                    client.requestConnection(android.os.Build.MODEL, endPointId, ConnectingProcessCallback())
                         .addOnSuccessListener {
 
                         }
