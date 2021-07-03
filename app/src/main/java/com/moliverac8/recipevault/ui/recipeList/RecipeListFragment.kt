@@ -1,7 +1,6 @@
 package com.moliverac8.recipevault.ui.recipeList
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +11,10 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.transition.MaterialFadeThrough
 import com.moliverac8.domain.DietType
 import com.moliverac8.domain.DishType
 import com.moliverac8.domain.RecipeWithIng
-import com.moliverac8.recipevault.GENERAL
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.FragmentRecipeListBinding
 import com.moliverac8.recipevault.ui.common.SwipeToDeleteRecipeList
@@ -97,6 +96,9 @@ class RecipeListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        enterTransition = MaterialFadeThrough().apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
     }

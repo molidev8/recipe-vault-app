@@ -111,7 +111,9 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun animateNavigationToRecipeList() {
-        currentNavigationFragment?.exitTransition = MaterialFadeThrough()
+        currentNavigationFragment?.exitTransition = MaterialFadeThrough().apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
     }
 
     private fun animateNavigationToNewRecipe() {
@@ -145,19 +147,6 @@ class MainActivity : AppCompatActivity(),
                 it.addOnDestinationChangedListener(this)
             }
         binding.bottomNav.setupWithNavController(navController)
-    }
-
-    private fun updateBottomNavigationActions() {
-        when(currentNavigationFragment) {
-            is RecipeListFragment -> {
-                binding.bottomNav.menu.findItem(R.id.my_recipes).isEnabled = false
-                binding.bottomNav.menu.findItem(R.id.account).isEnabled = true
-            }
-            is AccountFragment -> {
-                binding.bottomNav.menu.findItem(R.id.my_recipes).isEnabled = true
-                binding.bottomNav.menu.findItem(R.id.account).isEnabled = false
-            }
-        }
     }
 
     override fun onBackPressed() {
