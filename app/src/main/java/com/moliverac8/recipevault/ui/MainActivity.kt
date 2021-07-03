@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -20,9 +21,11 @@ import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.databinding.ActivityMainBinding
 import com.moliverac8.recipevault.framework.workmanager.BackupUserData
 import com.moliverac8.recipevault.framework.workmanager.DropboxManager
+import com.moliverac8.recipevault.ui.account.AccountFragment
 import com.moliverac8.recipevault.ui.recipeDetail.RecipePager
 import com.moliverac8.recipevault.ui.recipeDetail.RecipePagerFragment
 import com.moliverac8.recipevault.ui.recipeDetail.RecipePagerNavigate
+import com.moliverac8.recipevault.ui.recipeList.RecipeListFragment
 import com.moliverac8.recipevault.ui.recipeList.RecipeListFragmentDirections
 import com.moliverac8.recipevault.ui.recipeList.RecipeListNavigation
 import com.moliverac8.recipevault.ui.search.SearchFragmentDirections
@@ -71,6 +74,7 @@ class MainActivity : AppCompatActivity(),
             setShowMotionSpecResource(R.animator.fab_show)
             setHideMotionSpecResource(R.animator.fab_hide)
         }
+
 
         setupBottomNavigation()
     }
@@ -141,7 +145,19 @@ class MainActivity : AppCompatActivity(),
                 it.addOnDestinationChangedListener(this)
             }
         binding.bottomNav.setupWithNavController(navController)
+    }
 
+    private fun updateBottomNavigationActions() {
+        when(currentNavigationFragment) {
+            is RecipeListFragment -> {
+                binding.bottomNav.menu.findItem(R.id.my_recipes).isEnabled = false
+                binding.bottomNav.menu.findItem(R.id.account).isEnabled = true
+            }
+            is AccountFragment -> {
+                binding.bottomNav.menu.findItem(R.id.my_recipes).isEnabled = true
+                binding.bottomNav.menu.findItem(R.id.account).isEnabled = false
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -158,12 +174,16 @@ class MainActivity : AppCompatActivity(),
     ) {
         when (destination.id) {
             R.id.RecipeListFragment -> {
+                binding.bottomNav.menu.findItem(R.id.my_recipes).isEnabled = false
+                binding.bottomNav.menu.findItem(R.id.account).isEnabled = true
                 binding.newRecipeBtn.show()
                 showBottomAppBar()
                 animateNavigationToRecipeList()
             }
             R.id.AccountFragment -> {
                 // FAB hides onViewCreated in the fragment to avoid stutter
+                binding.bottomNav.menu.findItem(R.id.my_recipes).isEnabled = true
+                binding.bottomNav.menu.findItem(R.id.account).isEnabled = false
                 animateNavigationToAccount()
             }
             R.id.RecipePagerFragment -> {

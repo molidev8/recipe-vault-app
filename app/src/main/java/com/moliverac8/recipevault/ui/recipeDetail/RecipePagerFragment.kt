@@ -19,6 +19,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.gson.Gson
@@ -108,6 +109,8 @@ class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigat
             }
         }
 
+//        postponeEnterTransition()
+
         binding.lifecycleOwner = this
 
         return binding.root
@@ -116,7 +119,7 @@ class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigat
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (args.recipeID == -1) {
             enterTransition = MaterialContainerTransform().apply {
-                startView = requireActivity().findViewById(R.id.newRecipeBtn)
+                startView = requireActivity().findViewById<FloatingActionButton>(R.id.newRecipeBtn)
                 endView = binding.recipePager
                 duration = resources.getInteger(R.integer.motion_duration_large).toLong()
                 scrimColor = Color.TRANSPARENT
@@ -125,6 +128,9 @@ class RecipePagerFragment : Fragment(), RecipeDetailFragment.DetailToEditNavigat
                     ContextCompat.getColor(requireContext(), R.color.secondaryColor)
                 endContainerColor = ContextCompat.getColor(requireContext(), R.color.colorSurface)
             }
+
+//            startPostponedEnterTransition()
+
             returnTransition = Slide().apply {
                 addTarget(R.id.recipe_pager)
                 resources.getInteger(R.integer.motion_duration_large).toLong()
