@@ -11,6 +11,7 @@ import com.dropbox.core.oauth.DbxCredential
 import com.dropbox.core.v2.DbxClientV2
 import com.dropbox.core.v2.files.WriteMode
 import com.moliverac8.recipevault.BACKUP
+import com.moliverac8.recipevault.BuildConfig
 import com.moliverac8.recipevault.R
 import com.moliverac8.recipevault.Strings
 import java.io.FileInputStream
@@ -18,7 +19,7 @@ import java.io.FileOutputStream
 import java.io.OutputStream
 import java.util.*
 
-private var API_KEY = Strings.get(R.string.dropbox_key)
+private var API_KEY = BuildConfig.DROPBOX_KEY
 
 /**
  * Manages all the interaction with the Dropbox backend

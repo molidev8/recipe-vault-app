@@ -70,7 +70,7 @@ class RecipeDetailEditFragment : Fragment() {
         binding.instructions.adapter = adapter
 
         // Loads the data of the recipe that it's being edited
-        viewModel.recipeWithIng.observe(viewLifecycleOwner, { recipe ->
+        viewModel.recipeWithIng.observe(viewLifecycleOwner) { recipe ->
             this.recipe = recipe
             if (recipe.domainRecipe.name.isNotBlank()) {
                 binding.setTitleEdit.setText(recipe.domainRecipe.name)
@@ -89,6 +89,7 @@ class RecipeDetailEditFragment : Fragment() {
                 DietType.VEGAN -> binding.veganChip.isChecked = true
                 DietType.VEGETARIAN -> binding.vegetarianChip.isChecked = true
                 DietType.REGULAR -> binding.regularChip.isChecked = true
+                DietType.NONE -> unCheckDietChips()
             }
             recipe.domainRecipe.dishType.forEach {
                 when (it) {
@@ -102,7 +103,7 @@ class RecipeDetailEditFragment : Fragment() {
                     recipe.domainRecipe.instructions.toListOfInstructions().toMutableList()
                 else mutableListOf()
             adapter.submitList(instructions)
-        })
+        }
 
         /**
          * Checks if the user has concede permissions or asks for them to access the camera and the storage before
@@ -145,6 +146,12 @@ class RecipeDetailEditFragment : Fragment() {
             }
         }
         return binding.root
+    }
+
+    private fun unCheckDietChips() = with(binding) {
+        veganChip.isChecked = false
+        vegetarianChip.isChecked = false
+        regularChip.isChecked = false
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

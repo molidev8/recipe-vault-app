@@ -84,8 +84,6 @@ class SwipeToDeleteRecipeList(
         var circleRadius = 0f
         val iconScale: Float
 
-        Log.d(GENERAL, "top $top bottom $bottom")
-
         when (progress) {
             in 0f..swipeThreshold -> {
                 iconScale = 1f - (progress * 0.2f)

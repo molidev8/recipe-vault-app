@@ -8,22 +8,15 @@ plugins {
     id 'org.jetbrains.dokka'
 }
 
-android {
-    signingConfigs {
+def localPropertiesFile = rootProject.file("local.properties")
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(localPropertiesFile))
 
-        release {
-            storeFile file('C:\\Users\\moliv\\keystores\\test.jks')
-            storePassword '123456'
-            keyAlias 'test'
-            keyPassword '123456'
-        }
-    }
+android {
+
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
-    packagingOptions {
-        exclude 'META-INF/LGPL2.1'
-        exclude 'META-INF/AL2.0'
-    }
+
     defaultConfig {
         applicationId "com.moliverac8.recipevault"
         testApplicationId "com.moliverac8.recipevault.test"
@@ -32,7 +25,18 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        signingConfig signingConfigs.release
+        buildConfigField("String", "DROPBOX_KEY", localProperties['dropboxKey'])
+    }
+
+    signingConfigs {
+        release {
+            if (localPropertiesFile.exists()) {
+                keyAlias localProperties['keyAlias']
+                keyPassword localProperties['keyPassword']
+                storeFile rootProject.file('keystore.jks')
+                storePassword localProperties['storePassword']
+            }
+        }
     }
 
     buildTypes {
@@ -40,8 +44,8 @@ android {
         // Debug version does not explicitly show
 
         release {
-            shrinkResources true //false
-            minifyEnabled true //false
+            shrinkResources true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -52,12 +56,15 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    packagingOptions {
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/AL2.0'
+    }
     buildFeatures {
         dataBinding true
     }
     configurations {
         all {
-
             exclude group: "org.jetbrains.dokka"
         }
     }
@@ -83,7 +90,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.5.0'
 }
 
-//Room
+// Room
 dependencies {
     dependencies {
         def room_version = "2.3.0-rc01"
@@ -113,12 +120,10 @@ dependencies {
 dependencies {
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
-
     kapt 'androidx.hilt:hilt-compiler:1.0.0'
-    implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
 }
 
-//Testing
+// Testing
 dependencies {
 
     // Dependencies for local unit tests

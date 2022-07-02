@@ -29,27 +29,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RecipeVault">
-        <!--<activity
-            android:name=".ui.SplashActivity"
-            android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>-->
-        <activity android:name=".ui.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.dropbox.core.android.AuthActivity"
-            android:configChanges="orientation|keyboard"
-            android:launchMode="singleTask">
-            <intent-filter>
 
-                <!-- Change this to be db- followed by your app key -->
+        <activity android:name=".ui.MainActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
+    <activity
+        android:name="com.dropbox.core.android.AuthActivity"
+        android:configChanges="orientation|keyboard"
+        android:launchMode="singleTask">
+        <intent-filter>
+
+            <!-- Change this to be db- followed by your app key -->
                 <data android:scheme="db-1an6pdc5pzzppws" />
 
                 <action android:name="android.intent.action.VIEW" />
