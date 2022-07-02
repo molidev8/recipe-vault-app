@@ -28,17 +28,6 @@ android {
         buildConfigField("String", "DROPBOX_KEY", localProperties['dropboxKey'])
     }
 
-    signingConfigs {
-        release {
-            if (localPropertiesFile.exists()) {
-                keyAlias localProperties['keyAlias']
-                keyPassword localProperties['keyPassword']
-                storeFile rootProject.file('keystore.jks')
-                storePassword localProperties['storePassword']
-            }
-        }
-    }
-
     buildTypes {
 
         // Debug version does not explicitly show
