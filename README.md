@@ -2,7 +2,7 @@
 Recipe Vault is an Android app that allows the user to store, share and backup his favourite recipes. It follows Clean Architecture with different layers, MVVM and the Single Activity pattern. 
 The app uses Material Design for the UI components and animations, and Espresso and JUnit for testing.
 
-## Libraries
+## Technologies
 
 * Material Design
 * Navigation Component
@@ -11,6 +11,7 @@ The app uses Material Design for the UI components and animations, and Espresso 
 * WorkManager
 * Nearby
 * Espresso
+* Shrinking and obfuscation
 
 ## APK
 In the following [link](https://github.com/molidev8/Recipe-Vault/blob/master/recipeVaultApp.apk) you can access an APK if you want to check the app in your device.
