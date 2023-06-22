@@ -18,7 +18,7 @@ In the following [link](https://github.com/molidev8/Recipe-Vault/blob/master/rec
 
 ## Source code config
 If you want to run the app in Android Studio, you can do so by cloning the repo, but if you want to check the backup functionality a Dropbox API key is needed. 
-Generate the key, and copy it in the local.properties file in the dropbox_key variable.
+Generate the key, and copy it in the local.properties file in the _dropboxKey_ variable.
 
 ## Some Animations
 <center>
